@@ -1,0 +1,40 @@
+.login-section{
+    height: 100vh;
+    background-color: #f6f1e1;
+}
+
+.login-card{
+    background-color: white;
+    width: 450px;
+}
+
+h2{
+    font-family: sans-serif;
+    font-size: 25px;
+    font-weight: bolder;
+    color: #02092dec;
+    text-transform: uppercase;
+}
+label{
+    color: black;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+input::placeholder{
+    color: #6c757d;
+}
+
+
+button{
+    padding: 8px 15px;
+    background-color: #4c3b03;
+    color: white;
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+

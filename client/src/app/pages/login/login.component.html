@@ -1,0 +1,55 @@
+<div
+  class="container-fluid login-section d-flex justify-content-center align-items-center"
+>
+  <div class="card login-card p-2 shadow-lg">
+    <h2>Connecter</h2>
+    <form [formGroup]="loginForm" autocomplete="off">
+      <div class="col-xl-12 mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input
+          type="email"
+          id="email"
+          class="form-control"
+          formControlName="email"
+          placeholder="email"
+          autocomplete="off"
+        />
+        <div
+          *ngIf="
+            loginForm.controls['email'].hasError('required') &&
+            loginForm.controls['email'].touched
+          "
+          class="text-danger"
+        >
+          Entrez votre email
+        </div>
+      </div>
+      <div class="col-xl-12 mb-3">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          formControlName="password"
+          placeholder="mot de passe"
+        />
+        <div
+          *ngIf="
+            loginForm.controls['password'].hasError('required') &&
+            loginForm.controls['password'].touched
+          "
+          class="text-danger"
+        >
+          Entrez votre mot de passe
+        </div>
+      </div>
+      <button
+        type="submit"
+        class="btn btn-primary full-width-button"
+        (click)="submit()"
+      >
+        Connecter
+      </button>
+    </form>
+  </div>
+</div>
