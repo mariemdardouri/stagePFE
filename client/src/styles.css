@@ -1,3 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
 
+:root{
+    --bg-body: #e7f6fc;
+    --bg-card: #8ecae6;
+    --primary-color:#219ebc;
+    --primary-light:#fff;
+    --secondary-light:#c8c8c8;
+    --secondary-color:#023047;
+}
 
+body{
+    background-color: var(--bg-body);
+    color: var(--text-color-light);
+}

@@ -1,0 +1,24 @@
+<div class="header" >
+  <span class="list-icon" (click)="toggleShadow($event)" [ngClass]="{'clicked': isClicked}"><i class="bi bi-list" (click)="toggleSidebar()"></i></span>
+  <span class="profile-icon"><i class="bi bi-person-circle"></i></span>  
+ 
+</div>
+<div class="container-fluid">
+  <div class="container sidebar" [ngClass]="{ 'show': isSidebarOpen}">
+    
+    <nav>
+      <ul>
+        <li *ngFor="let menuItem of menuItems">
+          <a [routerLink]="menuItem.path">
+            <i [class]="menuItem.icon"></i>
+            {{ menuItem }}
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container main">
+    <router-outlet></router-outlet>
+  </div>
+</div>
