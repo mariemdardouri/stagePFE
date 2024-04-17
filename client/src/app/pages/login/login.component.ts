@@ -35,9 +35,13 @@ submit(){
     this.login.loginUser(this.loginForm.value).subscribe({next:(resp:any)=>{
       console.log(resp);
       localStorage.setItem("token", resp.token);
-      this.router.navigate(['admin']).then(()=>{
+      localStorage.setItem("role", resp.role);
+      if(resp.role === 'admin'){
+        this.router.navigate(['admin']);
+      }else if(resp.role === "user"){
+        this.router.navigate(['home'])
+      }
         alert('Login Successfull!')
-      })
     },error:(err)=>{
       console.log(err);
       if(err.status==500){
@@ -46,30 +50,7 @@ submit(){
     }
   })
   }
-    /*if  (this.loginForm.valid){
-      const loginData = this.loginForm.value;
-      console.log('Form Data:',loginData);
-      
-      this.http.post('/api/auth/login', loginData).subscribe((data:any)=>{
-      localStorage.setItem("token", data.token);
-      console.log('token stored:',localStorage.getItem("token"));
-      
-      if (this.isAdmin(data)) {
-        this.router.navigate(['admin']);
-      } else {
-        this.router.navigate(['user'])
-      }
-    }, (error)=>{console.error('Error during login',error)});
-    }else{
-      console.log('form is invalid. Form data:',this.loginForm.value)
-      alert("Please fill out all fields")
-    }
     
 }
 
-// Helper function to check user type after logging in
-isAdmin(data: any):boolean{
-  return data && data["role"] === "admin";
-}*/
-}
 }

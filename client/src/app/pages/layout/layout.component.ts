@@ -1,27 +1,37 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
+import { LoginService } from '../../services/login.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-layout',
   standalone: true,
-  imports: [CommonModule ,LayoutComponent, RouterOutlet, RouterModule],
+  imports: [CommonModule , RouterOutlet, RouterModule],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css'
 })
 export class LayoutComponent {
-   adminMenu=[
-    {name:"Les utilisateurs" , path:"/admin/userList", icon:"bi bi-person"},
-    {name:"Deconnection", path:"/logout", icon:"bi bi-box-arrow-right"}
+    adminMenu=[
+    {label:"Les utilisateurs" , link:"user-list"},
+    {label:"Deconnection", link:"login"}
   ];
-   userMenu=[ 
-    {name:"Deconnection", path:"/logout", icon:"bi bi-box-arrow-right"}
+    userMenu=[ 
+    {label:"Deconnection", link:"login"}
   ];
-   menuItems: {name:string, path:string, icon:string}[]=[];
+   menuItems: any ;
    isSidebarOpen: boolean= false;
    isClicked: boolean= false;
 
-   constructor() {}
+  firstName: string='';
+  user: any;
+    
+
+   constructor( private userService:UserService) {}
+
+   
+    
+
 
   toggleSidebar():void{
     this.isSidebarOpen = !this.isSidebarOpen;
@@ -30,17 +40,17 @@ export class LayoutComponent {
   toggleShadow(event: MouseEvent):void{
     this.isClicked = !this.isClicked;
   }
-  getMenu(role:string):void{
-    switch(role){
-      case "admin":
-        this.menuItems =  this.adminMenu;
-        break;
-      case "user":
-        this.menuItems =  this.userMenu;
-        break;
-      default :
-        console.log("Error: unknown role "+role);
-        break;
-    }
+  getUser(role:string):void{
+     localStorage.getItem('token');
+    this.userService.getUser(role).subscribe({next:(resp:any)=>{
+      console.log(resp);
+      this.firstName = resp.user.firstName;
+      this.menuItems = role === resp.user.role ? this.adminMenu : this.userMenu;
+    },error: (err)=>{
+      console.log(err);
+      if(err.status==500){
+        alert(err.error.msg)
+      }
+    }});
   }
 }

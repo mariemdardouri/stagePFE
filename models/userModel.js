@@ -4,12 +4,11 @@ const userSchema = new mongoose.Schema(
   {
     email: { type: String, required: true },
     password: { type: String, required: true },
-
-    isAdmin: { type: Boolean, default: true },
     role: {
       type: String,
       require: true,
     },
+    fisrtName: { type: String, required: true }
   },
   { timestamps: true }
 );

@@ -9,8 +9,9 @@ module.exports = async (req, res, next) => {
           message: "Auth failed",
           success: false,
         });
-      } else {
-        req.body.userId = decoded.id;
+      } else {  
+        console.log(decoded);
+        req.user = decoded;
         next();
       }
     });
