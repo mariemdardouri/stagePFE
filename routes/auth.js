@@ -1,10 +1,12 @@
 const express = require("express");
 const router = express.Router();
+const authMiddleware = require("../middlewares/authMiddleware");
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const bcrypt = require("bcryptjs");
+router.use(jsonParser);
 
 router.post("/login", jsonParser, async (req, res) => {
   try {
@@ -28,7 +30,7 @@ router.post("/login", jsonParser, async (req, res) => {
     res.status(200).json({
       message: "login successfully",
       success: true,
-      token: token,
+      data: token,
       role: user.role,
     });
   } catch (err) {
@@ -36,5 +38,7 @@ router.post("/login", jsonParser, async (req, res) => {
     res.status(500).json({ msg: "Internal server error" });
   }
 });
+
+
 
 module.exports = router;

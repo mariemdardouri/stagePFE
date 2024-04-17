@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink} from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +16,7 @@ export class LoginComponent {
 
   loginForm!:FormGroup;
 
-  constructor(private router:Router, private login:LoginService){}
+  constructor(private router:Router, private login:AuthService){}
 
 ngOnInit():void{
 

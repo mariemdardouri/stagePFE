@@ -6,19 +6,21 @@ const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 
 router.use(jsonParser);
-router.get("/get-user",async(req,res)=>{
-  try{
-    const user = await User.find({});
+router.post("/get-user", jsonParser, authMiddleware, async (req, res) => {
+  try {
+    const users = await User.find({});
     res.status(200).json({
       success: true,
-      data: user,
+      data: users,
     });
-  }catch(err){
-    console.log(err)
-    res.status(401).json({success: false, msg:"Failed to get user"});
+    console.log("decoded user",req.user);
+  } catch (err) {
+    console.log(err);
+    res.status(401).json({ success: false, msg: "Failed to get user" });
   }
-})
-router.post("/get-user-info-by-role", authMiddleware, async (req, res) => {
+});
+router.post("/get-user-info-by-role", authMiddleware,jsonParser, async (req, res) => {
+  console.log(req.body);
   try {
     const user = await User.findOne({ role: req.body.role});
     if (!user) {
@@ -26,7 +28,7 @@ router.post("/get-user-info-by-role", authMiddleware, async (req, res) => {
     }
     res.status(200).json({
       success: true,
-      user: user,
+      data: user,
     });
   } catch (err) {
     res
@@ -35,4 +37,4 @@ router.post("/get-user-info-by-role", authMiddleware, async (req, res) => {
   }
 });
 
-module.exports= router;
+module.exports = router;

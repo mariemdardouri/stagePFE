@@ -1,15 +1,13 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  url="http://localhost:3000/api/user/get-user-info-by-role";
   constructor(private http:HttpClient) { }
 
-  getUser(role: any){  
-    return this.http.post(this.url, role);
-  }
+  
 }
