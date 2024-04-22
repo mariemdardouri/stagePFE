@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { LoginService } from '../../services/login.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-layout',
@@ -12,22 +13,37 @@ import { LoginService } from '../../services/login.service';
 })
 export class LayoutComponent implements OnInit{
     adminMenu=[
-    {label:"Les utilisateurs" , link:"user-list"},
-    {label:"Deconnection", link:"login"}
+    {label:"Les utilisateurs" , path:"/admin",icon:"bi bi-person "},
+    {label:"Déconnexion", path:"/login" ,icon:"bi bi-box-arrow-left "}
+  ];
+  FournisseurMenu=[
+    {label:"Liste de matériel" , path:"/Fournisseur",icon:"bi bi-person "},
+   { label:"Déconnexion", path:"/login",icon:"bi bi-box-arrow-left"},
+
   ];
     userMenu=[ 
-    {label:"Deconnection", link:"login"}
+    {label:"Déconnexion", path:"/login",icon:"bi bi-box-arrow-left"}
   ];
    menuItems: any ;
    isSidebarOpen: boolean= false;
    isClicked: boolean= false;
-   role: string ='admin';
-   user: any;
 
-   constructor() {}
+itemActive: any;
+   //firstName: string = '';
+   
+
+   constructor(private router: Router,private authService:AuthService) {}
 
    ngOnInit(): void {
-     this.menuItems = this.role === 'admin' ? this.adminMenu : this.userMenu;
+    if(typeof localStorage !== 'undefined'){
+    const role = localStorage.getItem('role');
+    console.log(role);
+    if(role === 'admin'){
+    this.menuItems = this.adminMenu;
+    }else if(role ==='fournisseur'){
+      this.menuItems = this.FournisseurMenu;
+    }
+  }
    }
 
 
@@ -38,6 +54,5 @@ export class LayoutComponent implements OnInit{
   toggleShadow(event: MouseEvent):void{
     this.isClicked = !this.isClicked;
   }
-
   
 }

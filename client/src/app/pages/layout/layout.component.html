@@ -2,7 +2,7 @@
   <span
     class="list-icon"
     (click)="toggleShadow($event)"
-    [ngClass]="{ clicked: isClicked }"
+    [ngClass]="{ clicked: isSidebarOpen }"
     ><i class="bi bi-list" (click)="toggleSidebar()"></i
   ></span>
   
@@ -14,13 +14,14 @@
 <div class="container-fluid">
   <div class="container sidebar" [ngClass]="{ show: isSidebarOpen }">
     <nav>
-      <ul class="layout-menu">
-        <li class="layout-menu-item" *ngFor="let item of menuItems">
-          <a class="layout-menu-link" [routerLink]="item.link">
-            {{ item.label }}
+      <div class="menu">
+        <div class="menu-item" *ngFor="let item of menuItems" [routerLinkActive]="['active']">
+          <a class="menu-link" [routerLink]="item.path" [ngClass]="{ 'active': itemActive === item.label }" (click)="itemActive = item.label">
+            <i class="{{ item.icon }}"> </i>
+            <span class="menu-label">{{ item.label }}</span>
           </a>
-        </li>
-      </ul>
+        </div>
+      </div>
     </nav>
   </div>
 

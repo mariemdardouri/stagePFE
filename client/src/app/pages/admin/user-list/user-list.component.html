@@ -1,1 +1,155 @@
-<p>user-list works!</p>
+<div class=" container-fluid ">
+  <div>
+    <button
+      class="btn btn-primary float-end m-2"
+      [routerLink]="['/admin/register']"
+    >
+      Ajouter +
+    </button>
+  </div>
+  <div>
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+       <th *ngFor="let column of displayedColumns">{{ column }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of userList">
+        <td>{{ user.firstName }}</td>
+        <td>{{ user.lastName }}</td>
+        <td>{{ user.cin }}</td>
+        <td>{{ user.email }}</td>
+        <td>{{ user.phoneNumber }}</td>
+        <td>{{ user.role }}</td>
+        <td>
+          <div>
+            <span 
+              data-bs-toggle="modal"
+              data-bs-target="#UpdateModal">
+              Modifier
+            </span>|
+            <span >
+              Activer
+            </span>|
+            <span>
+            Deactiver
+            </span>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="UpdateModal"
+  tabindex="-1"
+  aria-labelledby="UpdateModalModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="UpdateModalLabel">
+          Modifier l'utilisateur
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form autocomplete="off">
+          <div class="row">
+            <div class="col-xl-6 mb-3">
+              <label for="firstName" class="form-label">Nom</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="nom"
+                name="firstName"
+                formControlName="firstName"
+              />
+            </div>
+
+            <div class="col-xl-6 mb-3">
+              <label for="lastName" class="form-label">Prénom</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="prénom"
+                name="lastName"
+                formControlName="lastName"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-6 mb-3">
+              <label for="cin" class="form-label">CIN</label>
+              <input
+                type="cin"
+                class="form-control"
+                placeholder="cin"
+                name="cin"
+                formControlName="cin"
+              />
+            </div>
+            <div class="col-xl-6 mb-3">
+              <label for="email" class="form-label">Email</label>
+              <input
+                type="email"
+                class="form-control"
+                placeholder="email"
+                name="email"
+                formControlName="email"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-xl-6 mb-3">
+              <label for="phoneNumber" class="form-label"
+                >Numéro du Téléohone</label
+              >
+              <input
+                type="tel"
+                class="form-control"
+                name="phoneNumber"
+                formControlName="phoneNumber"
+              />
+            </div>
+            <div class="col-xl-6 mb-3">
+              <label for="password" class="form-label">Role</label>
+              <select formControlName="role" class="liste">
+                <option value="fournisseur">Fournisseur</option>
+                <option value="responsable de déploiement">
+                  Responsable de déploiement
+                </option>
+                <option value="responsable approvisionnement">
+                  Responsable approvisionnement
+                </option>
+                <option value="responsable logistique">
+                  Responsable logistique
+                </option>
+                <option value="responsable site">Responsable site</option>
+                <option value="administrateur">Administrateur</option>
+                <option value="agent logistique">Agent logistique</option>
+                <option value="utilisateur">Utilisateur</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary">Modifier</button>
+      </div>
+    </div>
+  </div>
+</div>

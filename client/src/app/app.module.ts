@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -9,7 +9,8 @@ import { HttpClientModule } from '@angular/common/http';
   imports: [
     CommonModule,
     HttpClientModule,
-    
+    MatSelectModule,
+
   ]
 })
 export class AppModule { }

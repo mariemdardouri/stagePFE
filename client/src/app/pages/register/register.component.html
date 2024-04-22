@@ -1,0 +1,193 @@
+<div class="container-fluid register-section ">
+  <div class="card register-card p-2 shadow-lg">
+    <h2>Créer Compte</h2>
+    <form [formGroup]="userRegForm" autocomplete="off">
+      <div class="row">
+        <div class="col-xl-6 mb-3">
+          <label for="firstName" class="form-label">Nom</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="nom"
+            name="firstName"
+            formControlName="firstName"
+          />
+          <div
+            *ngIf="
+              userRegForm.controls['firstName'].hasError('required') &&
+              userRegForm.controls['firstName'].touched
+            "
+            class="text-danger"
+          >
+            Entrez votre nom
+          </div>
+        </div>
+
+        <div class="col-xl-6 mb-3">
+          <label for="lastName" class="form-label">Prénom</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="prénom"
+            name="lastName"
+            formControlName="lastName"
+          />
+          <div
+            *ngIf="
+              userRegForm.controls['lastName'].hasError('required') &&
+              userRegForm.controls['lastName'].touched
+            "
+            class="text-danger"
+          >
+            Entrez votre prénom
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-6 mb-3">
+          <label for="cin" class="form-label">CIN</label>
+          <input
+            type="cin"
+            class="form-control"
+            placeholder="cin"
+            name="cin"
+            formControlName="cin"
+          />
+          <div
+            *ngIf="
+              userRegForm.controls['cin'].hasError('required') &&
+              userRegForm.controls['cin'].touched
+            "
+            class="text-danger"
+          >
+            Entrez votre numéro de téléphone
+          </div>
+        </div>
+        <div class="col-xl-6 mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            placeholder="email"
+            name="email"
+            formControlName="email"
+          />
+          <div
+            *ngIf="
+              userRegForm.controls['email'].hasError('required') &&
+              userRegForm.controls['email'].touched
+            "
+            class="text-danger"
+          >
+            Entrez votre email
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-6 mb-3">
+          <label for="phoneNumber" class="form-label"
+            >Numéro du Téléohone</label
+          >
+          <input
+            type="tel"
+            class="form-control"
+            name="phoneNumber"
+            formControlName="phoneNumber"
+          />
+          <div
+            *ngIf="
+              userRegForm.controls['phoneNumber'].hasError('required') &&
+              userRegForm.controls['phoneNumber'].touched
+            "
+            class="text-danger"
+          >
+            Entrez votre numéro de téléphone
+          </div>
+        </div>
+        <div class="col-xl-6 mb-3">
+          <label for="password" class="form-label">Role</label>
+          <select formControlName="role">
+            <option value="Fournisseur">Fournisseur</option>
+            <option value="Résponsable de déploiement">
+              Résponsable de déploiement
+            </option>
+            <option value="Résponsable approvisionnement">
+              Résponsable approvisionnement
+            </option>
+            <option value="Résponsable logistique">
+              Résponsable logistique
+            </option>
+            <option value="Résponsable site">Résponsable site</option>
+            <option value="Agent logistique">Agent logistique</option>
+            <option value="Utilisateur">Utilisateur</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-xl-6 mb-3">
+          <label for="password" class="form-label">Mot de passe</label>
+          <input
+            type="password"
+            class="form-control"
+            placeholder="mot de passe"
+            name="password"
+            formControlName="password"
+          />
+          <div
+            *ngIf="
+              userRegForm.controls['password'].hasError('required') &&
+              userRegForm.controls['password'].touched
+            "
+            class="text-danger"
+          >
+            Entrez votre mot de passe
+          </div>
+        </div>
+        <div class="col-xl-6 mb-3">
+          <label for="confirmPassword" class="form-label"
+            >Confirmer Mot de passe</label
+          >
+          <input
+            type="password"
+            class="form-control"
+            placeholder="mot de passe"
+            name="confirmPassword"
+            formControlName="confirmPassword"
+          />
+          <div
+            *ngIf="
+              userRegForm.controls['confirmPassword'].hasError('required') &&
+              userRegForm.controls['confirmPassword'].touched
+            "
+            class="text-danger"
+          >
+            Confirmer votre mot de passe
+          </div>
+          <div
+            *ngIf="
+              userRegForm.controls['confirmPassword'].hasError(
+                'passwordmatcherror'
+              ) && userRegForm.controls['confirmPassword'].touched
+            "
+            class="text-danger"
+          >
+            Les mots de passe ne sont pas correspandant
+          </div>
+        </div>
+      </div>
+      <button
+        (click)="Register()"
+        type="submit"
+        class="btn btn-primary full-width-button"
+        [routerLink]="['/admin']"
+      >
+        Enregistrer
+      </button>
+    </form>
+  </div>
+</div>
+
+<div></div>

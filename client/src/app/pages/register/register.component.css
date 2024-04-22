@@ -1,0 +1,44 @@
+
+.container-fluid{
+    margin-top: 100px;
+    height:auto !important;
+    width:70%;
+}
+.register-card{
+    width: 600px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+h2{
+    font-family: sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: rgb(24, 23, 23);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+}
+label{
+    color: black;
+    font-family: sans-serif;
+    font-weight: bold;
+}
+
+input::placeholder{
+    color: #6c757d;
+}
+
+
+button{
+    padding: 8px 15px;
+    background-color: #023047;
+    color: white;
+    display: block;
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-top: 10px;
+}

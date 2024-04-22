@@ -5,14 +5,18 @@ import { RouterModule, Routes } from '@angular/router';
 import { UserListComponent } from './pages/admin/user-list/user-list.component';
 import { AuthGuard } from './services/auth.guard';
 import { LayoutComponent } from './pages/layout/layout.component';
+import { RegisterComponent } from './pages/register/register.component';
+import { FournisseurComponent } from './pages/fournisseur/fournisseur.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'/login',pathMatch:'full'},
-  {path:'login', component:LoginComponent },
+  {path:'/login', component:LoginComponent },
   {path:'',
-    component: LayoutComponent,
+    component: LayoutComponent, canActivate:[AuthGuard],
     children:[
-      {path:'admin', component: UserListComponent, canActivate:[AuthGuard],data:{role:'admin'}},
+      {path:'/admin', component: UserListComponent},
+      {path:'/admin/register', component: RegisterComponent},
+      {path:'/fournisseur',component: FournisseurComponent},
     ]
   }
   
