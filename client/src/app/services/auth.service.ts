@@ -11,6 +11,9 @@ const URL ="http://localhost:3000/api/auth/";
   providedIn: 'root'
 })
 export class AuthService {
+  jwtDecode() {
+    throw new Error('Method not implemented.');
+  }
   
   private Authenticated = false;
    
@@ -46,9 +49,8 @@ export class AuthService {
      const headers =  ({
         Authorization:`Bearer ${token}`
       })
-      const decodedToken = jwtDecode(token);
-      const userId = decodedToken;
-      console.log(userId,'ssss');
+      
+      
       console.log(headers,'hhhhh');
       return this.http.post(URL+ 'get-user-info',{},{headers});
     }catch(error){
@@ -57,7 +59,9 @@ export class AuthService {
       return throwError('invalid token');
     };
   }
-  
+  getDecodedToken(token: string): any {
+    return jwtDecode(token);
+  }
   }
   
 

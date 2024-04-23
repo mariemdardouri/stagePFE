@@ -1,1 +1,128 @@
-<p>fournisseur works!</p>
+<div class="container-fluid">
+  <div>
+    <button
+      data-bs-toggle="modal"
+      data-bs-target="#AddModal"
+      class="btn btn-primary float-end m-2"
+    >
+      Ajouter +
+    </button>
+  </div>
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th for="categorie">Categorie</th>
+          <th for="nature">Nature du model</th>
+          <th for="numero">Numero du serie</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let materiel of materielList">
+          <td>{{ materiel.categorie }}</td>
+          <td>{{ materiel.nature }}</td>
+          <td>{{ materiel.numero }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Modal -->
+   <div
+      class="modal fade"
+      id="AddModal"
+      tabindex="-1"
+      aria-labelledby="AddModalLabel"
+      aria-hidden="true"
+      data-backdrop="static"
+      data-keyboard="false"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="addModalLabel">
+              Ajouter Materiel
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="materielForm" autocomplete="off">
+              <div class="row">
+                <div class="col-xl-6 mb-3">
+                  <label for="categorie" class="form-label">Categorie</label>
+                  <select formControlName="categorie" name="categorie" id="categorie">
+                    <option value="ordinateurs">Ordinateurs</option>
+                    <option value="alimentation">Alimentation</option>
+                    <option value="processeur">Processeur</option>
+                    <option value="clavier">Clavier</option>
+                    <option value="souris">Souris</option>
+                    <option value="casque">Casque</option>
+                    <option value="écran">Ecran</option>
+                    <option value="baffle">Baffle</option>
+                    <option value="cables">Câbles</option>
+                    <option value="imprimante">Imprimante</option>
+                    <option value="switch">Commutateur réseau</option>
+                    <option value="modems">Modems</option>
+                    <option value="scanner">Scanner</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 mb-3">
+                  <label for="nature" class="form-label">Nature du materiel</label>
+                  <select formControlName="nature" name="nature" id="nature">
+                    <option value="apple">APPLE</option>
+                    <option value="asus">ASUS</option>
+                    <option value="hp">HP</option>
+                    <option value="acer">ACER</option>
+                    <option value="lenovo">LENOVO</option>
+                    <option value="dell">DELL</option>
+                    <option value="microsoft">MICROSOFT</option>
+                    <option value="epson">EPSON</option>
+                    <option value="canon">CANON</option>
+                    <option value="logitech">LOGITECH</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 mb-3">
+                  <label for="numero" class="form-label"
+                    >Numéro du serie</label
+                  >
+                  <input
+                    class="form-control"
+                    name="numero"
+                    formControlName="numero"
+                  />
+                  <div
+                    *ngIf="
+                      materielForm.controls['numero'].hasError('required') &&
+                      materielForm.controls['numero'].touched
+                    "
+                    class="text-danger"
+                  >
+                    Entrez le numéro de serie
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button
+              mat-raised-button 
+              type="submit" 
+              (click)="submit()"
+              data-bs-dismiss="modal">
+              Ajouter
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+

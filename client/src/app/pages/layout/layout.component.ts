@@ -29,14 +29,20 @@ export class LayoutComponent implements OnInit{
    isClicked: boolean= false;
 
 itemActive: any;
+firstName: any;
    //firstName: string = '';
-   
 
+   
    constructor(private router: Router,private authService:AuthService) {}
 
    ngOnInit(): void {
     if(typeof localStorage !== 'undefined'){
     const role = localStorage.getItem('role');
+    this.authService.getUserInfo().subscribe({next:(userInfo:any)=>{
+      console.log(userInfo);
+      console.log(userInfo.token.firstName);
+      this.firstName= userInfo.token.firstName;
+    }});
     console.log(role);
     if(role === 'admin'){
     this.menuItems = this.adminMenu;

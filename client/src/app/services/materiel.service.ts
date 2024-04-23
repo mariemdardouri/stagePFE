@@ -1,17 +1,19 @@
+
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
 import { Observable, map } from 'rxjs';
 
-const URL ="http://localhost:3000/api/user/";
+const URL ="http://localhost:3000/api/materiel/";
 
 @Injectable({
   providedIn: 'root'
 })
-export class UserService {
+export class MaterielService {
+
   constructor(private http:HttpClient) { }
-  
-  getAllUser(): Observable<any[]> {
+
+  addMateriel(data:any){
     const token = localStorage.getItem('token');
     if (!token) {
       throw new Error('Token not found');
@@ -20,23 +22,22 @@ export class UserService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
+    return this.http.post(URL + 'add-materiel',data,{headers});
 
-    return this.http.get<any>(URL + 'get-all-users', { headers }).pipe(
-      map(response => response.data)
-    );
   }
+  
 
-  updateUser(user: any): Observable<any> {
+  getMateriels(): Observable<any[]>  {
     const token = localStorage.getItem('token');
     if (!token) {
       throw new Error('Token not found');
     }
-
-    const headers = new HttpHeaders({
+    const headers = ({
       Authorization: `Bearer ${token}`
     });
-
-    return this.http.put(URL + 'update-user/' + user._id, user, { headers });
+    return this.http.get<any>(URL + 'get-materiel' , { headers }).pipe(
+      map(response => response.materiel)
+    );
   }
 
 }

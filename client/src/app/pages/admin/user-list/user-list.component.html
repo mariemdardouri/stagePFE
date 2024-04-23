@@ -1,4 +1,4 @@
-<div class=" container-fluid ">
+<div class="container-fluid">
   <div>
     <button
       class="btn btn-primary float-end m-2"
@@ -8,38 +8,35 @@
     </button>
   </div>
   <div>
-  <table class="table table-bordered">
-    <thead>
-      <tr>
-       <th *ngFor="let column of displayedColumns">{{ column }}</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let user of userList">
-        <td>{{ user.firstName }}</td>
-        <td>{{ user.lastName }}</td>
-        <td>{{ user.cin }}</td>
-        <td>{{ user.email }}</td>
-        <td>{{ user.phoneNumber }}</td>
-        <td>{{ user.role }}</td>
-        <td>
-          <div>
-            <span 
-              data-bs-toggle="modal"
-              data-bs-target="#UpdateModal">
-              Modifier
-            </span>|
-            <span >
-              Activer
-            </span>|
-            <span>
-            Deactiver
-            </span>
-          </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th *ngFor="let column of displayedColumns">{{ column }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userList">
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.cin }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phoneNumber }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <div>
+              <span
+                data-bs-toggle="modal"
+                data-bs-target="#UpdateModal"
+                (click)="editUser(user)"
+              >
+                Modifier </span
+              >| <span> Activer </span>|
+              <span> Deactiver </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </div>
 
@@ -50,6 +47,8 @@
   tabindex="-1"
   aria-labelledby="UpdateModalModalLabel"
   aria-hidden="true"
+  data-backdrop="static"
+  data-keyboard="false"
 >
   <div class="modal-dialog">
     <div class="modal-content">
@@ -71,10 +70,11 @@
               <label for="firstName" class="form-label">Nom</label>
               <input
                 type="text"
-                class="form-control"
-                placeholder="nom"
                 name="firstName"
-                formControlName="firstName"
+                id="firstName"
+                class="form-control"
+                [(ngModel)]="selectedUser.firstName"
+                [ngModelOptions]="{ standalone: true }"
               />
             </div>
 
@@ -82,10 +82,11 @@
               <label for="lastName" class="form-label">Prénom</label>
               <input
                 type="text"
-                class="form-control"
-                placeholder="prénom"
                 name="lastName"
-                formControlName="lastName"
+                id="lastName"
+                class="form-control"
+                [(ngModel)]="selectedUser.lastName"
+                [ngModelOptions]="{ standalone: true }"
               />
             </div>
           </div>
@@ -94,21 +95,23 @@
             <div class="col-xl-6 mb-3">
               <label for="cin" class="form-label">CIN</label>
               <input
-                type="cin"
-                class="form-control"
-                placeholder="cin"
+                type="number"
                 name="cin"
-                formControlName="cin"
+                id="cin"
+                class="form-control"
+                [(ngModel)]="selectedUser.cin"
+                [ngModelOptions]="{ standalone: true }"
               />
             </div>
             <div class="col-xl-6 mb-3">
               <label for="email" class="form-label">Email</label>
               <input
                 type="email"
-                class="form-control"
-                placeholder="email"
                 name="email"
-                formControlName="email"
+                id="email"
+                class="form-control"
+                [(ngModel)]="selectedUser.email"
+                [ngModelOptions]="{ standalone: true }"
               />
             </div>
           </div>
@@ -119,15 +122,22 @@
                 >Numéro du Téléohone</label
               >
               <input
-                type="tel"
-                class="form-control"
+                type="number"
                 name="phoneNumber"
-                formControlName="phoneNumber"
+                id="phoneNumber"
+                [(ngModel)]="selectedUser.phoneNumber"
+                [ngModelOptions]="{ standalone: true }"
               />
             </div>
             <div class="col-xl-6 mb-3">
-              <label for="password" class="form-label">Role</label>
-              <select formControlName="role" class="liste">
+              <label for="role" class="form-label">Role</label>
+              <select
+                class="liste"
+                name="role"
+                id="role"
+                [(ngModel)]="selectedUser.role"
+                [ngModelOptions]="{ standalone: true }"
+              >
                 <option value="fournisseur">Fournisseur</option>
                 <option value="responsable de déploiement">
                   Responsable de déploiement
@@ -148,7 +158,14 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button class="btn btn-primary">Modifier</button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="updateUser()"
+          data-bs-dismiss="modal"
+        >
+          Modifier
+        </button>
       </div>
     </div>
   </div>

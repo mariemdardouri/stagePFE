@@ -38,7 +38,7 @@ submit(){
       localStorage.setItem("token", resp.token);
       localStorage.setItem('role',resp.role);
       this.authService.getUserInfo().subscribe({next:(userInfo:any)=>{
-        console.log(userInfo,"tttt");
+        console.log(userInfo);
         if(userInfo.token.role === 'admin'){
           this.router.navigate(['admin']);
         }else if(userInfo.token.role === 'fournisseur'){
