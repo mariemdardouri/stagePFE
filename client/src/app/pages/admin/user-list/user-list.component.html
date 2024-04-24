@@ -4,7 +4,7 @@
       class="btn btn-primary float-end m-2"
       [routerLink]="['/admin/register']"
     >
-      Ajouter +
+      <i class="bi bi-person-add icon-add"></i>
     </button>
   </div>
   <div>
@@ -29,9 +29,9 @@
                 data-bs-target="#UpdateModal"
                 (click)="editUser(user)"
               >
-                Modifier </span
-              >| <span> Activer </span>|
-              <span> Deactiver </span>
+              <i class="bi bi-pencil-square icon-edit"></i></span
+              > <span class="icon-check"> <i class="bi bi-check-square-fill"></i> </span>|
+              <span class="icon-desactivate"> <i class="bi bi-power"></i>  </span>
             </div>
           </td>
         </tr>

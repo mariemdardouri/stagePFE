@@ -15,7 +15,7 @@ export class FournisseurComponent {
 
   materielList:any[]=[];
   materielForm!:FormGroup ;
-
+  selectedMateriel:any = {};
   constructor ( private materielService : MaterielService){}
 
   ngOnInit():void {
@@ -50,5 +50,37 @@ export class FournisseurComponent {
         console.error('Error fetching users:', error);
       }
     );
+  }
+
+
+  editMateriel(user: any): void {
+    this.selectedMateriel = user;
+  }
+
+  updateMateriel(): void {
+    if (this.selectedMateriel) {
+      this.materielService.updateMateriel(this.selectedMateriel).subscribe(
+        () => {
+          this.getAllMateriels();
+          // Reset selectedUser to null
+          this.selectedMateriel = {};
+        },
+        (error) => {
+          console.error('Error updating user:', error);
+        }
+      );
+    }
+  }
+
+  deleteMateriel(materiel:any): void {
+      this.materielService.deleteMateriel(materiel).subscribe(
+        () => {
+          console.log('Materiel deleted successfully');
+          this.getAllMateriels();
+        },
+        (error) => {
+          console.error(error);
+        }
+      );
   }
 }
