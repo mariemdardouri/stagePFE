@@ -11,25 +11,24 @@ router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
     const newMateriel = new Materiel(req.body);
     await newMateriel.save();
 
-    res.status(201).json({ message: "Materiel added successfully" });
+    res.status(201).json({ message: "Matériel ajouté avec succès",success:true });
   } catch (error) {
     console.error(error);
     res
       .status(500)
-      .json({ errot: "An error occurred while adding the materiel" });
+      .json({ message: "Erreur lors de l'ajout du matériel",success:false });
   }
 });
 
 router.get("/get-materiel", authMiddleware, jsonParser, async (req, res) => {
     try {
         const materiel = await  Materiel.find({});
-        console.log(materiel,"materiel");
         res.status(200).json({materiel});
     } catch (error) {
       console.error(error);
       res
         .status(500)
-        .json({ errot: "An error occurred while adding the materiel" });
+        .json({ message: "Error fetching materiels", success:false});
     }
 });
 
@@ -40,12 +39,12 @@ router.put("/update-materiel/:id",authMiddleware, jsonParser, async (req, res) =
       req.body,
       { new: true }
     );
-    res.status(200).json(updatedMateriel);
+    res.status(200).json({updatedMateriel , message:'Le materiel a été mis à jour avec succès',success:true});
   } catch (error) {
     console.error("Error updating materiel: ", error);
     res
       .status(500)
-      .json({ msg: "Error updating materiel", error: err.message });
+      .json({ message: "Erreur de mise à jour du matériel",success:false });
   }
 });
 
@@ -54,12 +53,12 @@ router.delete("/delete-materiel/:id",authMiddleware, jsonParser, async (req, res
     const deletedMateriel = await Materiel.findByIdAndDelete(
       req.params.id,
     );
-    res.status(200).json(deletedMateriel);
+    res.status(200).json({deletedMateriel, message:'Le matériel a été supprimé avec succès',success:true});
   } catch (error) {
     console.error("Error deleting materiel: ", error);
     res
       .status(500)
-      .json({ msg: "Error deleting materiel", error: err.message });
+      .json({ message: "Erreur lors de la suppression du matériel", success:false });
   }
 });
 

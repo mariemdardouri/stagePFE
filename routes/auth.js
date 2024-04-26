@@ -14,23 +14,24 @@ router.post("/login", jsonParser, async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (!user) return res.status(401).json({ msg: "User do not found" });
 
-    //const isMatch = await bcrypt.compare(req.body.password, user.password);
-    if (req.body.password !== user.password){
+    const isMatch = await bcrypt.compare(req.body.password, user.password);
+    if (!isMatch){
     return res
     .status(200)
-    .send({ message: "Password is incorrect", success: false });
-} else {
+    .json({ message: "Le mot de passe est incorrect", success: false });
+} 
+else {
   const token = jwt.sign({ id: user._id,role: user.role},'PFE', {
     expiresIn: "1d",
   })
   res
     .status(200)
-    .send({ message: "Login successful", success: true, token: token, role: user.role});
+    .json({ message: "Connexion réussie", success: true, token: token, role: user.role});
 }
     
   } catch (err) {
     console.log(err);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(200).json({ message: "Erreur de connexion", success: false });
   }
 });
 
@@ -40,7 +41,7 @@ router.post ('/register',jsonParser, async (req,res)=>{
     if (userExists) {
       return res
         .status(200)
-        .send({ message: "User already exists", success: false });
+        .json({ message: "L'utilisateur existe déjà", success: false });
     }
     console.log("body data",req.body);
     const password = req.body.password;
@@ -51,11 +52,11 @@ router.post ('/register',jsonParser, async (req,res)=>{
     await newuser.save();
     res
       .status(200)
-      .json({ message: "User created successfully", success: true
+      .json({ message: "Utilisateur créé avec succès", success: true
     })
   } catch (err) {
     console.log(err);
-    res.status(500).json({ msg: "Internal server error" });
+    res.status(500).json({ message: "Internal server error", success: false });
   }
   
 });

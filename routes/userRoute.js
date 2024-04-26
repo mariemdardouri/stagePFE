@@ -10,12 +10,12 @@ router.use(jsonParser);
 router.get("/get-all-users",authMiddleware, jsonParser, async (req, res) => {
   try {
     const data = await User.find({});
-    res.status(200).json({ data });
+    res.status(200).json({ data  });
   } catch (error) {
     console.error("Error fetching users: ", error);
     res
       .status(500)
-      .json({ msg: "error fetching users", error: err.message });
+      .json({ message: "Error fetching users",success:false });
   }
 });
 
@@ -26,12 +26,12 @@ router.put("/update-user/:id",authMiddleware, jsonParser, async (req, res) => {
       req.body,
       { new: true }
     );
-    res.status(200).json(updatedUser);
+    res.status(200).json({updatedUser, message:"l'utilisateur a été mis à jour avec succès" , success:true});
   } catch (error) {
     console.error("Error updating user: ", error);
     res
       .status(500)
-      .json({ msg: "Error updating user", error: err.message });
+      .json({ message: "Erreur lors de la mise à jour de l'utilisateur", success:false });
   }
 });
 
