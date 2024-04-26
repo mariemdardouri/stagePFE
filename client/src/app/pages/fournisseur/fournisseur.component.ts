@@ -3,6 +3,7 @@ import { MaterielService } from '../../services/materiel.service';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-fournisseur',
@@ -16,7 +17,7 @@ export class FournisseurComponent {
   materielList:any[]=[];
   materielForm!:FormGroup ;
   selectedMateriel:any = {};
-  constructor ( private materielService : MaterielService){}
+  constructor ( private materielService : MaterielService, private  toast:ToastrService){}
 
   ngOnInit():void {
     this.setForm();
@@ -35,9 +36,19 @@ export class FournisseurComponent {
     console.log(this.materielForm.value)
     this.materielService.addMateriel(this.materielForm.value).subscribe({next:(resp:any)=>{
     console.log(resp);
-  }
+    if(resp.success){
+      this.toast.success(resp.message);
+    }else{
+      this.toast.error(resp.message);
+    }
+  }, error:(err) => {
+    console.log(err);
+      if (err.status === 500) {
+        this.toast.error('Erreur lors de l\'ajout du matériel');
+      }
+  } 
   })
-  }
+ }
   getAllMateriels():void{
     this.materielService.getMateriels().subscribe(
       (data: any[]) => {
@@ -59,28 +70,42 @@ export class FournisseurComponent {
 
   updateMateriel(): void {
     if (this.selectedMateriel) {
-      this.materielService.updateMateriel(this.selectedMateriel).subscribe(
-        () => {
-          this.getAllMateriels();
-          // Reset selectedUser to null
-          this.selectedMateriel = {};
+      this.materielService.updateMateriel(this.selectedMateriel).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.getAllMateriels();
+            this.selectedMateriel = {};
+          } else {
+            this.toast.error(resp.message);
+          }
         },
-        (error) => {
-          console.error('Error updating user:', error);
+        error: (err) => {
+          console.error('Error updating materiel:', err);
+          if (err.status === 500) {
+            this.toast.error('Erreur lors de la mise à jour du materiel');
+          }
         }
-      );
+      });
     }
   }
 
   deleteMateriel(materiel:any): void {
-      this.materielService.deleteMateriel(materiel).subscribe(
-        () => {
-          console.log('Materiel deleted successfully');
-          this.getAllMateriels();
+      this.materielService.deleteMateriel(materiel).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.getAllMateriels();
+          } else {
+            this.toast.error(resp.message);
+          }
         },
-        (error) => {
-          console.error(error);
+        error: (err) => {
+          console.error('Error updating materiel:', err);
+          if (err.status === 500) {
+            this.toast.error('Erreur lors de la suppression du materiel');
+          }
         }
-      );
+      });
   }
 }

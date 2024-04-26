@@ -14,4 +14,5 @@ import { LayoutComponent } from "./pages/layout/layout.component";
 })
 export class AppComponent {
   title = 'client';
+  
 }

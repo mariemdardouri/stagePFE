@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-register',
@@ -14,7 +15,7 @@ import { AuthService } from '../../services/auth.service';
 export class RegisterComponent {
   userRegForm!:FormGroup ;
   userList:any=[];
-  constructor(private router:Router ,private register:AuthService){
+  constructor(private router:Router ,private register:AuthService, private  toast:ToastrService){
     
   }
 
@@ -43,8 +44,19 @@ Register(){
   console.log(this.userRegForm.value)
   this.register.registerUser(this.userRegForm.value).subscribe({next:(resp:any)=>{
     console.log(resp);
-  }
-  })
+    if(resp.success){
+      this.toast.success(resp.message);
+    }else{
+      this.toast.error(resp.message);
+    }
+  }, error:(err) => {
+    console.log(err);
+      if (err.status === 500) {
+        this.toast.error('Erreur de connexion');
+        this.toast.error('Erreur lors de l\'enregistrement');
+      }
+  } 
+ })
 }
 
  matchpassword : ValidatorFn =(control : AbstractControl):ValidationErrors | null =>{

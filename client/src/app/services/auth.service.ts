@@ -11,9 +11,6 @@ const URL ="http://localhost:3000/api/auth/";
   providedIn: 'root'
 })
 export class AuthService {
-  jwtDecode() {
-    throw new Error('Method not implemented.');
-  }
   
   private Authenticated = false;
    

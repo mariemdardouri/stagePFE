@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterLink} from '@angular/router';
 import { AuthService } from '../../services/auth.service';
-import { HttpHeaders } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent {
 
   loginForm!:FormGroup;
 
-  constructor(private router:Router, private authService:AuthService){}
+  constructor(private router:Router, private authService:AuthService, private  toast:ToastrService) {}
 
 ngOnInit():void{
 
@@ -35,31 +35,37 @@ submit(){
   if  (this.loginForm.valid){
     this.authService.loginUser(this.loginForm.value).subscribe({next:(resp:any)=>{
       console.log(resp);
-      localStorage.setItem("token", resp.token);
-      localStorage.setItem('role',resp.role);
-      this.authService.getUserInfo().subscribe({next:(userInfo:any)=>{
-        console.log(userInfo);
-        if(userInfo.token.role === 'admin'){
-          this.router.navigate(['admin']);
-        }else if(userInfo.token.role === 'fournisseur'){
-          this.router.navigate(['fournisseur'])
-        }
-      },error : (err)=> {
-        console.log(err);
-        if(err.status == 500){
-          alert(err.error.msg);
-        }
+      if (resp.success) {
+        this.toast.success(resp.message);
+        localStorage.setItem("token", resp.token);
+        localStorage.setItem('role', resp.role);
+        this.authService.getUserInfo().subscribe({
+          next: (userInfo: any) => {
+            if (userInfo.token.role === 'admin') {
+              this.router.navigate(['admin']);
+            } else if (userInfo.token.role === 'fournisseur') {
+              this.router.navigate(['fournisseur'])
+            } else if (userInfo.token.role === 'deploiement') {
+              this.router.navigate(['deploiement'])
+            }
+          },
+          error: (err) => {
+            console.log(err);
+          }
+        });
+      } else {
+        this.toast.error(resp.message);
       }
-      });
-        alert('Login Successfull!')
-    },error:(err)=>{
+    },
+    error: (err) => {
       console.log(err);
-      if(err.status==500){
-        alert(err.error.msg)
+      if (err.status === 500) {
+        this.toast.error('Erreur de connexion');
+        
       }
     }
-  })
-  }
+  });
+}
     
 }
 

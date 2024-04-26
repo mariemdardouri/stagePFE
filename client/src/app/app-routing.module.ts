@@ -7,16 +7,18 @@ import { AuthGuard } from './services/auth.guard';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { FournisseurComponent } from './pages/fournisseur/fournisseur.component';
+import { DeploiementComponent } from './pages/deploiement/deploiement.component';
 
 const routes: Routes = [
-  {path:'', redirectTo:'/login',pathMatch:'full'},
-  {path:'/login', component:LoginComponent },
+  {path:'', redirectTo:'login',pathMatch:'full'},
+  {path:'login', component:LoginComponent },
   {path:'',
     component: LayoutComponent, canActivate:[AuthGuard],
     children:[
-      {path:'/admin', component: UserListComponent},
-      {path:'/admin/register', component: RegisterComponent},
-      {path:'/fournisseur',component: FournisseurComponent},
+      {path:'admin', component: UserListComponent},
+      {path:'admin/register', component: RegisterComponent},
+      {path:'fournisseur',component: FournisseurComponent},
+      {path:'deploiement',component: DeploiementComponent},
     ]
   }
   

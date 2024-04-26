@@ -1,0 +1,30 @@
+<div class="container-fluid">
+    <div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th for="categorie">Catégorie</th>
+            <th for="nature">Nature du model</th>
+            <th for="numero">Numéro du serie</th>
+            <th>Vérifier</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let materiel of materielList">
+            <td>{{ materiel.categorie }}</td>
+            <td>{{ materiel.nature }}</td>
+            <td>{{ materiel.numero }}</td>
+            <td>
+                <div class="checkbox-container">
+                    <input type="checkbox" [(ngModel)]="materiel.checked">
+                </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+        <button (click)="accepter()" [disabled]="!allChecked()" class="btn btn-primary float-end m-2">Accepter</button>
+        <button (click)="rejeter()" class="btn btn-primary float-end m-2">Rejeter</button>
+    </div>
+  </div>
+  
