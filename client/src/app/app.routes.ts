@@ -6,6 +6,7 @@ import { AuthGuard } from './services/auth.guard';
 import { RegisterComponent } from './pages/register/register.component';
 import { FournisseurComponent } from './pages/fournisseur/fournisseur.component';
 import { DeploiementComponent } from './pages/deploiement/deploiement.component';
+import { ApproComponent } from './pages/appro/appro.component';
 
 export const routes: Routes = [
     
@@ -17,6 +18,7 @@ export const routes: Routes = [
             {path:'admin/register',component:RegisterComponent},
             {path:'fournisseur',component: FournisseurComponent},
             {path:'deploiement',component: DeploiementComponent},
+            {path:'approvisionnement',component: ApproComponent},
         ]
     },
     

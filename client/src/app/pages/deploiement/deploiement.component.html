@@ -5,14 +5,14 @@
           <tr>
             <th for="categorie">Catégorie</th>
             <th for="nature">Nature du model</th>
-            <th for="numero">Numéro du serie</th>
+            <th for="numSerie">Numéro du serie</th>
             <th>Vérifier</th>
         </thead>
         <tbody>
           <tr *ngFor="let materiel of materielList">
             <td>{{ materiel.categorie }}</td>
             <td>{{ materiel.nature }}</td>
-            <td>{{ materiel.numero }}</td>
+            <td>{{ materiel.numSerie }}</td>
             <td>
                 <div class="checkbox-container">
                     <input type="checkbox" [(ngModel)]="materiel.checked">
@@ -27,4 +27,6 @@
         <button (click)="rejeter()" class="btn btn-primary float-end m-2">Rejeter</button>
     </div>
   </div>
+
+  
   

@@ -47,6 +47,8 @@ submit(){
               this.router.navigate(['fournisseur'])
             } else if (userInfo.token.role === 'deploiement') {
               this.router.navigate(['deploiement'])
+            }else if (userInfo.token.role === 'approvisionnement') {
+              this.router.navigate(['approvisionnement'])
             }
           },
           error: (err) => {

@@ -25,7 +25,7 @@ export class LayoutComponent implements OnInit {
     { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
   ];
   ApproMenu = [
-    { label: 'Liste de matériel', path: '/appro', icon: 'bi bi-person ' },
+    { label: 'Liste de matériel', path: '/approvisionnement', icon: 'bi bi-person ' },
     { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
   ];
   userMenu = [

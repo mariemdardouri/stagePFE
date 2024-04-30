@@ -8,6 +8,7 @@ import { LayoutComponent } from './pages/layout/layout.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { FournisseurComponent } from './pages/fournisseur/fournisseur.component';
 import { DeploiementComponent } from './pages/deploiement/deploiement.component';
+import { ApproComponent } from './pages/appro/appro.component';
 
 const routes: Routes = [
   {path:'', redirectTo:'login',pathMatch:'full'},
@@ -19,6 +20,7 @@ const routes: Routes = [
       {path:'admin/register', component: RegisterComponent},
       {path:'fournisseur',component: FournisseurComponent},
       {path:'deploiement',component: DeploiementComponent},
+      {path:'approvisionnement',component: ApproComponent},
     ]
   }
   

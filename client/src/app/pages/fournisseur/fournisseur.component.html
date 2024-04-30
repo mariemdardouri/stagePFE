@@ -14,14 +14,14 @@
         <tr>
           <th for="categorie">Catégorie</th>
           <th for="nature">Nature du model</th>
-          <th for="numero">Numéro du serie</th>
+          <th for="numSerie">Numéro du serie</th>
           <th for="action">Action</th>
       </thead>
       <tbody>
         <tr *ngFor="let materiel of materielList">
           <td>{{ materiel.categorie }}</td>
           <td>{{ materiel.nature }}</td>
-          <td>{{ materiel.numero }}</td>
+          <td>{{ materiel.numSerie }}</td>
           <td>
             <div>
               <span
@@ -103,18 +103,18 @@
               </div>
               <div class="row">
                 <div class="col-xl-6 mb-3">
-                  <label for="numero" class="form-label"
+                  <label for="numSerie" class="form-label"
                     >Numéro du serie</label
                   >
                   <input
                     class="form-control"
-                    name="numero"
-                    formControlName="numero"
+                    name="numSerie"
+                    formControlName="numSerie"
                   />
                   <div
                     *ngIf="
-                      materielForm.controls['numero'].hasError('required') &&
-                      materielForm.controls['numero'].touched
+                      materielForm.controls['numSerie'].hasError('required') &&
+                      materielForm.controls['numSerie'].touched
                     "
                     class="text-danger"
                   >
@@ -210,13 +210,13 @@ data-keyboard="false"
           </div>
           <div class="row">
             <div class="col-xl-6 mb-3">
-              <label for="numero" class="form-label"
+              <label for="numSerie" class="form-label"
                 >Numéro du serie</label
               >
               <input
-                name="numero"
-                id="numero"
-                [(ngModel)]="selectedMateriel.numero"
+                name="numSerie"
+                id="numSerie"
+                [(ngModel)]="selectedMateriel.numSerie"
                 [ngModelOptions]="{ standalone: true }"
               />
             </div>

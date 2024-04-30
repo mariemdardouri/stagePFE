@@ -4,7 +4,8 @@ const materielSchema = new mongoose.Schema(
   {
     categorie: { type: String, required: true },
     nature: { type: String, required: true },
-    numero: { type: String, required: true },
+    numSerie: { type: String, required: true },
+    numInv: { type: String, default: ''},
   },
   { timestamps: true }
 );

@@ -13,7 +13,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './deploiement.component.css'
 })
 export class DeploiementComponent {
-
   materielList:any[]=[];
   checkedMateriels:any[]=[];
   constructor ( private materielService : MaterielService, private  toast:ToastrService){}
@@ -21,6 +20,7 @@ export class DeploiementComponent {
   ngOnInit():void {
     this.getAllMateriels(); 
   }
+
   getAllMateriels():void{
     this.materielService.getMateriels().subscribe(
       (data: any[]) => {
@@ -49,8 +49,8 @@ export class DeploiementComponent {
   }
 
   rejeter():void{
-      this.toast.success('Tous les matériels ont été rejetés.');
-    }
+    this.toast.success('Tous les matériels ont été rejetés.');
+  }
 }
 
 

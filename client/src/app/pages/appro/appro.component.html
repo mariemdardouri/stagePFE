@@ -1,1 +1,52 @@
-<p>appro works!</p>
+<div class="container-fluid">
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th for="categorie">Catégorie</th>
+          <th for="nature">Nature du model</th>
+          <th for="numSerie">Numéro du serie</th>
+          <th>Numéro d'inventaire</th>
+          <th *ngIf="isClicked || hasAllNumInvFilled()">Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let materiel of materielList">
+          <td>{{ materiel.categorie }}</td>
+          <td>{{ materiel.nature }}</td>
+          <td>{{ materiel.numSerie }}</td>
+          <td>
+            <div>
+              <input
+                [disabled]="materiel.isNumInvDisabled"
+                [(ngModel)]="materiel.numInv"
+              />
+            </div>
+          </td>
+          <td *ngIf="materiel.numInv">
+            <button
+              class="btn btn-success float-end m-2"
+              (click)="updateMateriel(materiel)"
+            >
+              Save
+            </button>
+            <button
+              name="edit"
+              class="btn btn-primary float-end m-2"
+              (click)="editNumInv(materiel)"
+            >
+              edit
+            </button>
+            <button
+              class="btn btn-danger float-end m-2"
+              (click)="deleteNumInv(materiel)"
+            >
+              Supprimer
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -28,7 +28,7 @@ export class FournisseurComponent {
     this.materielForm = new FormGroup({
       categorie: new FormControl('',[Validators.required]),
       nature: new FormControl('',[Validators.required]),
-      numero: new FormControl('',[Validators.required]),
+      numSerie: new FormControl('',[Validators.required]),
     })
   }
 
@@ -38,6 +38,7 @@ export class FournisseurComponent {
     console.log(resp);
     if(resp.success){
       this.toast.success(resp.message);
+      this.getAllMateriels();
     }else{
       this.toast.error(resp.message);
     }
@@ -64,8 +65,8 @@ export class FournisseurComponent {
   }
 
 
-  editMateriel(user: any): void {
-    this.selectedMateriel = user;
+  editMateriel(materiel: any): void {
+    this.selectedMateriel = materiel;
   }
 
   updateMateriel(): void {
