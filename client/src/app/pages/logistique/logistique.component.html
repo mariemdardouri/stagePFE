@@ -1,0 +1,24 @@
+<div class="container-fluid">
+    <div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th for="categorie">Catégorie</th>
+            <th for="nature">Nature du model</th>
+            <th for="numSerie">Numéro du serie</th>
+            <th>Numéro d'inventaire</th>
+          </tr>
+        </thead>
+  
+        <tbody>
+          <tr *ngFor="let materiel of materielList">
+            <td>{{ materiel.categorie }}</td>
+            <td>{{ materiel.nature }}</td>
+            <td>{{ materiel.numSerie }}</td>
+            <td>{{ materiel.numInv }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  

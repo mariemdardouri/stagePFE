@@ -1,21 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-register',
+  selector: 'app-site',
   standalone: true,
   imports: [FormsModule , ReactiveFormsModule, RouterModule,RouterOutlet,CommonModule],
-  templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  templateUrl: './site.component.html',
+  styleUrl: './site.component.css'
 })
-export class RegisterComponent {
+export class SiteComponent {
   userRegForm!:FormGroup ;
-  userList:any=[];
+  
   constructor(private userService : UserService ,private register:AuthService, private  toast:ToastrService){
     
   }
@@ -37,35 +37,7 @@ setForm(){
     password :new FormControl('',[Validators.required])   ,
     isAdmin : new FormControl('',[Validators.required , Validators.minLength(8)]) ,
     confirmPassword : new FormControl('',[Validators.required , Validators.minLength(8)]),
-  },
-  {validators:this.matchpassword})
-}
- 
-
-Register(){
-  console.log(this.userRegForm.value)
-  this.register.registerUser(this.userRegForm.value).subscribe({next:(resp:any)=>{
-    console.log(resp);
-    if(resp.success){
-      this.toast.success(resp.message);
-    }else{
-      this.toast.error(resp.message);
-    }
-  }, error:(err) => {
-    console.log(err);
-      if (err.status === 500) {
-        this.toast.error('Erreur de connexion');
-        this.toast.error('Erreur lors de l\'enregistrement');
-      }
-  } 
- })
-}
-
- matchpassword : ValidatorFn =(control : AbstractControl):ValidationErrors | null =>{
- const password = control.get('password')?.value;
- const confirmpassword = control.get('confirmPassword')?.value ;
-
-return password === confirmpassword ? null: {passwordmatcherror: true};  
+  })
 }
 
 }

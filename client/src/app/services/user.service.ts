@@ -26,6 +26,7 @@ export class UserService {
     );
   }
 
+
   updateUser(user: any): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) {

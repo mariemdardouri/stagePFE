@@ -7,6 +7,10 @@ import { RegisterComponent } from './pages/register/register.component';
 import { FournisseurComponent } from './pages/fournisseur/fournisseur.component';
 import { DeploiementComponent } from './pages/deploiement/deploiement.component';
 import { ApproComponent } from './pages/appro/appro.component';
+import { LogistiqueComponent } from './pages/logistique/logistique.component';
+import { AgentLogistiqueComponent } from './pages/agent-logistique/agent-logistique.component';
+import { SiteComponent } from './pages/site/site.component';
+import { AgentComponent } from './pages/agent/agent.component';
 
 export const routes: Routes = [
     
@@ -19,6 +23,10 @@ export const routes: Routes = [
             {path:'fournisseur',component: FournisseurComponent},
             {path:'deploiement',component: DeploiementComponent},
             {path:'approvisionnement',component: ApproComponent},
+            {path:'logistique',component: LogistiqueComponent},
+            {path:'agentLogistique',component: AgentLogistiqueComponent},
+            {path:'responsableSite',component: SiteComponent},
+            {path:'agent',component: AgentComponent},
         ]
     },
     

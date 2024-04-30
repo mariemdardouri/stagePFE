@@ -49,6 +49,14 @@ submit(){
               this.router.navigate(['deploiement'])
             }else if (userInfo.token.role === 'approvisionnement') {
               this.router.navigate(['approvisionnement'])
+            }else if (userInfo.token.role === 'logistique') {
+              this.router.navigate(['logistique'])
+            }else if (userInfo.token.role === 'agentLogistique') {
+              this.router.navigate(['agentLogistique'])
+            }else if (userInfo.token.role === 'responsableSite') {
+              this.router.navigate(['responsableSite'])
+            }else if (userInfo.token.role === 'agent') {
+              this.router.navigate(['agent'])
             }
           },
           error: (err) => {
