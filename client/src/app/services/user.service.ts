@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { jwtDecode } from 'jwt-decode';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 
 const URL ="http://localhost:3000/api/user/";
 
@@ -40,4 +40,5 @@ export class UserService {
     return this.http.put(URL + 'update-user/' + user._id, user, { headers });
   }
 
+  
 }
