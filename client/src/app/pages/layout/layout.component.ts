@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { LoginService } from '../../services/login.service';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
@@ -14,6 +13,7 @@ import { AuthService } from '../../services/auth.service';
 export class LayoutComponent implements OnInit {
   adminMenu = [
     { label: 'Les utilisateurs', path: '/admin', icon: 'bi bi-person ' },
+    { label: 'Les demandes', path: '/admin/request', icon: 'bi bi-person ' },
     { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left ' },
   ];
   FournisseurMenu = [

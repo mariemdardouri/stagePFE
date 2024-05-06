@@ -1,0 +1,99 @@
+
+.container-fluid{
+    margin-top: 130px;
+    margin-right: 200px;
+    width:80% !important;
+   
+} 
+.table{
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    border-collapse: collapse ;
+
+}
+
+th, td {
+    
+    text-align: left;
+}
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+    text-align:center ;
+}
+
+td:last-child {
+
+    text-align:center ;
+}
+  
+  
+   
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+.btn-primary{
+    background-color: #023047;
+    padding: 8px 15px;
+    color: white;
+    display: block;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.liste{
+    width: 100%;
+}
+
+.modal-dialog{
+    position: absolute ;
+    top:20%;
+    left:35%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    margin: 1.75rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+  }
+  .icon-add{
+    font-size: 1.5rem;
+    cursor: pointer;
+
+  }
+
+.icon-edit,.icon-check,.icon-desactivate{
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+}
+
+.icon-edit:hover,.icon-check:hover,.icon-desactivate:hover{
+    color:#007bff;
+}
+
+.icon-edit{
+    color: blue;
+}
+.icon-check{
+    color: green;
+}
+
+.icon-desactivate{
+    color: red;
+}

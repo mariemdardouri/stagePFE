@@ -1,0 +1,31 @@
+<div class="container-fluid">
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th *ngFor="let column of displayedColumns">{{ column }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of userRequests">
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.cin }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.phoneNumber }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <div>
+              <span class="icon-check" (click)="acceptRequest(user)">
+                <i class="bi bi-check-square-fill"></i> </span
+              >|
+              <span class="icon-desactivate">
+                <i class="bi bi-power"></i>
+              </span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

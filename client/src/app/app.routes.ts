@@ -11,6 +11,7 @@ import { LogistiqueComponent } from './pages/logistique/logistique.component';
 import { AgentLogistiqueComponent } from './pages/agent-logistique/agent-logistique.component';
 import { SiteComponent } from './pages/site/site.component';
 import { AgentComponent } from './pages/agent/agent.component';
+import { RequestComponent } from './pages/request/request.component';
 
 export const routes: Routes = [
     
@@ -19,6 +20,7 @@ export const routes: Routes = [
         path:'',component: LayoutComponent,canActivate:[AuthGuard],
         children:[
             {path:'admin',component: UserListComponent},
+            {path:'admin/request',component: RequestComponent},
             {path:'admin/register',component:RegisterComponent},
             {path:'fournisseur',component: FournisseurComponent},
             {path:'deploiement',component: DeploiementComponent},

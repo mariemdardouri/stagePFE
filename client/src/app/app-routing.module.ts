@@ -13,6 +13,7 @@ import { LogistiqueComponent } from './pages/logistique/logistique.component';
 import { SiteComponent } from './pages/site/site.component';
 import { AgentLogistiqueComponent } from './pages/agent-logistique/agent-logistique.component';
 import { AgentComponent } from './pages/agent/agent.component';
+import { RequestComponent } from './pages/request/request.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,6 +25,7 @@ const routes: Routes = [
     children: [
       { path: 'admin', component: UserListComponent },
       { path: 'admin/register', component: RegisterComponent },
+      { path: 'admin/request', component: RequestComponent },
       { path: 'fournisseur', component: FournisseurComponent },
       { path: 'deploiement', component: DeploiementComponent },
       { path: 'approvisionnement', component: ApproComponent },
