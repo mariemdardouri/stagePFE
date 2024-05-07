@@ -57,21 +57,7 @@ router.put("/update-user/:id", authMiddleware, jsonParser, async (req, res) => {
   }
 });
 
-router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { status: "active" },
-      { new: true }
-    );
-    res
-      .status(200)
-      .json({ user, message: "User accepted successfully", success: true });
-  } catch (error) {
-    console.error("Error accepting user:", error);
-    res.status(500).json({ message: "Error accepting user", success: false });
-  }
-});
+
 router.post("/uploadCSV", upload.single("file"), async (req, res) => {
   const csvData = [];
   console.log(req.file.path, "pathh");
@@ -116,18 +102,20 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
     });
 });
 
-router.get("/request", authMiddleware, async (req, res) => {
+router.put("/active-user/:id",authMiddleware, jsonParser, async (req, res) => {
   try {
-    const request = await Request.find({ status: "pending" });
-    res.status(200).json(request);
+    const user = await User.findById(req.params.id);
+      if(!user){
+       return res.status(404).json({message:"utilisateur non trouvé" , success:false});
+      }
+      user.isActive= true;
+      await user.save();
+    res.status(200).json({message:"l'utilisateur a été activé avec succès" , success:true});
   } catch (error) {
-    console.error("Error fetching demande requests:", error);
-    res
-      .status(500)
-      .json({ message: "Error fetching demande requests", success: false });
+    console.error("Error activing user: ", error);
+    res.status(500).json({ message: "Erreur lors de l'activation de l'utilisateur", success:false });
   }
 });
-
 router.put("/user/:id/activate", authMiddleware, async (req, res) => {
   try {
     const user = await User.findByIdAndUpdate(
@@ -146,28 +134,4 @@ router.put("/user/:id/activate", authMiddleware, async (req, res) => {
       .json({ message: "Error activating user", success: false });
   }
 });
-
-router.get("/get-request", requestMiddleware, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id);
-    res.status(200).json(user);
-  } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({ message: "Error fetching user", success: false });
-  }
-});
-
-router.get(
-  "/get-all-requests",
-  jsonParser,
-  async (req, res) => {
-    try {
-      const data = await Request.find({});
-      res.status(200).json({ data });
-    } catch (error) {
-      console.error("Error fetching users: ", error);
-      res.status(500).json({ message: "Error fetching users", success: false });
-    }
-  }
-);
 module.exports = router;

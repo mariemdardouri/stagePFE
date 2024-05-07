@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
     phoneNumber: { type: String },
     password: { type: String },
     role: { type: String },
-    status: { type: String, default: "pending" },
+    status: { type: String},
   },
   { timestamps: true }
 );

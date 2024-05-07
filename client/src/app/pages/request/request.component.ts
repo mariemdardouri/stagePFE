@@ -8,31 +8,61 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-request',
   standalone: true,
-  imports: [CommonModule , RouterOutlet, RouterModule,FormsModule , ReactiveFormsModule,],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './request.component.html',
-  styleUrl: './request.component.css'
+  styleUrl: './request.component.css',
 })
 export class RequestComponent {
+  displayedColumns: string[] = [
+    'Nom',
+    'Prénom',
+    'CIN',
+    'Email',
+    'NumTél',
+    'Role',
+    'Status',
+    'Action',
+  ];
+  userRequests: any[] = [];
+  constructor(
+    private requestService: RequestService,
+    private toast: ToastrService
+  ) {}
 
-  displayedColumns: string[] = ['Nom', 'Prénom', 'CIN', 'Email', 'NumTél', 'Role', 'Action'];
-  selectedUser:any = {};
-  userRequests:any[]=[];
-  constructor ( private requestService : RequestService, private  toast:ToastrService){}
-  
-  ngOnInit():void {
-    this.loadUserRequests(); 
+  ngOnInit(): void {
+    this.loadUserRequests();
   }
 
   loadUserRequests(): void {
-    this.requestService.getAllRequest().subscribe(requests => {
+    this.requestService.getAllRequest().subscribe((requests) => {
       this.userRequests = requests;
     });
   }
 
-  acceptRequest(userId: string): void {
-    this.requestService.acceptUserRequest(userId).subscribe(() => {
-      // After accepting the request, update the userRequests list or fetch the updated list
-      this.loadUserRequests();
-    });
+  acceptRequest(user: any): void {
+    if (user) {
+      this.requestService.acceptUserRequest(user).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.loadUserRequests();
+          } else {
+            this.toast.error(resp.message);
+          }
+        },
+        error: (err) => {
+          console.error('Error accepting user:', err);
+          if (err.status === 500) {
+            this.toast.error("Erreur lors de l'acceptation de l'utilisateur");
+          }
+        },
+      });
+    }
   }
 }
