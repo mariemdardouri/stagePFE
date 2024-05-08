@@ -67,7 +67,10 @@ router.post("/get-user-info", authMiddleware, jsonParser, async (req, res) => {
     console.log(req.body.id, "qqq");
     console.log(user, "www");
     if (!user) {
-      return res.status(401).json({ msg: "User do not found" });
+      return res.status(401).json({ message: "User do not found" });
+    }
+    if (user.status === "desactivate") {
+      return res.status(200).json({ message: "This account is deactivated",success: false });
     }
     res.status(200).json({
       success: true,

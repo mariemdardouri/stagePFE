@@ -14,6 +14,7 @@ import { SiteComponent } from './pages/site/site.component';
 import { AgentLogistiqueComponent } from './pages/agent-logistique/agent-logistique.component';
 import { AgentComponent } from './pages/agent/agent.component';
 import { RequestComponent } from './pages/request/request.component';
+import { MissionComponent } from './pages/mission/mission.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -30,6 +31,7 @@ const routes: Routes = [
       { path: 'deploiement', component: DeploiementComponent },
       { path: 'approvisionnement', component: ApproComponent },
       { path: 'logistique', component: LogistiqueComponent },
+      {path:  'logistique/mission',component: MissionComponent},
       { path: 'agentLogistique', component: AgentLogistiqueComponent },
       { path: 'responsableSite', component: SiteComponent },
       { path: 'agent', component: AgentComponent },

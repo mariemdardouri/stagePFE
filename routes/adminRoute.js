@@ -26,18 +26,37 @@ router.get("/request", authMiddleware, async (req, res) => {
 router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
   try {
     const requestId = req.params.id;
-    const request = await Request.findByIdAndUpdate(requestId, { status: "active" }, { new: true });
+    console.log(req.params.id, "paramss");
+    const request = await Request.findByIdAndDelete(
+      requestId,
+      { status: "active" },
+      { new: true }
+    );
+
 
     if (!request) {
-      return res.status(404).json({ message: "Request not found", success: false });
+      return res
+        .status(404)
+        .json({ message: "Request not found", success: false });
     }
 
     // Create a new user based on the request details
-    const newUser = new User(req.body);
+    const newUser = new User({
+      firstName: request.firstName,
+      lastName: request.lastName,
+      cin: request.cin,
+      email: request.email,
+      phoneNumber: request.phoneNumber,
+      password: request.password,
+      role: request.role,
+      status: "active", // Set the user's status to active
+    });
 
     await newUser.save();
 
-    res.status(200).json({ message: "User created successfully", success: true });
+    res
+      .status(200)
+      .json({ message: "User created successfully", success: true });
   } catch (error) {
     console.error("Error accepting user:", error);
     res.status(500).json({ message: "Error accepting user", success: false });

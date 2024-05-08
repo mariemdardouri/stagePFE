@@ -4,6 +4,7 @@ import {  map } from 'rxjs/operators';
 import {  Observable, of, throwError } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
 import { UserInfo } from 'os';
+import { ToastrService } from 'ngx-toastr';
 
 const URL ="http://localhost:3000/api/auth/";
 
@@ -14,7 +15,7 @@ export class AuthService {
   
   private Authenticated = false;
    
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private toast: ToastrService) { }
 
   isAuthenticated(): boolean {
     return this.Authenticated;
@@ -53,6 +54,7 @@ export class AuthService {
     }catch(error){
       console.error(error);
       console.log(error,'error');
+      this.toast.error('This account is deactivated');
       return throwError('invalid token');
     };
   }

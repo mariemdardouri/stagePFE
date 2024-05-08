@@ -12,6 +12,7 @@ import { AgentLogistiqueComponent } from './pages/agent-logistique/agent-logisti
 import { SiteComponent } from './pages/site/site.component';
 import { AgentComponent } from './pages/agent/agent.component';
 import { RequestComponent } from './pages/request/request.component';
+import { MissionComponent } from './pages/mission/mission.component';
 
 export const routes: Routes = [
     
@@ -26,6 +27,7 @@ export const routes: Routes = [
             {path:'deploiement',component: DeploiementComponent},
             {path:'approvisionnement',component: ApproComponent},
             {path:'logistique',component: LogistiqueComponent},
+            {path:'logistique/mission',component: MissionComponent},
             {path:'agentLogistique',component: AgentLogistiqueComponent},
             {path:'responsableSite',component: SiteComponent},
             {path:'agent',component: AgentComponent},

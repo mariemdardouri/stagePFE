@@ -40,5 +40,28 @@ export class UserService {
     return this.http.put(URL + 'update-user/' + user._id, user, { headers });
   }
 
+  updateUserStatus(user: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.put<any>(URL + 'user-activate/' + user._id, user, {headers});
+  }
   
+  desactivateUser(user: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.put<any>(URL + 'desactivate-user/' + user._id , user, {headers});
+  }
+
 }

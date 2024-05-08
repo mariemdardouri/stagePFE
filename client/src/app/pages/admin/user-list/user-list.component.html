@@ -24,6 +24,13 @@
           <td>{{ user.role }}</td>
           <td>
             <div>
+              <span *ngIf="user.status === 'pending'">Pending</span>
+              <span *ngIf="user.status === 'active'">Active</span>
+              <span *ngIf="user.status === 'desactivate'">Desactive</span>
+            </div>
+          </td>
+          <td>
+            <div>
               <span
                 data-bs-toggle="modal"
                 data-bs-target="#UpdateModal"
@@ -31,7 +38,7 @@
               >
               <i class="bi bi-pencil-square icon-edit"></i></span
               > <span class="icon-check"> <i class="bi bi-check-square-fill"></i> </span>|
-              <span class="icon-desactivate"> <i class="bi bi-power"></i>  </span>
+              <span class="icon-desactivate" (click)="desactivateUser(user)"> <i class="bi bi-power"></i>  </span>
             </div>
           </td>
         </tr>

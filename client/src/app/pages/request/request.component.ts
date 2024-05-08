@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-request',
@@ -32,6 +33,7 @@ export class RequestComponent {
   userRequests: any[] = [];
   constructor(
     private requestService: RequestService,
+    private userService: UserService,
     private toast: ToastrService
   ) {}
 
@@ -45,13 +47,14 @@ export class RequestComponent {
     });
   }
 
-  acceptRequest(user: any): void {
-    if (user) {
-      this.requestService.acceptUserRequest(user).subscribe({
+  acceptRequest(request: any): void {
+    if (request) {
+      console.log(request, 'iddddd');
+      this.requestService.acceptUserRequest(request).subscribe({
         next: (resp: any) => {
           if (resp.success) {
-            this.toast.success(resp.message);
-            this.loadUserRequests();
+                this.toast.success(resp.message);
+                this.loadUserRequests();
           } else {
             this.toast.error(resp.message);
           }

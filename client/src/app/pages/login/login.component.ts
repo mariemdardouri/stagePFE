@@ -36,11 +36,15 @@ submit(){
     this.authService.loginUser(this.loginForm.value).subscribe({next:(resp:any)=>{
       console.log(resp);
       if (resp.success) {
-        this.toast.success(resp.message);
         localStorage.setItem("token", resp.token);
         localStorage.setItem('role', resp.role);
         this.authService.getUserInfo().subscribe({
-          next: (userInfo: any) => {
+          next: (userInfo: any) => { 
+            console.log(userInfo,'uuuu');
+            if (userInfo.success === false) {
+              this.toast.error('This account is desactivated');
+            } else {
+            this.toast.success(resp.message);
             if (userInfo.token.role === 'admin') {
               this.router.navigate(['admin']);
             } else if (userInfo.token.role === 'fournisseur') {
@@ -58,6 +62,7 @@ submit(){
             }else if (userInfo.token.role === 'agent') {
               this.router.navigate(['agent'])
             }
+          }
           },
           error: (err) => {
             console.log(err);

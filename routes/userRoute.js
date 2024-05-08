@@ -57,7 +57,6 @@ router.put("/update-user/:id", authMiddleware, jsonParser, async (req, res) => {
   }
 });
 
-
 router.post("/uploadCSV", upload.single("file"), async (req, res) => {
   const csvData = [];
   console.log(req.file.path, "pathh");
@@ -102,36 +101,65 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
     });
 });
 
-router.put("/active-user/:id",authMiddleware, jsonParser, async (req, res) => {
-  try {
-    const user = await User.findById(req.params.id);
-      if(!user){
-       return res.status(404).json({message:"utilisateur non trouvé" , success:false});
+router.put(
+  "/user-activate/:id",
+  authMiddleware,
+  jsonParser,
+  async (req, res) => {
+    try {
+      const user = await User.findByIdAndUpdate(
+        req.params.id,
+        { status: "active" },
+        { new: true }
+      );
+      if (!user) {
+        res
+          .status(404)
+          .json({ message: "utilisateur non trouvé", success: false });
       }
-      user.isActive= true;
-      await user.save();
-    res.status(200).json({message:"l'utilisateur a été activé avec succès" , success:true});
-  } catch (error) {
-    console.error("Error activing user: ", error);
-    res.status(500).json({ message: "Erreur lors de l'activation de l'utilisateur", success:false });
-  }
-});
-router.put("/user/:id/activate", authMiddleware, async (req, res) => {
-  try {
-    const user = await User.findByIdAndUpdate(
-      req.params.id,
-      { status: "active" },
-      { new: true }
-    );
-    if (!user) {
-      res.status(404).json({ message: "User not found", success: false });
+      res.status(200).json({
+        user,
+        message: "l'utilisateur a été activé avec succès",
+        success: true,
+      });
+    } catch (error) {
+      console.error("Error activating user:", error);
+      res.status(500).json({
+        message: "Erreur lors de l'activation de l'utilisateur",
+        success: false,
+      });
     }
-    res.status(200).json({user, message: "Demande activated successfully", success: true,});
-  } catch (error) {
-    console.error("Error activating user:", error);
-    res
-      .status(500)
-      .json({ message: "Error activating user", success: false });
   }
-});
+);
+router.put(
+  "/desactivate-user/:id",
+  authMiddleware,
+  jsonParser,
+  async (req, res) => {
+    try {
+      const userId = req.params.id;
+      console.log(userId, "llllllll");
+      const user = await User.findByIdAndUpdate(
+        userId,
+        { status: "desactivate" },
+        { new: true }
+      );
+      console.log(user, "uuuuu");
+      if (!user) {
+        return res
+          .status(404)
+          .json({ message: "User not found", success: false });
+      }
+
+      res
+        .status(200)
+        .json({ message: "User deactivated successfully", success: true });
+    } catch (error) {
+      console.error("Error deactivating user:", error);
+      res
+        .status(500)
+        .json({ message: "Error deactivating user", success: false });
+    }
+  }
+);
 module.exports = router;

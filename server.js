@@ -11,6 +11,7 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/userRoute");
 const adminRoute = require("./routes/adminRoute");
 const materielRoute = require("./routes/materielRoute");
+const missionRoute = require("./routes/missionRoute");
 const port = 3000;
 
 app.use(express.json());
@@ -21,5 +22,6 @@ app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/materiel", materielRoute);
 app.use("/api/admin", adminRoute);
+app.use("/api/mission", missionRoute);
 
 app.listen(port, () => console.log(`node server started at port ${port}`));

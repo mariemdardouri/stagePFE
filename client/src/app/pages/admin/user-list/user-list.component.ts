@@ -10,23 +10,37 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-user-list',
   standalone: true,
-  imports: [CommonModule , RouterOutlet, RouterModule,RegisterComponent,FormsModule , ReactiveFormsModule,  ],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    RouterModule,
+    RegisterComponent,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './user-list.component.html',
-  styleUrl: './user-list.component.css'
+  styleUrl: './user-list.component.css',
 })
 export class UserListComponent {
-  
-  displayedColumns: string[] = ['Nom', 'Prénom', 'CIN', 'Email', 'NumTél', 'Role', 'Action'];
-  selectedUser:any = {};
-  userList:any[]=[];
-  constructor ( private userService : UserService, private  toast:ToastrService){}
-  
-  ngOnInit():void {
-    this.getAllUsers(); 
+  displayedColumns: string[] = [
+    'Nom',
+    'Prénom',
+    'CIN',
+    'Email',
+    'NumTél',
+    'Role',
+    'Status',
+    'Action',
+  ];
+  selectedUser: any = {};
+  userList: any[] = [];
+  constructor(private userService: UserService, private toast: ToastrService) {}
+
+  ngOnInit(): void {
+    this.getAllUsers();
   }
 
-
-  getAllUsers():void{
+  getAllUsers(): void {
     this.userService.getAllUser().subscribe(
       (data: any[]) => {
         this.userList = data.filter((user: any) => user.role !== 'admin');
@@ -56,10 +70,30 @@ export class UserListComponent {
         error: (err) => {
           console.error('Error updating user:', err);
           if (err.status === 500) {
-            this.toast.error('Erreur lors de la mise à jour de l\'utilisateur');
+            this.toast.error("Erreur lors de la mise à jour de l'utilisateur");
           }
-        }
+        },
       });
     }
   }
+
+  desactivateUser(userId: string): void {
+    this.userService.desactivateUser(userId).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success(resp.message);
+          this.getAllUsers();
+        } else {
+          this.toast.error(resp.message);
+        }
+      },
+      error: (err) => {
+        console.error('Error deactivating user:', err);
+        if (err.status === 500) {
+          this.toast.error("Erreur lors du desactivation de l'utilisateur");
+        }
+      },
+    });
+  }
+
 }
