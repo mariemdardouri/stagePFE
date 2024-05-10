@@ -61,7 +61,39 @@ export class AuthService {
   getDecodedToken(token: string): any {
     return jwtDecode(token);
   }
+  getUserId(): string {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.userId;
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      throw new Error('Error getting user ID from token');
+    }
   }
+
+  getLoggedInUser(): any {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+
+    try {
+      const decodedToken: any = jwtDecode(token);
+      return {
+        firstName: decodedToken.firstName,
+        lastName: decodedToken.lastName
+      };
+    } catch (error) {
+      console.error('Error decoding token:', error);
+      throw new Error('Error getting user information from token');
+    }
+  }
+}
   
 
 

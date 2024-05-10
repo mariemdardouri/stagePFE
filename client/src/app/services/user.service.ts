@@ -64,4 +64,15 @@ export class UserService {
     return this.http.put<any>(URL + 'desactivate-user/' + user._id , user, {headers});
   }
 
+  getAgentsWithRole(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get<any[]>(URL + 'get-users-by-role', { headers });
+  }
 }

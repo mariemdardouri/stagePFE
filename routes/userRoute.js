@@ -3,6 +3,7 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 const user = express();
 const User = require("../models/userModel");
+const Mission = require("../models/missionModel");
 const Request = require("../models/requestModel");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
@@ -162,4 +163,17 @@ router.put(
     }
   }
 );
+
+router.get("/get-users-by-role", authMiddleware, async (req, res) => {
+  try {
+    const users = await User.find({ role:"agentLogistique" });
+    console.log(users,'mmmmm');
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching users", success: false });
+  }
+});
+
+
 module.exports = router;

@@ -1,1 +1,32 @@
-<p>agent-logistique works!</p>
+<div class="container-fluid">
+    <div>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th for="title">Titre</th>
+            <th for="place">Lieu du mission</th>
+            <th for="hour">Heure du mission</th>
+            <th for="dateStart">Date du debut</th>
+            <th for="dateEnd">Date du fin</th>
+            <th for="action">Action</th>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mission of userMissions">
+            <td>{{ mission.title }}</td>
+            <td>{{ mission.place }}</td>
+            <td>{{ mission.hour }}</td>
+            <td>{{ mission.dateStart }}</td>
+            <td>{{ mission.dateEnd }}</td>
+            <td>
+              <div>
+                <span class="icon-check" *ngIf="mission.status !== 'valider'" (click)="validateMission(mission)"><i class="bi bi-check-square-fill"></i> </span>
+                <span class="icon-delete"> <i class="bi bi-trash-fill"></i></span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  
+ 

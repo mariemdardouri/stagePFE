@@ -4,6 +4,8 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { MissionService } from '../../services/mission.service';
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
+import { UserService } from '../../services/user.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-mission',
@@ -14,13 +16,16 @@ import { CommonModule } from '@angular/common';
 })
 export class MissionComponent {
   missionList:any[]=[];
+  users: any[] = [];
   missionForm!:FormGroup ;
   selectedMission:any = {};
-  constructor ( private missionService : MissionService, private  toast:ToastrService){}
+  agentLogistique: any;
+  constructor ( private missionService : MissionService,private authService: AuthService,private userService : UserService, private  toast:ToastrService){}
 
   ngOnInit():void {
     this.setForm();
     this.getAllMissions(); 
+    this.getAgents();
   }
 
   setForm(): void{
@@ -30,28 +35,54 @@ export class MissionComponent {
       hour: new FormControl('',[Validators.required]),
       dateStart: new FormControl('',[Validators.required]),
       dateEnd: new FormControl('',[Validators.required]),
-      agent: new FormControl('',[Validators.required]),
+      agentLogistique: new FormControl('',[Validators.required]),
     })
   }
 
   submit(): void{
-    console.log(this.missionForm.value)
-    this.missionService.addMission(this.missionForm.value).subscribe({next:(resp:any)=>{
-    console.log(resp);
-    if(resp.success){
-      this.toast.success(resp.message);
-      this.getAllMissions();
-    }else{
-      this.toast.error(resp.message);
-    }
-  }, error:(err) => {
-    console.log(err);
-      if (err.status === 500) {
-        this.toast.error('Erreur lors de l\'ajout du mission');
+    if (this.missionForm.valid) {
+      const missionData = this.missionForm.value;
+      const selectedAgentName = missionData.agentLogistique;
+      const selectedAgent = this.users.find(user => {
+        const fullName = `${user.firstName} ${user.lastName}`;
+        return fullName === selectedAgentName;
+      });
+  
+      if (selectedAgent) {
+        missionData.assignedTo = selectedAgent._id; // Assign the mission to the selected agent
+        this.missionService.addMission(missionData).subscribe({
+          next: (resp: any) => {
+            if (resp.success) {
+              this.toast.success(resp.message);
+              this.getAllMissions();
+            } else {
+              this.toast.error(resp.message);
+            }
+          },
+          error: (err) => {
+            console.error(err);
+            if (err.status === 500) {
+              this.toast.error('Erreur lors de l\'ajout de la mission');
+            }
+          }
+        });
+      } else {
+        this.toast.error('Erreur lors de la sélection de l\'agent logistique');
       }
-  } 
-  })
+    } else {
+      this.toast.error('Veuillez remplir tous les champs obligatoires.');
+    }
  }
+ getAgents(): void {
+  this.userService.getAgentsWithRole().subscribe(
+    (data: any[]) => {
+      this.users = data;
+    },
+    (error) => {
+      console.error('Error fetching agents:', error);
+    }
+  );
+}
   getAllMissions():void{
     this.missionService.getMissions().subscribe(
       (data: any[]) => {

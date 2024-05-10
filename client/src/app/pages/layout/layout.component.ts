@@ -30,6 +30,7 @@ export class LayoutComponent implements OnInit {
   ];
   LogistiqueMenu = [
     { label: 'Liste de matériel', path: '/logistique', icon: 'bi bi-person ' },
+    { label: 'Liste de mission', path: '/logistique/mission', icon: 'bi bi-person ' },
     { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
   ];
   ResponsableSiteMenu = [

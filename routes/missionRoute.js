@@ -2,6 +2,7 @@ const express = require("express");
 const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 const Mission = require("../models/missionModel");
+const User = require("../models/userModel");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 
@@ -45,6 +46,7 @@ router.put(
       const updatedMission = await Mission.findByIdAndUpdate(
         req.params.id,
         req.body,
+        { status: "valider" }, 
         { new: true }
       );
 
@@ -83,5 +85,28 @@ router.delete(
     }
   }
 );
+
+router.get("/get-user", authMiddleware, jsonParser,async (req, res) => {
+  try {
+    const users = await User.find({ role: 'agentLogistique' }, 'firstName');
+    console.log(users,'zzzzz');
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Error fetching agents", success: false });
+  }
+});
+
+router.get("/missions", authMiddleware,jsonParser, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.id });
+    const missions = await Mission.find({ agentLogistique : user.firstName + " " + user.lastName });
+    res.status(200).json(missions);
+  } catch (error) {
+    console.error("Error fetching user missions:", error);
+    console.log(error,'error');
+    res.status(500).json({ message: "Error fetching user missions", success: false });
+  }
+});
 
 module.exports = router;
