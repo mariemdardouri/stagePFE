@@ -24,6 +24,6 @@ import { SiteComponent } from './pages/site/site.component';
       positionClass: 'toast-top-right',
       preventDuplicates: true,
     }),
-  ]
+  ],
 })
 export class AppModule { }

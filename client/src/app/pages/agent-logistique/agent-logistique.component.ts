@@ -47,11 +47,11 @@ export class AgentLogistiqueComponent {
   }
 
   validateMission(mission: any): void {
-    mission.status = "valider"; // Update the status to "Valider"
+    mission.status = 'valider'; // Update the status to "Valider"
     this.missionService.updateMission(mission).subscribe(
       (updatedMission: any) => {
-        this.toast.success("Mission valider avec succee");
-        console.log("Mission validated successfully:", updatedMission);
+        this.toast.success('Mission valider avec succee');
+        console.log('Mission validated successfully:', updatedMission);
         // Add any notification logic here
       },
       (error) => {

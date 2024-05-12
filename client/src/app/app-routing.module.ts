@@ -1,5 +1,4 @@
-import { Component, NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 import { LoginComponent } from './pages/login/login.component';
 import { RouterModule, Routes } from '@angular/router';
 import { UserListComponent } from './pages/admin/user-list/user-list.component';
@@ -15,6 +14,7 @@ import { AgentLogistiqueComponent } from './pages/agent-logistique/agent-logisti
 import { AgentComponent } from './pages/agent/agent.component';
 import { RequestComponent } from './pages/request/request.component';
 import { MissionComponent } from './pages/mission/mission.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -24,6 +24,7 @@ const routes: Routes = [
     component: LayoutComponent,
     canActivate: [AuthGuard],
     children: [
+      { path: 'notifications', component: NotificationsComponent },
       { path: 'admin', component: UserListComponent },
       { path: 'admin/register', component: RegisterComponent },
       { path: 'admin/request', component: RequestComponent },
@@ -31,7 +32,7 @@ const routes: Routes = [
       { path: 'deploiement', component: DeploiementComponent },
       { path: 'approvisionnement', component: ApproComponent },
       { path: 'logistique', component: LogistiqueComponent },
-      {path:  'logistique/mission',component: MissionComponent},
+      { path: 'logistique/mission', component: MissionComponent },
       { path: 'agentLogistique', component: AgentLogistiqueComponent },
       { path: 'responsableSite', component: SiteComponent },
       { path: 'agent', component: AgentComponent },
@@ -39,8 +40,4 @@ const routes: Routes = [
   },
 ];
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-})
 export class AppRoutingModule {}

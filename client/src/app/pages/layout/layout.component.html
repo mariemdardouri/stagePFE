@@ -1,21 +1,29 @@
-<div class="header">
-  <span
-    class="list-icon"
+<nav class="navbar navbar-expand-lg y">
+  <span class="list-icon"
     ><i class="bi bi-list" (click)="toggleSidebar()"></i
   ></span>
-  
-  <span  class=" firstName profile-icon"
-    >{{firstName}} <i class="bi bi-person-circle"></i> </span
-  >
-  
 
-</div>
+  <div >
+    <span class="firstName">{{ firstName }}</span>
+    <span class="profile-icon"> <i class="bi bi-person-circle"></i></span>
+    <span class="notification bill-icon" (click)="goToNotifications()"><i class="bi bi-bell-fill"></i></span>
+  </div>
+</nav>
 <div class="container-fluid">
   <div class="container sidebar">
     <nav>
       <div class="menu">
-        <div class="menu-item" *ngFor="let item of menuItems" [routerLinkActive]="['active']">
-          <a class="menu-link" [routerLink]="item.path" [ngClass]="{ 'active': itemActive === item.label }" (click)="itemActive = item.label">
+        <div
+          class="menu-item"
+          *ngFor="let item of menuItems"
+          [routerLinkActive]="['active']"
+        >
+          <a
+            class="menu-link"
+            [routerLink]="item.path"
+            [ngClass]="{ active: itemActive === item.label }"
+            (click)="itemActive = item.label"
+          >
             <i class="{{ item.icon }}"> </i>
             <span class="menu-label">{{ item.label }}</span>
           </a>

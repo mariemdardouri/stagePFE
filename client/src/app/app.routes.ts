@@ -13,6 +13,7 @@ import { SiteComponent } from './pages/site/site.component';
 import { AgentComponent } from './pages/agent/agent.component';
 import { RequestComponent } from './pages/request/request.component';
 import { MissionComponent } from './pages/mission/mission.component';
+import { NotificationsComponent } from './pages/notifications/notifications.component';
 
 export const routes: Routes = [
     
@@ -20,6 +21,7 @@ export const routes: Routes = [
     {
         path:'',component: LayoutComponent,canActivate:[AuthGuard],
         children:[
+            {path:'notifications',component: NotificationsComponent},
             {path:'admin',component: UserListComponent},
             {path:'admin/request',component: RequestComponent},
             {path:'admin/register',component:RegisterComponent},

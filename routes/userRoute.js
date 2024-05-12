@@ -3,7 +3,6 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const router = express.Router();
 const user = express();
 const User = require("../models/userModel");
-const Mission = require("../models/missionModel");
 const Request = require("../models/requestModel");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
@@ -118,17 +117,27 @@ router.put(
           .status(404)
           .json({ message: "utilisateur non trouvé", success: false });
       }
-      res.status(200).json({
-        user,
-        message: "l'utilisateur a été activé avec succès",
-        success: true,
+      const unseenNotifications = user.unseenNotifications;
+      unseenNotifications.push({
+        type: "user-account-activate",
+        message: `Your account has been activated`,
+        onClickPath: "/notifications",
       });
+      res
+        .status(200)
+        .json({
+          user,
+          message: "l'utilisateur a été activé avec succès",
+          success: true,
+        });
     } catch (error) {
       console.error("Error activating user:", error);
-      res.status(500).json({
-        message: "Erreur lors de l'activation de l'utilisateur",
-        success: false,
-      });
+      res
+        .status(500)
+        .json({
+          message: "Erreur lors de l'activation de l'utilisateur",
+          success: false,
+        });
     }
   }
 );
@@ -166,8 +175,8 @@ router.put(
 
 router.get("/get-users-by-role", authMiddleware, async (req, res) => {
   try {
-    const users = await User.find({ role:"agentLogistique" });
-    console.log(users,'mmmmm');
+    const users = await User.find({ role: "agentLogistique" });
+    console.log(users, "mmmmm");
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
@@ -175,5 +184,77 @@ router.get("/get-users-by-role", authMiddleware, async (req, res) => {
   }
 });
 
+router.get("/user-notifications", authMiddleware, async (req, res) => {
+  try {
+    console.log(req.body.id,'idd');
+    const user = await User.findOne({ _id: req.body.id});
+    console.log(user,'notifiiii');
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User not found", success: false });
+    }
+
+    const unseenNotifications = user.unseenNotifications;
+    const seenNotifications = user.seenNotifications;
+
+    res.status(200).json({ unseenNotifications, seenNotifications });
+  } catch (error) {
+    console.error("Error fetching user notifications: ", error);
+    res
+      .status(500)
+      .json({ message: "Error fetching user notifications", success: false });
+  }
+});
+router.post(
+  "/mark-all-notifications-as-seen",
+  authMiddleware,
+  async (req, res) => {
+    try {
+      const user = await User.findOne({ _id: req.body.userId });
+      const unseenNotifications = user.unseenNotifications;
+      const seenNotifications = user.seenNotifications;
+      seenNotifications.push(...unseenNotifications);
+      user.unseenNotifications = [];
+      user.seenNotifications = seenNotifications;
+      const updatedUser = await user.save();
+      updatedUser.password = undefined;
+      res.status(200).send({
+        success: true,
+        message: "All notifications marked as seen",
+        data: updatedUser,
+      });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({
+        message: "Error applying doctor account",
+        success: false,
+        error,
+      });
+    }
+  }
+);
+
+router.post("/delete-all-notifications", authMiddleware, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.userId });
+    user.seenNotifications = [];
+    user.unseenNotifications = [];
+    const updatedUser = await user.save();
+    updatedUser.password = undefined;
+    res.status(200).send({
+      success: true,
+      message: "All notifications cleared",
+      data: updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      message: "Error cleaning notifications",
+      success: false,
+      error,
+    });
+  }
+});
 
 module.exports = router;

@@ -64,8 +64,6 @@ router.post("/register", jsonParser, async (req, res) => {
 router.post("/get-user-info", authMiddleware, jsonParser, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.body.id });
-    console.log(req.body.id, "qqq");
-    console.log(user, "www");
     if (!user) {
       return res.status(401).json({ message: "User do not found" });
     }

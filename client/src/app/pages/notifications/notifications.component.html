@@ -1,0 +1,16 @@
+<div class="container-fluid">
+  <div>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>unseenNotifications</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let notification of unseenNotifications">
+          <td>{{ notification.message }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

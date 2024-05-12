@@ -5,6 +5,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LayoutComponent } from "./pages/layout/layout.component";
 
+
+
 @Component({
     selector: 'app-root',
     standalone: true,

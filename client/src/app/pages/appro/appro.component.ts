@@ -8,32 +8,40 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-appro',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule,RouterOutlet,CommonModule,FormsModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterModule,
+    RouterOutlet,
+    CommonModule,
+    FormsModule,
+  ],
   templateUrl: './appro.component.html',
-  styleUrl: './appro.component.css'
+  styleUrl: './appro.component.css',
 })
 export class ApproComponent {
-
-  materielList:any[]=[];
+  materielList: any[] = [];
   isNumInvDisabled: boolean = false;
-  isClicked:boolean=false;
-materiel: any;
-  
-  constructor ( private materielService : MaterielService, private  toast:ToastrService){}
-  ngOnInit():void {
-    this.getAllMateriels(); 
+  isClicked: boolean = false;
+  materiel: any;
+
+  constructor(
+    private materielService: MaterielService,
+    private toast: ToastrService
+  ) {}
+  ngOnInit(): void {
+    this.getAllMateriels();
   }
-  
-  getAllMateriels():void{
+
+  getAllMateriels(): void {
     this.materielService.getMateriels().subscribe(
       (data: any[]) => {
-        console.log(data,'data');
+        console.log(data, 'data');
         this.materielList = data;
-        console.log(data,'materielList');
-        this.materielList.forEach(materiel => {
+        console.log(data, 'materielList');
+        this.materielList.forEach((materiel) => {
           if (materiel.numInv) {
             materiel.isNumInvDisabled = true;
-          }else{
+          } else {
             materiel.isNumInvDisabled = false;
           }
         });
@@ -45,51 +53,47 @@ materiel: any;
   }
 
   hasAllNumInvFilled(): boolean {
-    return this.materielList.every(materiel => materiel.numInv);
+    return this.materielList.every((materiel) => materiel.numInv);
   }
 
-  
-  editNumInv(materiel:any): void {
-    
-      materiel.isNumInvDisabled = false;
-    
+  editNumInv(materiel: any): void {
+    materiel.isNumInvDisabled = false;
   }
 
-  updateMateriel(materiel:any): void {
-    
-      this.materielService.updateMateriel(materiel).subscribe({
-        next: (resp: any) => {
-          if (resp.success) {
-            this.toast.success('Numéro d\'inventaire mis à jour avec succès.');
-            this.getAllMateriels();
-            
-          } else {
-            this.toast.error(resp.message);
-          }
-        },
-        error: (err) => {
-          console.error('Error updating materiel:', err);
-          if (err.status === 500) {
-            this.toast.error(`Erreur lors de l'enregistrement du numéro d'inventaire`);
-          }
+  updateMateriel(materiel: any): void {
+    this.materielService.updateMateriel(materiel).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success("Numéro d'inventaire mis à jour avec succès.");
+          this.getAllMateriels();
+        } else {
+          this.toast.error(resp.message);
         }
-      });
-    
+      },
+      error: (err) => {
+        console.error('Error updating materiel:', err);
+        if (err.status === 500) {
+          this.toast.error(
+            `Erreur lors de l'enregistrement du numéro d'inventaire`
+          );
+        }
+      },
+    });
   }
 
   deleteNumInv(materiel: any): void {
-    materiel.numInv = "";
+    materiel.numInv = '';
     materiel.isNumInvDisabled = false;
     this.materielService.updateMateriel(materiel).subscribe(
       () => {
-        this.toast.success('Numéro d\'inventaire supprimé avec succès.');
+        this.toast.success("Numéro d'inventaire supprimé avec succès.");
       },
       (error) => {
-        this.toast.error('Erreur lors de la suppression du numéro d\'inventaire.');
+        this.toast.error(
+          "Erreur lors de la suppression du numéro d'inventaire."
+        );
         console.error('Error deleting materiel:', error);
       }
     );
   }
-
-  
 }

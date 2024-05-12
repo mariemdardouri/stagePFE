@@ -53,8 +53,8 @@ export class RequestComponent {
       this.requestService.acceptUserRequest(request).subscribe({
         next: (resp: any) => {
           if (resp.success) {
-                this.toast.success(resp.message);
-                this.loadUserRequests();
+            this.toast.success(resp.message);
+            this.loadUserRequests();
           } else {
             this.toast.error(resp.message);
           }

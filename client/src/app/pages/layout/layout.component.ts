@@ -25,16 +25,23 @@ export class LayoutComponent implements OnInit {
     { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
   ];
   ApproMenu = [
-    { label: 'Liste de matériel', path: '/approvisionnement', icon: 'bi bi-person ' },
+    {
+      label: 'Liste de matériel',
+      path: '/approvisionnement',
+      icon: 'bi bi-person ',
+    },
     { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
   ];
   LogistiqueMenu = [
     { label: 'Liste de matériel', path: '/logistique', icon: 'bi bi-person ' },
-    { label: 'Liste de mission', path: '/logistique/mission', icon: 'bi bi-person ' },
+    {
+      label: 'Liste de mission',
+      path: '/logistique/mission',
+      icon: 'bi bi-person ',
+    },
     { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
   ];
   ResponsableSiteMenu = [
-    
     { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
   ];
   AgentLogistiqueMenu = [
@@ -71,13 +78,13 @@ export class LayoutComponent implements OnInit {
         this.menuItems = this.DeploiementMenu;
       } else if (role === 'approvisionnement') {
         this.menuItems = this.ApproMenu;
-      }else if (role === 'logistique') {
+      } else if (role === 'logistique') {
         this.menuItems = this.LogistiqueMenu;
-      }else if (role === 'agentLogistique') {
+      } else if (role === 'agentLogistique') {
         this.menuItems = this.AgentLogistiqueMenu;
-      }else if (role === 'responsableSite') {
+      } else if (role === 'responsableSite') {
         this.menuItems = this.ResponsableSiteMenu;
-      }else if (role === 'agent') {
+      } else if (role === 'agent') {
         this.menuItems = this.AgentMenu;
       }
     }
@@ -89,5 +96,9 @@ export class LayoutComponent implements OnInit {
 
   toggleShadow(event: MouseEvent): void {
     this.isClicked = !this.isClicked;
+  }
+
+  goToNotifications(): void {
+    this.router.navigate(['/notifications']);
   }
 }

@@ -10,6 +10,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String },
     role: { type: String },
     status: { type: String, default: "pending" },
+    seenNotifications:{ type: Array, default: [] },
+    unseenNotifications:{ type: Array, default: [] },
   },
   { timestamps: true }
 );

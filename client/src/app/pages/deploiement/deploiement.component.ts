@@ -8,26 +8,34 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-deploiement',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule,RouterOutlet,CommonModule,FormsModule ],
+  imports: [
+    ReactiveFormsModule,
+    RouterModule,
+    RouterOutlet,
+    CommonModule,
+    FormsModule,
+  ],
   templateUrl: './deploiement.component.html',
-  styleUrl: './deploiement.component.css'
+  styleUrl: './deploiement.component.css',
 })
 export class DeploiementComponent {
-  materielList:any[]=[];
-  checkedMateriels:any[]=[];
-  constructor ( private materielService : MaterielService, private  toast:ToastrService){}
+  materielList: any[] = [];
+  checkedMateriels: any[] = [];
+  constructor(
+    private materielService: MaterielService,
+    private toast: ToastrService
+  ) {}
 
-  ngOnInit():void {
-    this.getAllMateriels(); 
+  ngOnInit(): void {
+    this.getAllMateriels();
   }
 
-  getAllMateriels():void{
+  getAllMateriels(): void {
     this.materielService.getMateriels().subscribe(
       (data: any[]) => {
-        console.log(data,'data');
+        console.log(data, 'data');
         this.materielList = data;
-        console.log(data,'materielList');
-      
+        console.log(data, 'materielList');
       },
       (error) => {
         console.error('Error fetching users:', error);
@@ -35,22 +43,21 @@ export class DeploiementComponent {
     );
   }
 
-
-  allChecked(): boolean{
-    return this.materielList.every(materiel => materiel.checked);
+  allChecked(): boolean {
+    return this.materielList.every((materiel) => materiel.checked);
   }
 
-  accepter():void{
-    if(this.allChecked()){
+  accepter(): void {
+    if (this.allChecked()) {
       this.toast.success('Tous les matériels ont été acceptés.');
-    }else{
-      this.toast.error('Vous devez vérifier tous les matériels avant de les accepter.');
+    } else {
+      this.toast.error(
+        'Vous devez vérifier tous les matériels avant de les accepter.'
+      );
     }
   }
 
-  rejeter():void{
+  rejeter(): void {
     this.toast.success('Tous les matériels ont été rejetés.');
   }
 }
-
-

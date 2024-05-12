@@ -48,12 +48,21 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
       email: request.email,
       phoneNumber: request.phoneNumber,
       password: request.password,
-      role: request.role,
-      status: "active", // Set the user's status to active
+      role: request.role, 
+      status: "active",
+      seenNotifications: request.seenNotifications,
+      unseenNotifications: request.unseenNotifications, // Set the user's status to active
     });
 
-    await newUser.save();
+    const notification = {
+      type: "user-account-activate",
+      message: "Your account has been activated",
+      onClickPath: "/notifications",
+    };
+    newUser.unseenNotifications.push(notification);
 
+    await newUser.save();
+    
     res
       .status(200)
       .json({ message: "User created successfully", success: true });
