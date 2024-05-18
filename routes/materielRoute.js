@@ -80,7 +80,7 @@ router.put("/update-materiel/:id",authMiddleware,jsonParser,async (req, res) => 
     }
   }
 );
-router.put('/update-materiels', authMiddleware, jsonParser, async (req, res) => {
+router.put('/accept-materiels', authMiddleware, jsonParser, async (req, res) => {
   try {
     const updatedMateriels = await Materiel.updateMany(
       { _id: { $in: req.body.map(materiel => materiel._id) } },

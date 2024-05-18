@@ -65,7 +65,7 @@
     
       const checkedMateriels = materiels.filter(materiel => materiel.checked);
     
-      return this.http.put(URL + 'update-materiels', checkedMateriels, { headers });
+      return this.http.put(URL + 'accept-materiels', checkedMateriels, { headers });
     }
 
     rejectMateriels(materiels: any[]): Observable<any> {
