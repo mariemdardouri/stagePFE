@@ -53,6 +53,36 @@
       return this.http.put(URL + 'update-materiel/' + materiel._id, materiel, { headers });
     }
 
+    updateCheckedMateriels(materiels: any[]): Observable<any> {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token not found');
+      }
+    
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+    
+      const checkedMateriels = materiels.filter(materiel => materiel.checked);
+    
+      return this.http.put(URL + 'update-materiels', checkedMateriels, { headers });
+    }
+
+    rejectMateriels(materiels: any[]): Observable<any> {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token not found');
+      }
+    
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      });
+    
+      const materielsIds = materiels.map(materiel => materiel._id);
+    
+      return this.http.put(URL + 'reject-materiels', materielsIds, { headers });
+    }
     deleteMateriel(materiel: any): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {
@@ -78,4 +108,43 @@
       );
     }
 
+    affectMateriels(materiels: any): Observable<any> {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token not found');
+      }
+  
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+      });
+  
+      return this.http.put(URL + 'affecter-materiels', materiels, { headers });
+    }
+
+    getMaterielsAffectedToAgent(): Observable<any[]> {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token not found');
+      }
+  
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      });
+  
+      return this.http.get<any[]>(URL + 'get-materiels-affected-to-agent', { headers });
+    }
+    receiveMateriel(materiel: any): Observable<any> {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token not found');
+      }
+    
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
+      });
+    
+      return this.http.put(URL + 'receive-materiel', materiel, { headers });
+    }
+    
   }

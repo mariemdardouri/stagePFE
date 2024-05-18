@@ -1,16 +1,49 @@
 <div class="container-fluid">
-  <div>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>unseenNotifications</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let notification of unseenNotifications">
-          <td>{{ notification.message }}</td>
-        </tr>
-      </tbody>
-    </table>
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a class="nav-link"  [class.active]="activeTab === 'unseen'" (click)="setActiveTab('unseen')">Unseen Notifications</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" [class.active]="activeTab === 'seen'" (click)="setActiveTab('seen')">Seen Notifications</a>
+    </li>
+  </ul>
+
+  <div class="tab-content">
+    <div *ngIf="activeTab === 'unseen'" class="tab-pane fade show active">
+      <table class="notification-table">
+        <thead>
+          <tr>
+            <th>Unseen Notifications</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let notification of unseenNotifications" (click)="navigateToRequests(notification.onClickPath)">
+            <td>{{ notification.message }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="actions-container">
+        <button (click)="markAllAsSeen()" class="btn btn-primary float-end m-2">Mark All as Seen</button>
+      </div>
+    </div>
+
+    <div *ngIf="activeTab === 'seen'" class="tab-pane fade show active">
+      <table class="notification-table">
+        <thead>
+          <tr>
+            <th>Seen Notifications</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let notification of seenNotifications" (click)="navigateToRequests(notification.onClickPath)">
+            <td>{{ notification.message }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="actions-container">
+        <button (click)="deleteAllNotifications()" class="btn btn-primary float-end m-2">Delete All Notifications</button>
+      </div>
+      
+    </div>
   </div>
 </div>

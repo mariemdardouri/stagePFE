@@ -1,0 +1,56 @@
+.notifications-container {
+    padding: 20px;
+  }
+  
+  .nav-tabs {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 20px;
+  }
+  
+  .nav-tabs .nav-link {
+    border: none;
+    color: #333;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+  }
+  
+  .nav-tabs .nav-link.active,
+  .nav-tabs .nav-link:hover {
+    border-bottom: 2px solid #007bff;
+    color: #007bff;
+  }
+  
+  .tab-content {
+    margin-top: 20px;
+  }
+  
+  .notification-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .notification-table th,
+  .notification-table td {
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .actions-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+  }
+  
+  .actions-container button {
+    margin-left: 10px;
+  }
+  
+  .btn-primary{
+    background-color: #023047;
+    padding: 8px 15px;
+    color: white;
+    display: block;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

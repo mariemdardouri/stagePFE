@@ -6,7 +6,9 @@
   <div >
     <span class="firstName">{{ firstName }}</span>
     <span class="profile-icon"> <i class="bi bi-person-circle"></i></span>
-    <span class="notification bill-icon" (click)="goToNotifications()"><i class="bi bi-bell-fill"></i></span>
+    <span class="notification bill-icon" (click)="goToNotifications()"><i class="bi bi-bell-fill"></i>
+      <span class="badge-notification" *ngIf="unseenNotificationsCount > 0">{{ unseenNotificationsCount }}</span>
+    </span>
   </div>
 </nav>
 <div class="container-fluid">

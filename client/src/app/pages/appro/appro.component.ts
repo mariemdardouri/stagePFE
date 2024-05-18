@@ -36,7 +36,7 @@ export class ApproComponent {
     this.materielService.getMateriels().subscribe(
       (data: any[]) => {
         console.log(data, 'data');
-        this.materielList = data;
+        this.materielList = data.filter(materiel => materiel.status !== 'rejected' && materiel.status !== 'pending');
         console.log(data, 'materielList');
         this.materielList.forEach((materiel) => {
           if (materiel.numInv) {
@@ -47,7 +47,7 @@ export class ApproComponent {
         });
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Error fetching materiels:', error);
       }
     );
   }

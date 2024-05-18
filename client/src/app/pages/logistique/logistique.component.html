@@ -7,6 +7,7 @@
             <th for="nature">Nature du model</th>
             <th for="numSerie">Numéro du serie</th>
             <th>Numéro d'inventaire</th>
+            <th>Agent</th>
           </tr>
         </thead>
   
@@ -16,9 +17,17 @@
             <td>{{ materiel.nature }}</td>
             <td>{{ materiel.numSerie }}</td>
             <td>{{ materiel.numInv }}</td>
+            <td>
+              <select class="form-select" [(ngModel)]="materiel.agent">
+                <option *ngFor="let user of userList" [value]="user._id">
+                  {{ user.firstName }} {{ user.lastName }}
+                </option>
+              </select>
+            </td>
           </tr>
         </tbody>
       </table>
+      <button class="btn btn-primary" (click)="affecterMateriels()">Affecter</button>
     </div>
   </div>
   

@@ -11,7 +11,7 @@ const csvtojson = require("csvtojson");
 const multer = require("multer");
 const path = require("path");
 const bcrypt = require("bcryptjs");
-const requestMiddleware = require("../middlewares/requestMiddleware");
+
 
 user.use(jsonParser);
 user.use(bodyParser.urlencoded({ extended: true }));
@@ -78,11 +78,23 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
         });
       }
       console.log(csvData, "csvvvv");
-
+    
       try {
         if (csvData.length > 0) {
-          await Request.insertMany(csvData);
-          res.status(200).json({ message: "CSV data imported successfully" });
+          const requests = await Request.insertMany(csvData);
+          const user = await User.findOne({ role:"admin"});
+          console.log(user,'iiiiii');
+          if (user) {
+            user.unseenNotifications = user.unseenNotifications || [];
+            user.unseenNotifications.push({
+              type: "request-list",
+              message: "Une nouvelle liste de demandes a été envoyée",
+              onClickPath: "/admin/request",
+            });
+            await user.save();
+          }
+
+          res.status(200).json({ requests ,message: "CSV data imported successfully" });
         } else {
           console.error("No valid data to import");
           res.status(400).json({ message: "No valid data to import" });
@@ -101,11 +113,7 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
     });
 });
 
-router.put(
-  "/user-activate/:id",
-  authMiddleware,
-  jsonParser,
-  async (req, res) => {
+router.put( "/user-activate/:id", authMiddleware, jsonParser, async (req, res) => {
     try {
       const user = await User.findByIdAndUpdate(
         req.params.id,
@@ -123,9 +131,7 @@ router.put(
         message: `Your account has been activated`,
         onClickPath: "/notifications",
       });
-      res
-        .status(200)
-        .json({
+      res.status(200).json({
           user,
           message: "l'utilisateur a été activé avec succès",
           success: true,
@@ -141,11 +147,7 @@ router.put(
     }
   }
 );
-router.put(
-  "/desactivate-user/:id",
-  authMiddleware,
-  jsonParser,
-  async (req, res) => {
+router.put("/desactivate-user/:id",authMiddleware,jsonParser,async (req, res) => {
     try {
       const userId = req.params.id;
       console.log(userId, "llllllll");
@@ -173,7 +175,7 @@ router.put(
   }
 );
 
-router.get("/get-users-by-role", authMiddleware, async (req, res) => {
+router.get("/get-users-by-role", authMiddleware, jsonParser, async (req, res) => {
   try {
     const users = await User.find({ role: "agentLogistique" });
     console.log(users, "mmmmm");
@@ -184,7 +186,7 @@ router.get("/get-users-by-role", authMiddleware, async (req, res) => {
   }
 });
 
-router.get("/user-notifications", authMiddleware, async (req, res) => {
+router.get("/user-notifications", authMiddleware,jsonParser, async (req, res) => {
   try {
     console.log(req.body.id,'idd');
     const user = await User.findOne({ _id: req.body.id});
@@ -206,28 +208,63 @@ router.get("/user-notifications", authMiddleware, async (req, res) => {
       .json({ message: "Error fetching user notifications", success: false });
   }
 });
-router.post(
-  "/mark-all-notifications-as-seen",
-  authMiddleware,
-  async (req, res) => {
+
+router.get("/user-notifications-count", authMiddleware,jsonParser, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.id });
+    console.log(user, 'uuuuu');
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const unseenNotificationsCount = user.unseenNotifications.length;
+
+    res.status(200).json({unseenNotificationsCount , success: true });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      message: "Error fetching notifications count",
+      success: false,
+      error,
+    });
+  }
+});
+
+router.post("/mark-all-notifications-as-seen",authMiddleware,jsonParser,async (req, res) => {
     try {
-      const user = await User.findOne({ _id: req.body.userId });
-      const unseenNotifications = user.unseenNotifications;
-      const seenNotifications = user.seenNotifications;
+      const user = await User.findOne({ _id: req.body.id });
+      console.log(user, 'uuuuu');
+
+      if (!user) {
+        return res.status(404).json({
+          success: false,
+          message: "User not found",
+        });
+      }
+
+      const unseenNotifications = user.unseenNotifications || [];
+      const seenNotifications = user.seenNotifications || [];
+
       seenNotifications.push(...unseenNotifications);
       user.unseenNotifications = [];
       user.seenNotifications = seenNotifications;
+
       const updatedUser = await user.save();
       updatedUser.password = undefined;
-      res.status(200).send({
+
+      res.status(200).json({
         success: true,
         message: "All notifications marked as seen",
         data: updatedUser,
       });
     } catch (error) {
       console.log(error);
-      res.status(500).send({
-        message: "Error applying doctor account",
+      res.status(500).json({
+        message: "Error marking notifications as seen",
         success: false,
         error,
       });
@@ -235,21 +272,21 @@ router.post(
   }
 );
 
-router.post("/delete-all-notifications", authMiddleware, async (req, res) => {
+router.post("/delete-all-notifications", authMiddleware,jsonParser, async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.body.userId });
+    const user = await User.findOne({ _id: req.body.id });
     user.seenNotifications = [];
     user.unseenNotifications = [];
     const updatedUser = await user.save();
     updatedUser.password = undefined;
-    res.status(200).send({
+    res.status(200).json({
       success: true,
       message: "All notifications cleared",
       data: updatedUser,
     });
   } catch (error) {
     console.log(error);
-    res.status(500).send({
+    res.status(500).json({
       message: "Error cleaning notifications",
       success: false,
       error,

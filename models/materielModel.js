@@ -6,6 +6,8 @@ const materielSchema = new mongoose.Schema(
     nature: { type: String, required: true },
     numSerie: { type: String, required: true },
     numInv: { type: String, default: ''},
+    status: { type: String, default: 'pending' },
+    agent: { type: String,default:'' },
   },
   { timestamps: true }
 );

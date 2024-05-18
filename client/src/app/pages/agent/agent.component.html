@@ -1,1 +1,70 @@
-<p>agent works!</p>
+<div class="container">
+    <h2 class="title">Materiel du l'agent</h2>
+    <hr>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Category</th>
+          <th>Nature</th>
+          <th>Numero du serie</th>
+          <th>Numero d'inventaire</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let materiel of affectedMateriels">
+          <td>{{ materiel.categorie }}</td>
+          <td>{{ materiel.nature }}</td>
+          <td>{{ materiel.numSerie }}</td>
+          <td>{{ materiel.numInv }}</td>
+          <td>
+            <span class="icon-check" (click)="receiveMateriel(materiel)">
+                <i class="bi bi-check-square-fill"></i>
+            </span>
+            <button class="btn btn-primary" data-bs-toggle="modal"
+            data-bs-target="#addModal"  >
+              Create Reclamation
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+<div 
+class="modal fade"
+id="addModal"
+tabindex="-1"
+aria-labelledby="addModalModalLabel"
+aria-hidden="true"
+data-backdrop="static"
+data-keyboard="false">
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="addModalLabel">
+        Cree Reclamation
+      </h1>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <textarea [(ngModel)]="description" placeholder="Enter description"></textarea>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="createReclamation(description)"
+        data-bs-dismiss="modal"
+      >
+      Submit Reclamation
+      </button>
+    </div>
+  </div>
+</div>
+</div>

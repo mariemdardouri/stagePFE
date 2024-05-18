@@ -44,20 +44,47 @@ export class DeploiementComponent {
   }
 
   allChecked(): boolean {
-    return this.materielList.every((materiel) => materiel.checked);
+    return this.materielList.every((materiel) => materiel.checked || materiel.status === 'accepted');
   }
 
   accepter(): void {
     if (this.allChecked()) {
-      this.toast.success('Tous les matériels ont été acceptés.');
-    } else {
-      this.toast.error(
-        'Vous devez vérifier tous les matériels avant de les accepter.'
+      const uncheckedAcceptedMateriels = this.materielList.filter(materiel => !materiel.checked && materiel.status === 'accepted');
+      if (uncheckedAcceptedMateriels.length === 0) {
+        this.toast.error('Vous ne pouvez pas vérifier à nouveau les matériels déjà acceptés.');
+        return;
+      }
+  
+      this.materielService.updateCheckedMateriels(this.materielList).subscribe(
+        (response) => {
+          this.toast.success('Tous les matériels ont été acceptés.');
+        },
+        (error) => {
+          console.error('Error updating materiels:', error);
+          this.toast.error('Une erreur est survenue lors de la mise à jour des matériels.');
+        }
       );
+    } else {
+      this.toast.error('Vous devez vérifier tous les matériels avant de les accepter.');
     }
   }
 
   rejeter(): void {
-    this.toast.success('Tous les matériels ont été rejetés.');
+    const uncheckedMateriels = this.materielList.filter(materiel => !materiel.checked);
+    if (uncheckedMateriels.length > 0) {
+      this.materielService.rejectMateriels(uncheckedMateriels).subscribe(
+        (response) => {
+          this.toast.success('Les matériels non vérifiés ont été rejetés.');
+          // Remove the rejected materiels from the list
+          this.materielList = this.materielList.filter(materiel => materiel.checked);
+        },
+        (error) => {
+          console.error('Error rejecting materiels:', error);
+          this.toast.error('Erreur lors de la réjection des matériels.');
+        }
+      );
+    } else {
+      this.toast.error('Aucun matériel non vérifié trouvé.');
+    }
   }
 }

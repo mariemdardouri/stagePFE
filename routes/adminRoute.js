@@ -7,14 +7,15 @@ const Request = require("../models/requestModel");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
 const bcrypt = require("bcryptjs");
-const requestMiddleware = require("../middlewares/requestMiddleware");
 
 user.use(jsonParser);
 
 router.get("/request", authMiddleware, async (req, res) => {
   try {
+    
     const request = await Request.find({ status: "pending" });
     res.status(200).json(request);
+
   } catch (error) {
     console.error("Error fetching demande requests:", error);
     res
@@ -72,7 +73,7 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
   }
 });
 
-router.get("/get-request", requestMiddleware, async (req, res) => {
+router.get("/get-request", authMiddleware, async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     res.status(200).json(user);
@@ -86,6 +87,7 @@ router.get("/get-all-requests", jsonParser, async (req, res) => {
   try {
     const data = await Request.find({});
     res.status(200).json({ data });
+
   } catch (error) {
     console.error("Error fetching users: ", error);
     res.status(500).json({ message: "Error fetching users", success: false });

@@ -10,7 +10,21 @@
     align-items: center;
     justify-content: space-between;
 }
+.bill-icon {
+  position: relative;
+  display: inline-block;
+}
 
+.badge-notification {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  background-color: #dc3545;
+  color: #fff;
+  border-radius: 50%;
+  padding: 4px 8px;
+  font-size: 0.60rem;
+}
 .list-icon{
   cursor: pointer;
   transition: box-shadow 0.5s ease;

@@ -13,10 +13,7 @@ router.post("/add-mission", authMiddleware, jsonParser, async (req, res) => {
       ...req.body,
     });
     await newMission.save();
-
-    res
-      .status(201)
-      .json({ message: "Mission ajouté avec succès", success: true });
+    res.status(201).json({ message: "Mission ajouté avec succès", success: true });
   } catch (error) {
     console.error(error);
     res
@@ -37,11 +34,7 @@ router.get("/get-mission", authMiddleware, jsonParser, async (req, res) => {
   }
 });
 
-router.put(
-  "/update-mission/:id",
-  authMiddleware,
-  jsonParser,
-  async (req, res) => {
+router.put("/update-mission/:id",authMiddleware,jsonParser,async (req, res) => {
     try {
       const updatedMission = await Mission.findByIdAndUpdate(
         req.params.id,
@@ -49,6 +42,18 @@ router.put(
         { status: "valider" }, 
         { new: true }
       );
+
+      const user = await User.findOne({ role:"logistique"});
+      // Add a notification for the responsible logistique
+      if (user) {
+        user.unseenNotifications = user.unseenNotifications || [];
+        user.unseenNotifications.push({
+          type: "mission-validated",
+          message: `This ${updatedMission.title} has been validated by ${updatedMission.agentLogistique}`,
+          onClickPath: "/logistique/mission",
+        });
+        await user.save();
+      }
 
       res.status(200).json({
         updatedMission,
@@ -102,6 +107,15 @@ router.get("/missions", authMiddleware,jsonParser, async (req, res) => {
     const user = await User.findOne({ _id: req.body.id });
     const missions = await Mission.find({ agentLogistique : user.firstName + " " + user.lastName });
     res.status(200).json(missions);
+    const unseenNotifications = user.unseenNotifications || [];
+    unseenNotifications.push({
+      type: "new-mission",
+      message: `You have new mission from the responsable`,
+      onClickPath: "/agentLogistique",
+    });
+    user.unseenNotifications = unseenNotifications;
+    await user.save();
+    
   } catch (error) {
     console.error("Error fetching user missions:", error);
     console.log(error,'error');
