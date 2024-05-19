@@ -37,11 +37,8 @@ import { NotificationsComponent } from '../notifications/notifications.component
     ];
     LogistiqueMenu = [
       { label: 'Liste de matériel', path: '/logistique', icon: 'bi bi-person ' },
-      {
-        label: 'Liste de mission',
-        path: '/logistique/mission',
-        icon: 'bi bi-person ',
-      },
+      { label: 'Liste de mission', path: '/logistique/mission', icon: 'bi bi-person '},
+      { label: 'Liste de réclamation', path: '/logistique/réclamation', icon: 'bi bi-person ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     ResponsableSiteMenu = [
@@ -53,7 +50,7 @@ import { NotificationsComponent } from '../notifications/notifications.component
     ];
     AgentMenu = [
       { label: 'Liste de matériel', path: '/agent', icon: 'bi bi-person ' },
-      { label: 'Liste de réclamation', path: '/agent/claim', icon: 'bi bi-person ' },
+      { label: 'Liste de réclamation', path: '/agent/réclamation', icon: 'bi bi-person ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     menuItems: any;

@@ -21,10 +21,10 @@
             <span class="icon-check" (click)="receiveMateriel(materiel)">
                 <i class="bi bi-check-square-fill"></i>
             </span>
-            <button class="btn btn-primary" data-bs-toggle="modal"
-            data-bs-target="#addModal"  >
+            <span class="btn btn-primary" data-bs-toggle="modal"
+               [attr.data-bs-target]="'#addModal' + selectedMateriel._id" >
               Create Reclamation
-            </button>
+          </span>
           </td>
         </tr>
       </tbody>
@@ -33,9 +33,9 @@
 
 <div 
 class="modal fade"
-id="addModal"
+[id]="'addModal' + selectedMateriel._id" 
 tabindex="-1"
-aria-labelledby="addModalModalLabel"
+aria-labelledby="addModalLabel"
 aria-hidden="true"
 data-backdrop="static"
 data-keyboard="false">
@@ -53,7 +53,7 @@ data-keyboard="false">
       ></button>
     </div>
     <div class="modal-body">
-      <textarea [(ngModel)]="description" placeholder="Enter description"></textarea>
+        <textarea [(ngModel)]="description" placeholder="Enter description"></textarea>
     </div>
     <div class="modal-footer">
       <button
@@ -61,6 +61,7 @@ data-keyboard="false">
         class="btn btn-primary"
         (click)="createReclamation(description)"
         data-bs-dismiss="modal"
+        
       >
       Submit Reclamation
       </button>

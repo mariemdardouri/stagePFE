@@ -33,7 +33,19 @@ export class ClaimService {
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
-    return this.http.get<any[]>(URL + 'get-claims-by-materiel',{headers});
+    return this.http.get<any[]>(URL + 'get-all-claims',{headers});
+  }
+
+  getClaimsByMateriel(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+    return this.http.get<any[]>( URL + `get-claims-by-materiel`, { headers });
   }
 
   modifyClaim(claimId: string, updatedData: any): Observable<any> {

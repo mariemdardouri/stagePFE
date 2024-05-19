@@ -15,6 +15,7 @@ import { MissionComponent } from './pages/mission/mission.component';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { AuthGuard } from './services/auth.guard';
 import { ClaimComponent } from './pages/claim/claim.component';
+import { LogistiqueClaimsComponent } from './pages/claim/logistique-claims/logistique-claims.component';
 
 export const routes: Routes = [
     
@@ -31,10 +32,11 @@ export const routes: Routes = [
             {path:'approvisionnement',component: ApproComponent},
             {path:'logistique',component: LogistiqueComponent},
             {path:'logistique/mission',component: MissionComponent},
+            {path:'logistique/réclamation',component: LogistiqueClaimsComponent},
             {path:'agentLogistique',component: AgentLogistiqueComponent},
             {path:'responsableSite',component: SiteComponent},
             {path:'agent',component: AgentComponent},
-            {path:'agent/claim',component: ClaimComponent},
+            {path:'agent/réclamation',component: ClaimComponent},
         ]
     },
     

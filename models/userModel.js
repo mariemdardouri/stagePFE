@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema(
     phoneNumber: { type: String },
     password: { type: String },
     role: { type: String },
-    status: { type: String, default: "pending" },
+    status: { type: String, default: "en attente" },
     seenNotifications:{ type: Array, default: [] },
     unseenNotifications:{ type: Array, default: [] },
   },

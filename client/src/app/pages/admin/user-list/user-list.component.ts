@@ -29,7 +29,7 @@ export class UserListComponent {
     'Email',
     'NumTél',
     'Role',
-    'Status',
+    'Statut',
     'Action',
   ];
   selectedUser: any = {};

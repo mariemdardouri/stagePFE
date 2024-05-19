@@ -13,14 +13,14 @@ user.use(jsonParser);
 router.get("/request", authMiddleware, async (req, res) => {
   try {
     
-    const request = await Request.find({ status: "pending" });
+    const request = await Request.find({ status: "en attente" });
     res.status(200).json(request);
 
   } catch (error) {
-    console.error("Error fetching demande requests:", error);
+    console.error("Erreur lors de la récupération des demandes de demande :", error);
     res
       .status(500)
-      .json({ message: "Error fetching demande requests", success: false });
+      .json({ message: "Erreur lors de la récupération des demandes de demande", success: false });
   }
 });
 
@@ -50,14 +50,14 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
       phoneNumber: request.phoneNumber,
       password: request.password,
       role: request.role, 
-      status: "active",
+      status: "actif",
       seenNotifications: request.seenNotifications,
       unseenNotifications: request.unseenNotifications, // Set the user's status to active
     });
 
     const notification = {
       type: "user-account-activate",
-      message: "Your account has been activated",
+      message: "Votre compte a été activé",
       onClickPath: "/notifications",
     };
     newUser.unseenNotifications.push(notification);
@@ -66,7 +66,7 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
     
     res
       .status(200)
-      .json({ message: "User created successfully", success: true });
+      .json({ message: "Utilisateur créé avec succès", success: true });
   } catch (error) {
     console.error("Error accepting user:", error);
     res.status(500).json({ message: "Error accepting user", success: false });

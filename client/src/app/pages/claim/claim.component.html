@@ -1,18 +1,20 @@
 <div class="container">
-  <h2 class="title">Reclamations</h2>
+  <h2 class="title">Réclamations</h2>
   <table class="table table-bordered">
     <thead>
       <tr>
-        <th>Category</th>
-        <th>Inventory Number</th>
+        <th>Catégorie</th>
+        <th>Numéro d'inventaire</th>
+        <th>Numéro de série</th>
         <th>Description</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let claim of claims">
-        <td>{{ claim.categorie }}</td>
-        <td>{{ claim.numInv }}</td>
+        <td>{{ claim.materiel.categorie }}</td>
+        <td>{{ claim.materiel.numInv }}</td>
+        <td>{{ claim.materiel.numSerie }}</td>
         <td>{{ claim.description }}</td>
         <td>
           <button class="btn btn-primary" (click)="modifyClaim(claim)">

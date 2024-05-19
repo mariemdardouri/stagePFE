@@ -13,7 +13,14 @@ user.use(bodyParser.urlencoded({ extended: true }));
 
 router.post("/add-reclamation", authMiddleware, jsonParser, async (req, res) => {
   try {
-    const newReclamation = new Claim({...req.body});
+    const { materielId, description } = req.body;
+    const materiel = await Materiel.findOne(materielId);
+    if (!materiel) {
+      return res.status(404).json({ message: "Materiel not found", success: false });
+    }
+    console.log(materiel,'materiel');
+    const newReclamation = new Claim({ materiel: materiel._id, description });
+    console.log(newReclamation,'newReclamation');
     await newReclamation.save();
     res.status(201).json({ message: "Reclamation created successfully", success: true });
   } catch (error) {
@@ -24,6 +31,8 @@ router.post("/add-reclamation", authMiddleware, jsonParser, async (req, res) => 
   }
 });
 
+
+
 router.get("/get-all-claims", authMiddleware, async (req, res) => {
   try {
     const claims = await Claim.find({});
@@ -33,11 +42,16 @@ router.get("/get-all-claims", authMiddleware, async (req, res) => {
     res.status(500).json({ message: "Error fetching claims", success: false });
   }
 });
-router.get("/get-claims-by-materiel", authMiddleware, async (req, res) => {
+
+router.get("/get-claims-by-materiel",authMiddleware,jsonParser,async (req, res) => {
   try {
-    const user = await User.findOne({ _id: req.body.id });
-    const affectedMateriels = await Materiel.find({ agent: user._id });
-    const claims = await Claim.find({affectedMateriels});
+    const materiel = await Materiel.findOne({ id: req.params.id });
+    console.log(materiel,'materiel');
+    if (!materiel) {
+      return res.status(404).json({ message: "Materiel not found", success: false });
+    }
+
+    const claims = await Claim.find({ materiel: materiel._id}).populate('materiel');
     res.status(200).json(claims);
   } catch (error) {
     console.error("Error fetching claims:", error);

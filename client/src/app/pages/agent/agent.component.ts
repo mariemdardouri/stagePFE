@@ -18,6 +18,7 @@ export class AgentComponent {
   showClaimModal: boolean = false;
   selectedMateriel: any = {};
   description: any;
+ 
 
   constructor(private materielService: MaterielService, private toast: ToastrService,private claimService: ClaimService,) {}
 
@@ -30,6 +31,7 @@ export class AgentComponent {
     this.materielService.getMaterielsAffectedToAgent().subscribe(
       (data: any[]) => {
         this.affectedMateriels = data;
+        console.log(data,'data');
       },
       (error) => {
         console.error('Error fetching affected materiels:', error);
@@ -42,6 +44,7 @@ export class AgentComponent {
     this.materielService.receiveMateriel(materiel).subscribe(
       () => {
         this.toast.success('Materiel received successfully.');
+        this.selectedMateriel = materiel;
         // Send notification to logistique user
       },
       (error) => {
@@ -53,20 +56,12 @@ export class AgentComponent {
 
   
   createReclamation(description: any): void {
+    console.log(this.selectedMateriel,'selectedMateriel');
     if (this.selectedMateriel) {
-      const reclamationData =  {
-        materiel: {
-          _id: this.selectedMateriel._id,
-          categorie: this.selectedMateriel.categorie,
-          numInv: this.selectedMateriel.numInv
-        },
-        agent: {
-          _id: 'agent_id',
-          name: 'Agent Name'
-        },
+      const reclamationData = {
+        materielId: this.selectedMateriel._id, // Include materiel ID
         description: description
       };
-  
       this.claimService.createReclamation(reclamationData).subscribe(
         () => {
           this.toast.success('Reclamation created successfully');
