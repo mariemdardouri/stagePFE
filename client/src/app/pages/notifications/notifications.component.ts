@@ -39,18 +39,18 @@ export class NotificationsComponent implements OnInit {
           this.unseenNotifications = response.unseenNotifications;
           this.updateUnseenNotificationsCount();
         } else {
-          console.error('Invalid response format or unseenNotifications is not an array');
+          console.error('Format de réponse invalide ou unseenNotifications n\'est pas un tableau');
         }
 
         if (response && response.seenNotifications && Array.isArray(response.seenNotifications)) {
           this.seenNotifications = response.seenNotifications;
         } else {
-          console.error('Invalid response format or seenNotifications is not an array');
+          console.error('Format de réponse invalide ou sawNotifications n\'est pas un tableau');
         }
       },
       (error) => {
-        console.error('Error fetching user notifications:', error);
-        this.toast.error('Error fetch ing user notifications');
+        console.error('Erreur lors de la récupération des notifications utilisateur:', error);
+        this.toast.error('Erreur lors de la récupération des notifications utilisateur');
       }
     );
   }
@@ -65,13 +65,13 @@ export class NotificationsComponent implements OnInit {
         // Update the seenNotifications array or handle success
         this.seenNotifications = this.unseenNotifications;
         this.unseenNotifications = [];
-        this.toast.success('all notification mark as seen');
+        this.toast.success(response.message);
 
         this.notificationService.setUnseenNotificationsCount(0);
       },
       (error) => {
-        console.error('Error marking all notifications as seen:', error);
-        this.toast.error('Error marking all notifications as seen');
+        console.error('Erreur marquant toutes les notifications comme vues:', error);
+        this.toast.error('Erreur marquant toutes les notifications comme vues');
       }
     );
   }
@@ -82,11 +82,11 @@ export class NotificationsComponent implements OnInit {
       (response: any) => {
         this.seenNotifications = [];
         // Clear the seenNotifications array or handle success
-        this.toast.success('all notification has deleted');
+        this.toast.success(response.message);
       },
       (error) => {
-        console.error('Error deleting all notifications:', error);
-        this.toast.error('Error deleting all notifications');
+        console.error('Erreur lors de la suppression de toutes les notifications:', error);
+        this.toast.error('Erreur lors de la suppression de toutes les notifications');
       }
     );
   }

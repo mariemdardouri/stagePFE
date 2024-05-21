@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterielService } from '../../services/materiel.service';
 import { ClaimService } from '../../services/claim.service';
+import { response } from 'express';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-agent',
@@ -16,11 +18,17 @@ import { ClaimService } from '../../services/claim.service';
 export class AgentComponent {
   affectedMateriels: any[] = [];
   showClaimModal: boolean = false;
-  selectedMateriel: any = {};
+  selectedMateriel: any = null;
   description: any;
+
  
 
-  constructor(private materielService: MaterielService, private toast: ToastrService,private claimService: ClaimService,) {}
+  constructor(
+    private materielService: MaterielService, 
+    private toast: ToastrService,
+    private claimService: ClaimService,
+    private authService: AuthService,
+  ) {}
 
   ngOnInit(): void {
     this.getMaterielsAffectedToAgent();
@@ -41,38 +49,51 @@ export class AgentComponent {
   }
 
   receiveMateriel(materiel: any): void {
-    this.materielService.receiveMateriel(materiel).subscribe(
-      () => {
-        this.toast.success('Materiel received successfully.');
-        this.selectedMateriel = materiel;
-        // Send notification to logistique user
+    this.materielService.receiveMateriel(materiel).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success(resp.message);
+        } else {
+          this.toast.error(resp.message);
+        }
       },
-      (error) => {
+      error:(error) => {
         console.error('Error receiving materiel:', error);
         this.toast.error('Error receiving materiel.');
       }
-    );
+  });
   }
 
-  
-  createReclamation(description: any): void {
-    console.log(this.selectedMateriel,'selectedMateriel');
-    if (this.selectedMateriel) {
+  selectMateriel(materiel: any): void {
+    this.selectedMateriel = materiel;
+    console.log(this.selectedMateriel,'selected');
+    this.description = ''; // Reset the description when selecting a new materiel
+  }
+  createReclamation(description:any): void {
+    if (this.selectedMateriel && this.selectedMateriel._id) {
+      const userId = this.authService.getUserId();
+      const materielId = this.selectedMateriel._id;
       const reclamationData = {
-        materielId: this.selectedMateriel._id, // Include materiel ID
-        description: description
+        userId: userId,
+        description: description, // Corrected parameter name
+        materielId: materielId,
       };
-      this.claimService.createReclamation(reclamationData).subscribe(
-        () => {
-          this.toast.success('Reclamation created successfully');
+  
+      this.claimService.createReclamation(reclamationData).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+          } else {
+            this.toast.error(resp.message);
+          }
         },
-        (error) => {
-          console.error('Error creating reclamation:', error);
-          this.toast.error('Error creating reclamation');
+        error: (error) => {
+          console.error('Erreur lors de la création de la réclamation :', error);
+          this.toast.error('Erreur lors de la création de la réclamation');
         }
-      );
+      });
     } else {
-      console.error('selectedMateriel is null');
+      console.error('Le matériel sélectionné est nul');
     }
   }
 }

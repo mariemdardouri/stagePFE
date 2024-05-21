@@ -40,24 +40,26 @@ export class AgentLogistiqueComponent {
         console.log(missions, 'userMissions');
       },
       (error) => {
-        console.error('Error fetching user missions:', error);
-        this.toast.error('Error fetching user missions');
+        console.error('Erreur lors de la récupération des missions :', error);
+        this.toast.error('Erreur lors de la récupération des missions');
       }
     );
   }
 
   validateMission(mission: any): void {
-    mission.status = 'valider'; // Update the status to "Valider"
-    this.missionService.updateMission(mission).subscribe(
-      (updatedMission: any) => {
-        this.toast.success('Mission valider avec succee');
-        console.log('Mission validated successfully:', updatedMission);
-        // Add any notification logic here
+    mission.status = 'validate'; // Update the status to "Valider"
+    this.missionService.updateMission(mission).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success('Mission validée avec succès');
+        } else {
+          this.toast.error(resp.message);
+        }
       },
-      (error) => {
-        console.error('Error updating mission:', error);
-        this.toast.error('Error updating mission');
+      error:(error) => {
+        console.error('Erreur lors de la mise à jour de la mission:', error);
+        this.toast.error('Erreur lors de la mise à jour de la mission');
       }
-    );
+  });
   }
 }

@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { AuthService } from './auth.service';
 
 const URL ="http://localhost:3000/api/claim/";
 
@@ -9,17 +10,18 @@ const URL ="http://localhost:3000/api/claim/";
 })
 export class ClaimService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private authService: AuthService) { }
 
   createReclamation(reclamationData: any): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
+
     return this.http.post<any>(URL + 'add-reclamation', reclamationData , {headers});
   }
 
@@ -27,7 +29,7 @@ export class ClaimService {
   getAllClaims(): Observable<any[]> {
     const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     const headers = new HttpHeaders({
@@ -36,39 +38,18 @@ export class ClaimService {
     return this.http.get<any[]>(URL + 'get-all-claims',{headers});
   }
 
-  getClaimsByMateriel(): Observable<any[]> {
+  getClaimsByMateriel(userId:any): Observable<any[]> {
     const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`
     });
-    return this.http.get<any[]>( URL + `get-claims-by-materiel`, { headers });
+
+    return this.http.get<any[]>( URL + 'get-claims-by-materiel/'+ userId, { headers });
   }
 
-  modifyClaim(claimId: string, updatedData: any): Observable<any> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Token not found');
-    }
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-    return this.http.put<any>(URL + `claims/${claimId}`, updatedData,{headers});
-  }
-
-  acceptClaim(claimId: string): Observable<any> {
-    const token = localStorage.getItem('token');
-    if (!token) {
-      throw new Error('Token not found');
-    }
-
-    const headers = new HttpHeaders({
-      Authorization: `Bearer ${token}`
-    });
-    return this.http.put<any>(URL + `claims/${claimId}/accept`, {headers});
-  }
 }
+

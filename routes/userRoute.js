@@ -33,8 +33,8 @@ router.get("/get-all-users", authMiddleware, jsonParser, async (req, res) => {
     const data = await User.find({});
     res.status(200).json({ data });
   } catch (error) {
-    console.error("Error fetching users: ", error);
-    res.status(500).json({ message: "Error fetching users", success: false });
+    console.error("Erreur lors de la récupération des utilisateurs: ", error);
+    res.status(500).json({ message: "Erreur lors de la récupération des utilisateurs", success: false });
   }
 });
 
@@ -49,7 +49,7 @@ router.put("/update-user/:id", authMiddleware, jsonParser, async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.error("Error updating user: ", error);
+    console.error("Erreur lors de la mise à jour de l'utilisateur: ", error);
     res.status(500).json({
       message: "Erreur lors de la mise à jour de l'utilisateur",
       success: false,
@@ -94,19 +94,19 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
             await user.save();
           }
 
-          res.status(200).json({ requests ,message: "CSV data imported successfully" });
+          res.status(200).json({ requests ,message: "Données CSV importées avec succès" });
         } else {
-          console.error("No valid data to import");
-          res.status(400).json({ message: "No valid data to import" });
+          console.error("Aucune donnée valide à importer");
+          res.status(400).json({ message: "Aucune donnée valide à importer",success:false });
         }
       } catch (error) {
-        console.error("Error importing CSV data:", error);
-        res.status(500).json({ message: "Error importing CSV data" });
+        console.error("Erreur lors de l'importation des données CSV:", error);
+        res.status(500).json({ message: "Erreur lors de l'importation des données CSV" });
       } finally {
         // Clean up the uploaded file
         fs.unlink(req.file.path, (err) => {
           if (err) {
-            console.error("Error deleting uploaded file:", err);
+            console.error("Erreur lors de la suppression du fichier téléchargé:", err);
           }
         });
       }
@@ -117,7 +117,7 @@ router.put( "/user-activate/:id", authMiddleware, jsonParser, async (req, res) =
     try {
       const user = await User.findByIdAndUpdate(
         req.params.id,
-        { status: "active" },
+        { status: "activate" },
         { new: true }
       );
       if (!user) {
@@ -128,7 +128,7 @@ router.put( "/user-activate/:id", authMiddleware, jsonParser, async (req, res) =
       const unseenNotifications = user.unseenNotifications;
       unseenNotifications.push({
         type: "user-account-activate",
-        message: `Your account has been activated`,
+        message: 'Votre compte a été activé',
         onClickPath: "/notifications",
       });
       res.status(200).json({
@@ -137,7 +137,7 @@ router.put( "/user-activate/:id", authMiddleware, jsonParser, async (req, res) =
           success: true,
         });
     } catch (error) {
-      console.error("Error activating user:", error);
+      console.error("Erreur lors de l'activation de l'utilisateur:", error);
       res
         .status(500)
         .json({
@@ -156,21 +156,17 @@ router.put("/desactivate-user/:id",authMiddleware,jsonParser,async (req, res) =>
         { status: "desactivate" },
         { new: true }
       );
-      console.log(user, "uuuuu");
+      
       if (!user) {
-        return res
-          .status(404)
-          .json({ message: "User not found", success: false });
+        return res.status(404).json({ message: "Utilisateur non trouvé", success: false });
       }
 
-      res
-        .status(200)
-        .json({ message: "User deactivated successfully", success: true });
+      res.status(200).json({ message: "Utilisateur désactivé avec succès", success: true });
     } catch (error) {
-      console.error("Error deactivating user:", error);
+      console.error("Erreur lors de la désactivation de l'utilisateur:", error);
       res
         .status(500)
-        .json({ message: "Error deactivating user", success: false });
+        .json({ message: "Erreur lors de la désactivation de l'utilisateur", success: false });
     }
   }
 );
@@ -182,7 +178,7 @@ router.get("/get-users-by-role", authMiddleware, jsonParser, async (req, res) =>
     res.status(200).json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error fetching users", success: false });
+    res.status(500).json({ message: "Erreur lors de la récupération des utilisateurs", success: false });
   }
 });
 
@@ -194,7 +190,7 @@ router.get("/user-notifications", authMiddleware,jsonParser, async (req, res) =>
     if (!user) {
       return res
         .status(404)
-        .json({ message: "User not found", success: false });
+        .json({ message: "Utilisateur non trouvé", success: false });
     }
 
     const unseenNotifications = user.unseenNotifications;
@@ -202,22 +198,22 @@ router.get("/user-notifications", authMiddleware,jsonParser, async (req, res) =>
 
     res.status(200).json({ unseenNotifications, seenNotifications });
   } catch (error) {
-    console.error("Error fetching user notifications: ", error);
+    console.error("Erreur lors de la récupération des notifications: ", error);
     res
       .status(500)
-      .json({ message: "Error fetching user notifications", success: false });
+      .json({ message: "Erreur lors de la récupération des notifications", success: false });
   }
 });
 
 router.get("/user-notifications-count", authMiddleware,jsonParser, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.body.id });
-    console.log(user, 'uuuuu');
+    
 
     if (!user) {
       return res.status(404).json({
         success: false,
-        message: "User not found",
+        message: "Utilisateur non trouvé",
       });
     }
 
@@ -227,7 +223,7 @@ router.get("/user-notifications-count", authMiddleware,jsonParser, async (req, r
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Error fetching notifications count",
+      message: "Erreur lors de la récupération du nombre de notifications",
       success: false,
       error,
     });
@@ -237,12 +233,11 @@ router.get("/user-notifications-count", authMiddleware,jsonParser, async (req, r
 router.post("/mark-all-notifications-as-seen",authMiddleware,jsonParser,async (req, res) => {
     try {
       const user = await User.findOne({ _id: req.body.id });
-      console.log(user, 'uuuuu');
-
+     
       if (!user) {
         return res.status(404).json({
           success: false,
-          message: "User not found",
+          message: "Utilisateur non trouvé",
         });
       }
 
@@ -258,13 +253,13 @@ router.post("/mark-all-notifications-as-seen",authMiddleware,jsonParser,async (r
 
       res.status(200).json({
         success: true,
-        message: "All notifications marked as seen",
+        message: "Toutes les notifications marquées comme vues",
         data: updatedUser,
       });
     } catch (error) {
       console.log(error);
       res.status(500).json({
-        message: "Error marking notifications as seen",
+        message: "Erreur marquant les notifications comme vues",
         success: false,
         error,
       });
@@ -281,13 +276,13 @@ router.post("/delete-all-notifications", authMiddleware,jsonParser, async (req, 
     updatedUser.password = undefined;
     res.status(200).json({
       success: true,
-      message: "All notifications cleared",
+      message: "Toutes les notifications effacées",
       data: updatedUser,
     });
   } catch (error) {
     console.log(error);
     res.status(500).json({
-      message: "Error cleaning notifications",
+      message: "Erreur lors de la suppression des notifications",
       success: false,
       error,
     });

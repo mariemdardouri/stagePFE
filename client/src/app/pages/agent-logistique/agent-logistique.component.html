@@ -1,4 +1,5 @@
 <div class="container-fluid">
+  <h1>Table des missions</h1>
     <div>
       <table class="table table-bordered">
         <thead>
@@ -8,7 +9,7 @@
             <th for="hour">Heure du mission</th>
             <th for="dateStart">Date du debut</th>
             <th for="dateEnd">Date du fin</th>
-            <th for="action">Action</th>
+            <th for="action">Actions</th>
         </thead>
         <tbody>
           <tr *ngFor="let mission of userMissions">
@@ -19,7 +20,7 @@
             <td>{{ mission.dateEnd }}</td>
             <td>
               <div>
-                <span class="icon-check" *ngIf="mission.status !== 'valider'" (click)="validateMission(mission)"><i class="bi bi-check-square-fill"></i> </span>
+                <span class="icon-check" *ngIf="mission.status !== 'validate'" (click)="validateMission(mission)"><i class="bi bi-check-square-fill"></i> </span>
                 <span class="icon-delete"> <i class="bi bi-trash-fill"></i></span>
               </div>
             </td>

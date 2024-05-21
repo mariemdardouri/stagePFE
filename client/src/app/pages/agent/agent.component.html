@@ -22,8 +22,8 @@
                 <i class="bi bi-check-square-fill"></i>
             </span>
             <span class="btn btn-primary" data-bs-toggle="modal"
-               [attr.data-bs-target]="'#addModal' + selectedMateriel._id" >
-              Create Reclamation
+               (click)="selectMateriel(materiel)" data-bs-target="#addModal" >
+               Créé Réclamation
           </span>
           </td>
         </tr>
@@ -33,7 +33,7 @@
 
 <div 
 class="modal fade"
-[id]="'addModal' + selectedMateriel._id" 
+id="addModal" 
 tabindex="-1"
 aria-labelledby="addModalLabel"
 aria-hidden="true"
@@ -43,7 +43,7 @@ data-keyboard="false">
   <div class="modal-content">
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="addModalLabel">
-        Cree Reclamation
+        Créé Réclamation
       </h1>
       <button
         type="button"
@@ -63,7 +63,7 @@ data-keyboard="false">
         data-bs-dismiss="modal"
         
       >
-      Submit Reclamation
+      Créé réclamation
       </button>
     </div>
   </div>

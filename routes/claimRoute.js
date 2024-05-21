@@ -13,49 +13,57 @@ user.use(bodyParser.urlencoded({ extended: true }));
 
 router.post("/add-reclamation", authMiddleware, jsonParser, async (req, res) => {
   try {
-    const { materielId, description } = req.body;
-    const materiel = await Materiel.findOne(materielId);
+    const { userId,materielId,description } = req.body;  
+    const materiel = await Materiel.findById(materielId);
+    console.log(materielId,'id');
     if (!materiel) {
-      return res.status(404).json({ message: "Materiel not found", success: false });
+      return res.status(404).json({ message: "Matériel introuvable", success: false });
     }
     console.log(materiel,'materiel');
-    const newReclamation = new Claim({ materiel: materiel._id, description });
+    const user = await User.findById(userId); 
+    console.log(user,'userrrrrrrrrrr');
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur introuvable", success: false });
+    }
+    
+    const newReclamation = new Claim({ materiel: materiel._id, user: user._id, description });
     console.log(newReclamation,'newReclamation');
     await newReclamation.save();
-    res.status(201).json({ message: "Reclamation created successfully", success: true });
+    res.status(201).json({ message: "Réclamation créée avec succès", success: true });
   } catch (error) {
-    console.error("Error creating reclamation:", error);
+    console.error("Erreur lors de la création de la réclamation:", error);
     res
       .status(500)
-      .json({ message: "Error creating reclamation", success: false });
+      .json({ message: "Erreur lors de la création de la réclamation", success: false });
   }
 });
 
 
 
-router.get("/get-all-claims", authMiddleware, async (req, res) => {
+router.get("/get-all-claims",authMiddleware,jsonParser, async (req, res) => {
   try {
-    const claims = await Claim.find({});
+    const claims = await Claim.find({}).populate('materiel');
     res.status(200).json(claims);
   } catch (error) {
-    console.error("Error fetching claims:", error);
-    res.status(500).json({ message: "Error fetching claims", success: false });
+    console.error("Erreur lors de la récupération des réclamations:", error);
+    res.status(500).json({ message: "Erreur lors de la récupération des réclamations", success: false });
   }
 });
 
-router.get("/get-claims-by-materiel",authMiddleware,jsonParser,async (req, res) => {
+router.get("/get-claims-by-materiel/:id",authMiddleware,jsonParser,async (req, res) => {
   try {
-    const materiel = await Materiel.findOne({ id: req.params.id });
-    console.log(materiel,'materiel');
-    if (!materiel) {
-      return res.status(404).json({ message: "Materiel not found", success: false });
+   
+    const user = req.params.id;
+    console.log(user,'userId');
+    if (!user) {
+      return res.status(400).json({ message: "ID de l'utilisateur manquant", success: false });
     }
 
-    const claims = await Claim.find({ materiel: materiel._id}).populate('materiel');
+    const claims = await Claim.find({ user: user._id }).populate('materiel').populate('userId');
     res.status(200).json(claims);
   } catch (error) {
-    console.error("Error fetching claims:", error);
-    res.status(500).json({ message: "Error fetching claims", success: false });
+    console.error("Erreur lors de la récupération des réclamations:", error);
+    res.status(500).json({ message: "Erreur lors de la récupération des réclamations", success: false });
   }
 });
 
@@ -65,10 +73,10 @@ router.put("/claims/:id", authMiddleware, jsonParser, async (req, res) => {
     const { id } = req.params;
     const updatedData = req.body;
     const updatedClaim = await Claim.findByIdAndUpdate(id, updatedData, { new: true });
-    res.status(200).json({ updatedClaim, message: "Claim updated successfully", success: true });
+    res.status(200).json({ updatedClaim, message: "Réclamation mise à jour avec succès", success: true });
   } catch (error) {
-    console.error("Error updating claim:", error);
-    res.status(500).json({ message: "Error updating claim", success: false });
+    console.error("Erreur lors de la mise à jour de la réclamation:", error);
+    res.status(500).json({ message: "Erreur lors de la mise à jour de la réclamation", success: false });
   }
 });
 
@@ -76,10 +84,10 @@ router.put("/claims/:id/accept", authMiddleware, async (req, res) => {
   try {
     const { id } = req.params;
     // Implement logic to mark the claim as accepted
-    res.status(200).json({ message: "Claim accepted successfully", success: true });
+    res.status(200).json({ message: "Réclamation acceptée avec succès", success: true });
   } catch (error) {
-    console.error("Error accepting claim:", error);
-    res.status(500).json({ message: "Error accepting claim", success: false });
+    console.error("Erreur lors de l'acceptation de la réclamation:", error);
+    res.status(500).json({ message: "Erreur lors de l'acceptation de la réclamation", success: false });
   }
 });
 

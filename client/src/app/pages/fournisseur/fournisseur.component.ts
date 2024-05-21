@@ -74,7 +74,7 @@ export class FournisseurComponent {
         console.log(data, 'materielList');
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
       }
     );
   }
@@ -96,7 +96,7 @@ export class FournisseurComponent {
           }
         },
         error: (err) => {
-          console.error('Error updating materiel:', err);
+          console.error('Erreur lors de la mise à jour du materiel:', err);
           if (err.status === 500) {
             this.toast.error('Erreur lors de la mise à jour du materiel');
           }
@@ -116,7 +116,7 @@ export class FournisseurComponent {
         }
       },
       error: (err) => {
-        console.error('Error updating materiel:', err);
+        console.error('Erreur lors de la suppression du materiel:', err);
         if (err.status === 500) {
           this.toast.error('Erreur lors de la suppression du materiel');
         }

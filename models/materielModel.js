@@ -8,6 +8,7 @@ const materielSchema = new mongoose.Schema(
     numInv: { type: String, default: ''},
     status: { type: String, default: 'pending' },
     agent: { type: String,default:'' },
+    fournisseur: { type: String},
   },
   { timestamps: true }
 );

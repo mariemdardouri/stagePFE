@@ -60,10 +60,6 @@ export class RegisterComponent {
         ]),
         role: new FormControl('', [Validators.required]),
         password: new FormControl('', [Validators.required]),
-        isAdmin: new FormControl('', [
-          Validators.required,
-          Validators.minLength(8),
-        ]),
         confirmPassword: new FormControl('', [
           Validators.required,
           Validators.minLength(8),

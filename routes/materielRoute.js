@@ -8,9 +8,10 @@ const jsonParser = bodyParser.json();
 
 router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
   try {
-    console.log(req.body, "req");
+    
     const newMateriel = new Materiel({
       ...req.body,
+      fournisseur : userId.firstName + " " + userId.lastName,
       numInv:''
     });
     await newMateriel.save();
@@ -18,19 +19,15 @@ router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
     const unseenNotifications = user.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-list-matetiel",
-      message: `You have new list materiel`,
+      message: 'Vous avez reçu une nouvelle liste de matériel',
       onClickPath: "/deploiement",
     });
     user.unseenNotifications = unseenNotifications;
     await user.save();
-    res
-      .status(201)
-      .json({ message: "Matériel ajouté avec succès", success: true });
+    res.status(201).json({ message: "Matériel ajouté avec succès", success: true });
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: "Erreur lors de l'ajout du matériel", success: false });
+    res.status(500).json({ message: "Erreur lors de l'ajout du matériel", success: false });
   }
 });
 
@@ -41,9 +38,7 @@ router.get("/get-materiel", authMiddleware, jsonParser, async (req, res) => {
 
   } catch (error) {
     console.error(error);
-    res
-      .status(500)
-      .json({ message: "Error fetching materiels", success: false });
+    res.status(500).json({ message: "Erreur lors de la récupération des matériels", success: false });
   }
 });
 
@@ -61,7 +56,7 @@ router.put("/update-materiel/:id",authMiddleware,jsonParser,async (req, res) => 
         const unseenNotifications = user.unseenNotifications || [];
         unseenNotifications.push({
           type: "numInv-added",
-          message: `The responsable approvisionnement added numInv to the materiel`,
+          message: "Le responsable de l'approvisionnement a ajouté numéro d'inventaire au matériel",
           onClickPath: "/logistique",
         });
         user.unseenNotifications = unseenNotifications;
@@ -69,14 +64,14 @@ router.put("/update-materiel/:id",authMiddleware,jsonParser,async (req, res) => 
       }
       res.status(200).json({
         updatedMateriel,
-        message: "Le materiel a été mis à jour avec succès",
+        message: "Le matériel a été mis à jour avec succès",
         success: true,
       });
     } catch (error) {
-      console.error("Error updating materiel: ", error);
+      console.error("Erreur lors de la mise à jour du matériel: ", error);
       res
         .status(500)
-        .json({ message: "Erreur de mise à jour du matériel", success: false });
+        .json({ message: "Erreur lors de la mise à jour du matériel", success: false });
     }
   }
 );
@@ -93,7 +88,7 @@ router.put('/accept-materiels', authMiddleware, jsonParser, async (req, res) => 
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "accepted-list-materiel",
-        message: `The list of materiels has been accepted`,
+        message: 'La liste des matériels a été acceptée',
         onClickPath: "/approvisionnement",
       });
       user.unseenNotifications = unseenNotifications;
@@ -105,9 +100,9 @@ router.put('/accept-materiels', authMiddleware, jsonParser, async (req, res) => 
       success: true
     });
   } catch (error) {
-    console.error("Error updating materiels: ", error);
+    console.error("Erreur lors de la mise à jour du matériel: ", error);
     res.status(500).json({
-      message: "Erreur de mise à jour des matériels",
+      message: "Erreur lors de la mise à jour du matériel",
       success: false
     });
   }
@@ -126,7 +121,7 @@ router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => 
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "rejected-list-materiel",
-        message: `The list of materiels has been rejected`,
+        message: 'La liste des matériels a été rejetée',
         onClickPath: "/approvisionnement",
       });
       user.unseenNotifications = unseenNotifications;
@@ -139,9 +134,9 @@ router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => 
       success: true
     });
   } catch (error) {
-    console.error("Error rejecting materiels: ", error);
+    console.error("Erreur lors du rejet des matériels: ", error);
     res.status(500).json({
-      message: "Erreur lors de la réjection des matériels",
+      message: "Erreur lors du rejet des matériels",
       success: false
     });
   }
@@ -156,7 +151,7 @@ router.delete( "/delete-materiel/:id", authMiddleware, jsonParser,async (req, re
         success: true,
       });
     } catch (error) {
-      console.error("Error deleting materiel: ", error);
+      console.error("Erreur lors de la suppression du matériel: ", error);
       res.status(500).json({
         message: "Erreur lors de la suppression du matériel",
         success: false,
@@ -197,7 +192,7 @@ router.put('/affecter-materiels', authMiddleware, jsonParser, async (req, res) =
     });
   } catch (error) {
     console.log(error,'error');
-    console.error("Error affecting materiels: ", error);
+    console.error("Erreur lors de l'affectation des matériels: ", error);
     res.status(500).json({
       message: "Erreur lors de l'affectation des matériels",
       success: false
@@ -213,9 +208,9 @@ router.get("/get-materiels-affected-to-agent",authMiddleware, jsonParser, async 
 
     res.status(200).json(affectedMateriels);
   } catch (error) {
-    console.error("Error fetching affected materiels: ", error);
+    console.error("Erreur lors de la récupération des matériaux concernés: ", error);
     res.status(500).json({
-      message: "Error fetching affected materiels",
+      message: "Erreur lors de la récupération des matériaux concernés",
       success: false
     });
   }
@@ -228,12 +223,12 @@ router.put('/receive-materiel', authMiddleware, jsonParser, async (req, res) => 
     const updatedMateriel = await Materiel.findByIdAndUpdate(materiel._id, { status: 'received' }, { new: true });
 
     const user = await User.findOne({ role:'logistique' });
-    console.log(user,'ooooo');
+    console.log(user,'oooo');
     if (user) {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "received-list-materiel",
-        message: `The materiel has been received to ${materiel._id} `,
+        message: `Le matériel a été reçu à ${materiel.categorie} `,
         onClickPath: "/logitique",
       });
       user.unseenNotifications = unseenNotifications;
@@ -242,13 +237,13 @@ router.put('/receive-materiel', authMiddleware, jsonParser, async (req, res) => 
 
     res.status(200).json({
       updatedMateriel,
-      message: "Materiel received successfully.",
+      message: "Matériel reçu avec succès",
       success: true
     });
   } catch (error) {
-    console.error("Error receiving materiel: ", error);
+    console.error("Erreur de réception du matériel: ", error);
     res.status(500).json({
-      message: "Error receiving materiel.",
+      message: "Erreur de réception du matériel",
       success: false
     });
   }

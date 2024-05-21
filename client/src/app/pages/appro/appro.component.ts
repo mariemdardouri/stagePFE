@@ -47,7 +47,7 @@ export class ApproComponent {
         });
       },
       (error) => {
-        console.error('Error fetching materiels:', error);
+        console.error('Erreur lors de la récupération des matériels:', error);
       }
     );
   }
@@ -64,14 +64,14 @@ export class ApproComponent {
     this.materielService.updateMateriel(materiel).subscribe({
       next: (resp: any) => {
         if (resp.success) {
-          this.toast.success("Numéro d'inventaire mis à jour avec succès.");
+          this.toast.success(resp.message);
           this.getAllMateriels();
         } else {
           this.toast.error(resp.message);
         }
       },
       error: (err) => {
-        console.error('Error updating materiel:', err);
+        console.error('Erreur lors de la mise à jour du matériel:', err);
         if (err.status === 500) {
           this.toast.error(
             `Erreur lors de l'enregistrement du numéro d'inventaire`
@@ -92,7 +92,7 @@ export class ApproComponent {
         this.toast.error(
           "Erreur lors de la suppression du numéro d'inventaire."
         );
-        console.error('Error deleting materiel:', error);
+        console.error('Erreur lors de la suppression du numéro d\'inventaire:', error);
       }
     );
   }

@@ -1,8 +1,9 @@
 <div class="container-fluid">
+  <h1>Table des utilisateurs</h1>
   <div>
     <button
       class="btn btn-primary float-end m-2"
-      [routerLink]="['/admin/register']"
+      [routerLink]="['/admin/registre']"
     >
       <i class="bi bi-person-add icon-add"></i>
     </button>
@@ -24,9 +25,9 @@
           <td>{{ user.role }}</td>
           <td>
             <div>
-              <span *ngIf="user.status === 'pending'">Pending</span>
-              <span *ngIf="user.status === 'active'">Active</span>
-              <span *ngIf="user.status === 'desactivate'">Desactive</span>
+              <span *ngIf="user.status === 'pending'">En Attente</span>
+              <span *ngIf="user.status === 'activate'">Activer</span>
+              <span *ngIf="user.status === 'desactivate'">Désactiver</span>
             </div>
           </td>
           <td>

@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { ClaimService } from '../../services/claim.service';
 import { ToastrService } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RouterModule, RouterOutlet } from '@angular/router';
+import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterielService } from '../../services/materiel.service';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-claim',
@@ -15,32 +16,27 @@ import { MaterielService } from '../../services/materiel.service';
 })
 export class ClaimComponent {
   claims: any[] = [];
+  userId: any;
+  
 
-  constructor(private claimService: ClaimService,private toast: ToastrService, private materielService: MaterielService,) { }
+  constructor(private claimService: ClaimService,  private route: ActivatedRoute,private toast: ToastrService, private materielService: MaterielService,) { }
 
   ngOnInit(): void {
+    this.userId = this.route.snapshot.params['userId'];
     this.getClaimsByMateriel();
   }
 
   getClaimsByMateriel(): void {
-    this.claimService.getClaimsByMateriel().subscribe(
-      (data: any[]) => {
+    this.claimService.getClaimsByMateriel(this.userId).subscribe(
+      (data) => {
         this.claims = data;
         console.log(data,'claims');
       },
       (error) => {
-        console.error('Error fetching claims by materiel:', error);
-        this.toast.error("Error fetching claims by materiel.");
+        console.error('Erreur lors de la récupération des réclamations par matériel:', error);
+        this.toast.error("Erreur lors de la récupération des réclamations par matériel");
       }
     );
-  }
-
-  modifyClaim(claim: any): void {
-    // Implement logic to modify the claim
-  }
-
-  acceptClaim(claim: any): void {
-    // Implement logic to accept the claim
   }
 
 }

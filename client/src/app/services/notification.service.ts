@@ -12,9 +12,8 @@ export class NotificationService {
 
   getUserNotifications(): Observable<any> {
     const token = localStorage.getItem('token');
-    console.log(token, 'ttttttttttttttt');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     const headers = new HttpHeaders({
@@ -27,7 +26,7 @@ export class NotificationService {
   getUserNotificationsCount(): Observable<number> {
     const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     const headers = new HttpHeaders({
@@ -50,9 +49,8 @@ export class NotificationService {
   
   markAllAsSeen(user:any): Observable<any> {
     const token = localStorage.getItem('token');
-    console.log(token, 'ttttttttttttttt');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     const headers = new HttpHeaders({
@@ -63,9 +61,8 @@ export class NotificationService {
   }
   deleteAllNotifications(user:any): Observable<any> {
     const token = localStorage.getItem('token');
-    console.log(token, 'ttttttttttttttt');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     const headers = new HttpHeaders({

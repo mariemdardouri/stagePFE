@@ -25,8 +25,8 @@ export const routes: Routes = [
         children:[
             {path:'notifications',component: NotificationsComponent},
             {path:'admin',component: UserListComponent},
-            {path:'admin/request',component: RequestComponent},
-            {path:'admin/register',component:RegisterComponent},
+            {path:'admin/demande',component: RequestComponent},
+            {path:'admin/registre',component:RegisterComponent},
             {path:'fournisseur',component: FournisseurComponent},
             {path:'deploiement',component: DeploiementComponent},
             {path:'approvisionnement',component: ApproComponent},

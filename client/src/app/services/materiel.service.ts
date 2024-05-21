@@ -16,7 +16,7 @@
     addMateriel(data:any){
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
 
       const headers = new HttpHeaders({
@@ -30,7 +30,7 @@
     getMateriels(): Observable<any[]>  {
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`
@@ -43,7 +43,7 @@
     updateMateriel(materiel: any): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
 
       const headers = new HttpHeaders({
@@ -56,7 +56,7 @@
     updateCheckedMateriels(materiels: any[]): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
     
       const headers = new HttpHeaders({
@@ -71,12 +71,11 @@
     rejectMateriels(materiels: any[]): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
     
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
       });
     
       const materielsIds = materiels.map(materiel => materiel._id);
@@ -86,32 +85,20 @@
     deleteMateriel(materiel: any): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
 
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`
       });
 
-      return this.http.delete(URL + 'delete-materiel/' + materiel._id, { headers }).pipe(
-        catchError((error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            // Handle unauthorized error
-            console.error('Unauthorized: ', error.message);
-            throw new Error('Unauthorized');
-          } else {
-            // Handle other errors
-            console.error('Error deleting materiel: ', error.message);
-            throw new Error('An error occurred while deleting the materiel');
-          }
-        })
-      );
+      return this.http.delete(URL + 'delete-materiel/' + materiel._id, { headers });
     }
 
     affectMateriels(materiels: any): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
   
       const headers = new HttpHeaders({
@@ -124,7 +111,7 @@
     getMaterielsAffectedToAgent(): Observable<any[]> {
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
   
       const headers = new HttpHeaders({
@@ -136,12 +123,11 @@
     receiveMateriel(materiel: any): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {
-        throw new Error('Token not found');
+        throw new Error('Token introuvable');
       }
     
       const headers = new HttpHeaders({
         Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
       });
     
       return this.http.put(URL + 'receive-materiel', materiel, { headers });

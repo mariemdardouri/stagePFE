@@ -12,7 +12,7 @@ router.use(jsonParser);
 router.post("/login", jsonParser, async (req, res) => {
   try {
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(401).json({ msg: "User do not found" });
+    if (!user) return res.status(401).json({ message: "L'utilisateur n'a pas trouvé" });
 
     const isMatch = await bcrypt.compare(req.body.password, user.password);
     if (!isMatch) {
@@ -23,14 +23,7 @@ router.post("/login", jsonParser, async (req, res) => {
       const token = jwt.sign({ id: user._id, role: user.role }, "PFE", {
         expiresIn: "1d",
       });
-      res
-        .status(200)
-        .json({
-          message: "Connexion réussie",
-          success: true,
-          token: token,
-          role: user.role,
-        });
+      res.status(200).json({message: "Connexion réussie",success: true,token: token,role: user.role,});
     }
   } catch (err) {
     console.log(err);
@@ -42,9 +35,7 @@ router.post("/register", jsonParser, async (req, res) => {
   try {
     const userExists = await User.findOne({ email: req.body.email });
     if (userExists) {
-      return res
-        .status(200)
-        .json({ message: "L'utilisateur existe déjà", success: false });
+      return res.status(200).json({ message: "L'utilisateur existe déjà", success: false });
     }
     console.log("body data", req.body);
     const password = req.body.password;
@@ -53,22 +44,20 @@ router.post("/register", jsonParser, async (req, res) => {
     req.body.password = hashedPassword;
     const newuser = new User(req.body);
     await newuser.save();
-    res
-      .status(200)
-      .json({ message: "Utilisateur créé avec succès", success: true });
+    res.status(200).json({ message: "Utilisateur créé avec succès", success: true });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Internal server error", success: false });
+    res.status(500).json({ message: "Erreur interne du serveur", success: false });
   }
 });
 router.post("/get-user-info", authMiddleware, jsonParser, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.body.id });
     if (!user) {
-      return res.status(401).json({ message: "User do not found" });
+      return res.status(401).json({ message: "L'utilisateur n'a pas trouvé" });
     }
     if (user.status === "desactivate") {
-      return res.status(200).json({ message: "This account is deactivated",success: false });
+      return res.status(200).json({ message: "Ce compte est désactivé",success: false });
     }
     res.status(200).json({
       success: true,
@@ -76,9 +65,7 @@ router.post("/get-user-info", authMiddleware, jsonParser, async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res
-      .status(500)
-      .json({ msg: "Error getting user info", error: err.message });
+    res.status(500).json({ msg: "Erreur lors de l'obtention des informations sur l'utilisateur", error: err.message });
   }
 });
 

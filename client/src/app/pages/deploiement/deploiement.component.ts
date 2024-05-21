@@ -38,30 +38,30 @@ export class DeploiementComponent {
         console.log(data, 'materielList');
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
       }
     );
   }
 
   allChecked(): boolean {
-    return this.materielList.every((materiel) => materiel.checked || materiel.status === 'accepted');
+    return this.materielList.every((materiel) => materiel.checked || materiel.status === 'accept');
   }
 
   accepter(): void {
     if (this.allChecked()) {
-      const uncheckedAcceptedMateriels = this.materielList.filter(materiel => !materiel.checked && materiel.status === 'accepted');
+      const uncheckedAcceptedMateriels = this.materielList.filter(materiel => !materiel.checked && materiel.status === 'accept');
       if (uncheckedAcceptedMateriels.length === 0) {
         this.toast.error('Vous ne pouvez pas vérifier à nouveau les matériels déjà acceptés.');
         return;
       }
   
       this.materielService.updateCheckedMateriels(this.materielList).subscribe(
-        (response) => {
-          this.toast.success('Tous les matériels ont été acceptés.');
+        (response: any) => {
+          this.toast.success(response.meesage);
         },
         (error) => {
-          console.error('Error updating materiels:', error);
-          this.toast.error('Une erreur est survenue lors de la mise à jour des matériels.');
+          console.error('Erreur lors de la mise à jour des matériels:', error);
+          this.toast.error(' Erreur lors de la mise à jour des matériels.');
         }
       );
     } else {
@@ -79,7 +79,7 @@ export class DeploiementComponent {
           this.materielList = this.materielList.filter(materiel => materiel.checked);
         },
         (error) => {
-          console.error('Error rejecting materiels:', error);
+          console.error('Erreur lors de la réjection des matériels:', error);
           this.toast.error('Erreur lors de la réjection des matériels.');
         }
       );

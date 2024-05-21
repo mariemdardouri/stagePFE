@@ -40,23 +40,14 @@ export class AuthService {
     const token = localStorage.getItem('token');
     console.log(token);
     if(!token){
-      return throwError('token not fount');
+      return throwError('token introuvable');
       }
-
-    try{
      const headers =  ({
         Authorization:`Bearer ${token}`
-      })
-      
-      
+      });
+  
       console.log(headers,'hhhhh');
       return this.http.post(URL+ 'get-user-info',{},{headers});
-    }catch(error){
-      console.error(error);
-      console.log(error,'error');
-      this.toast.error('This account is deactivated');
-      return throwError('invalid token');
-    };
   }
   getDecodedToken(token: string): any {
     return jwtDecode(token);
@@ -64,12 +55,13 @@ export class AuthService {
   getUserId(): string {
     const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     try {
       const decodedToken: any = jwtDecode(token);
-      return decodedToken.userId;
+      console.log(decodedToken,'decodedToken');
+      return decodedToken.id;
     } catch (error) {
       console.error('Error decoding token:', error);
       throw new Error('Error getting user ID from token');
@@ -79,7 +71,7 @@ export class AuthService {
   getLoggedInUser(): any {
     const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     try {

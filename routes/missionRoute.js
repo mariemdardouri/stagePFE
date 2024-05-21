@@ -30,7 +30,7 @@ router.get("/get-mission", authMiddleware, jsonParser, async (req, res) => {
     console.error(error);
     res
       .status(500)
-      .json({ message: "Error fetching missions", success: false });
+      .json({ message: "Erreur lors de la récupération des missions", success: false });
   }
 });
 
@@ -39,7 +39,7 @@ router.put("/update-mission/:id",authMiddleware,jsonParser,async (req, res) => {
       const updatedMission = await Mission.findByIdAndUpdate(
         req.params.id,
         req.body,
-        { status: "valider" }, 
+        { status: "validate" }, 
         { new: true }
       );
 
@@ -49,7 +49,7 @@ router.put("/update-mission/:id",authMiddleware,jsonParser,async (req, res) => {
         user.unseenNotifications = user.unseenNotifications || [];
         user.unseenNotifications.push({
           type: "mission-validated",
-          message: `This ${updatedMission.title} has been validated by ${updatedMission.agentLogistique}`,
+          message: `Ce ${updatedMission.title} a été validé par ${updatedMission.agentLogistique}`,
           onClickPath: "/logistique/mission",
         });
         await user.save();
@@ -61,19 +61,15 @@ router.put("/update-mission/:id",authMiddleware,jsonParser,async (req, res) => {
         success: true,
       });
     } catch (error) {
-      console.error("Error updating mission: ", error);
+      console.error("Erreur lors de la mise à jour de la mission  ", error);
       res
         .status(500)
-        .json({ message: "Erreur de mise à jour du mission", success: false });
+        .json({ message: "Erreur lors de la mise à jour de la mission ", success: false });
     }
   }
 );
 
-router.delete(
-  "/delete-mission/:id",
-  authMiddleware,
-  jsonParser,
-  async (req, res) => {
+router.delete("/delete-mission/:id",authMiddleware,jsonParser,async (req, res) => {
     try {
       const deletedMission = await Mission.findByIdAndDelete(req.params.id);
       res.status(200).json({
@@ -82,7 +78,7 @@ router.delete(
         success: true,
       });
     } catch (error) {
-      console.error("Error deleting mission: ", error);
+      console.error("Erreur lors de la suppression du mission: ", error);
       res.status(500).json({
         message: "Erreur lors de la suppression du mission",
         success: false,
@@ -98,7 +94,7 @@ router.get("/get-user", authMiddleware, jsonParser,async (req, res) => {
     res.status(200).json({ users });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error fetching agents", success: false });
+    res.status(500).json({ message: "Erreur lors de la récupération des agents", success: false });
   }
 });
 
@@ -110,16 +106,16 @@ router.get("/missions", authMiddleware,jsonParser, async (req, res) => {
     const unseenNotifications = user.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-mission",
-      message: `You have new mission from the responsable`,
+      message: `Vous avez une nouvelle mission de la part du responsable logistique ${user.role}`,
       onClickPath: "/agentLogistique",
     });
     user.unseenNotifications = unseenNotifications;
     await user.save();
     
   } catch (error) {
-    console.error("Error fetching user missions:", error);
+    console.error("Erreur lors de la récupération des missions utilisateur:", error);
     console.log(error,'error');
-    res.status(500).json({ message: "Error fetching user missions", success: false });
+    res.status(500).json({ message: "Erreur lors de la récupération des missions utilisateur", success: false });
   }
 });
 

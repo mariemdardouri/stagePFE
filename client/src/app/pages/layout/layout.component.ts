@@ -16,7 +16,7 @@ import { NotificationsComponent } from '../notifications/notifications.component
   export class LayoutComponent implements OnInit {
     adminMenu = [
       { label: 'Les utilisateurs', path: '/admin', icon: 'bi bi-person ' },
-      { label: 'Les demandes', path: '/admin/request', icon: 'bi bi-person ' },
+      { label: 'Les demandes', path: '/admin/demande', icon: 'bi bi-person ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left ' },
     ];
     FournisseurMenu = [
@@ -101,7 +101,7 @@ import { NotificationsComponent } from '../notifications/notifications.component
           this.unseenNotificationsCount = count;
         },
         (error) => {
-          console.error('Error fetching user notifications count:', error);
+          console.error('Erreur lors de la récupération du nombre de notifications utilisateur:', error);
         }
       );
     }

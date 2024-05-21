@@ -1,10 +1,10 @@
 <div class="container-fluid">
   <ul class="nav nav-tabs">
     <li class="nav-item">
-      <a class="nav-link"  [class.active]="activeTab === 'unseen'" (click)="setActiveTab('unseen')">Unseen Notifications</a>
+      <a class="nav-link"  [class.active]="activeTab === 'unseen'" (click)="setActiveTab('unseen')">Notifications non vues</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" [class.active]="activeTab === 'seen'" (click)="setActiveTab('seen')">Seen Notifications</a>
+      <a class="nav-link" [class.active]="activeTab === 'seen'" (click)="setActiveTab('seen')">Notifications vues</a>
     </li>
   </ul>
 
@@ -13,7 +13,7 @@
       <table class="notification-table">
         <thead>
           <tr>
-            <th>Unseen Notifications</th>
+            <th>Notifications non vues</th>
           </tr>
         </thead>
         <tbody>
@@ -23,7 +23,7 @@
         </tbody>
       </table>
       <div class="actions-container">
-        <button (click)="markAllAsSeen()" class="btn btn-primary float-end m-2">Mark All as Seen</button>
+        <button (click)="markAllAsSeen()" class="btn btn-primary float-end m-2">Marquer tout comme vu</button>
       </div>
     </div>
 
@@ -31,7 +31,7 @@
       <table class="notification-table">
         <thead>
           <tr>
-            <th>Seen Notifications</th>
+            <th>Notifications vues</th>
           </tr>
         </thead>
         <tbody>
@@ -41,7 +41,7 @@
         </tbody>
       </table>
       <div class="actions-container">
-        <button (click)="deleteAllNotifications()" class="btn btn-primary float-end m-2">Delete All Notifications</button>
+        <button (click)="deleteAllNotifications()" class="btn btn-primary float-end m-2">Supprimer toutes les notifications</button>
       </div>
       
     </div>

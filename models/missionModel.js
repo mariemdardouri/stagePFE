@@ -8,7 +8,7 @@ const missionSchema = new mongoose.Schema(
     dateStart: { type: String, required: true },
     dateEnd: { type: String, required: true },
     agentLogistique: { type: String,required: true },
-    status: { type: String,default: "attend" },
+    status: { type: String,default: "pending" },
     
   },
   { timestamps: true }

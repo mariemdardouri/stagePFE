@@ -96,7 +96,7 @@ export class MissionComponent {
         this.users = data;
       },
       (error) => {
-        console.error('Error fetching agents:', error);
+        console.error('Erreur lors de la récupération des agents :', error);
       }
     );
   }
@@ -108,7 +108,7 @@ export class MissionComponent {
         console.log(data, 'missionList');
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Erreur lors de la récupération des agents ::', error);
       }
     );
   }
@@ -130,7 +130,7 @@ export class MissionComponent {
           }
         },
         error: (err) => {
-          console.error('Error updating materiel:', err);
+          console.error('Erreur lors de la mise à jour du materiel:', err);
           if (err.status === 500) {
             this.toast.error('Erreur lors de la mise à jour du materiel');
           }
@@ -150,7 +150,7 @@ export class MissionComponent {
         }
       },
       error: (err) => {
-        console.error('Error updating materiel:', err);
+        console.error('Erreur lors de la suppression du materiel:', err);
         if (err.status === 500) {
           this.toast.error('Erreur lors de la suppression du materiel');
         }

@@ -35,12 +35,12 @@ export class SiteComponent {
       .post('http://localhost:3000/api/user/uploadCSV', formData)
       .subscribe(
         (response) => {
-          console.log('File uploaded successfully');
+          console.log('Fichier téléchargé avec succès');
           console.log(response);
         },
         (error) => {
           console.log(error);
-          console.error('Error uploading CSV:', error);
+          console.error('Erreur lors du téléchargement du CSV:', error);
         }
       );
   }

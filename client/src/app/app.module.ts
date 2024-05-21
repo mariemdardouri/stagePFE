@@ -6,8 +6,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { FormsModule } from '@angular/forms';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserModule } from '@angular/platform-browser';
-import { AppRoutingModule } from './app-routing.module';
 import { SiteComponent } from './pages/site/site.component';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({

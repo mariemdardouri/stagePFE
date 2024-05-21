@@ -17,6 +17,7 @@ import { MissionComponent } from './pages/mission/mission.component';
 import { NotificationsComponent } from './pages/notifications/notifications.component';
 import { ClaimComponent } from './pages/claim/claim.component';
 import { LogistiqueClaimsComponent } from './pages/claim/logistique-claims/logistique-claims.component';
+import { NgModule } from '@angular/core';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -28,8 +29,8 @@ const routes: Routes = [
     children: [
       { path: 'notifications', component: NotificationsComponent },
       { path: 'admin', component: UserListComponent },
-      { path: 'admin/register', component: RegisterComponent },
-      { path: 'admin/request', component: RequestComponent },
+      { path: 'admin/registre', component: RegisterComponent },
+      { path: 'admin/demande', component: RequestComponent },
       { path: 'fournisseur', component: FournisseurComponent },
       { path: 'deploiement', component: DeploiementComponent },
       { path: 'approvisionnement', component: ApproComponent },
@@ -43,5 +44,10 @@ const routes: Routes = [
     ],
   },
 ];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule],
+})
 
 export class AppRoutingModule {}

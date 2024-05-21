@@ -30,7 +30,7 @@ export class UserListComponent {
     'NumTél',
     'Role',
     'Statut',
-    'Action',
+    'Actions',
   ];
   selectedUser: any = {};
   userList: any[] = [];
@@ -46,7 +46,7 @@ export class UserListComponent {
         this.userList = data.filter((user: any) => user.role !== 'admin');
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Erreur lors de la récupération des utilisateurs :', error);
       }
     );
   }
@@ -68,7 +68,7 @@ export class UserListComponent {
           }
         },
         error: (err) => {
-          console.error('Error updating user:', err);
+          console.error('Erreur lors de la mise à jour de l\'utilisateur:', err);
           if (err.status === 500) {
             this.toast.error("Erreur lors de la mise à jour de l'utilisateur");
           }
@@ -88,7 +88,7 @@ export class UserListComponent {
         }
       },
       error: (err) => {
-        console.error('Error deactivating user:', err);
+        console.error('Erreur lors du desactivation de l\'utilisateur:', err);
         if (err.status === 500) {
           this.toast.error("Erreur lors du desactivation de l'utilisateur");
         }

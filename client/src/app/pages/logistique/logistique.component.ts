@@ -40,7 +40,7 @@ export class LogistiqueComponent {
         console.log(data, 'materielList');
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
       }
     );
 
@@ -49,7 +49,7 @@ export class LogistiqueComponent {
         this.userList = users;
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
       }
     );
   }
@@ -58,11 +58,11 @@ export class LogistiqueComponent {
     const materielsToUpdate = this.materielList.filter(materiel => materiel.agent);
     console.log(materielsToUpdate,'materielsToUpdate');
     this.materielService.affectMateriels({ materiels: materielsToUpdate }).subscribe(
-      (response) => {
-        this.toast.success('Matériels affectés avec succès.');
+      (response:any) => {
+        this.toast.success(response.message);
       },
       (error) => {
-        console.error('Error affecting materiels:', error);
+        console.error('Erreur lors de l\'affectation des matériels:', error);
         this.toast.error("Erreur lors de l'affectation des matériels.");
       }
     );

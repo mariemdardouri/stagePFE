@@ -1,4 +1,5 @@
 <div class="container-fluid">
+  <h1>Table des missions</h1>
     <div>
       <button
         data-bs-toggle="modal"
@@ -18,8 +19,8 @@
             <th for="dateStart">Date du debut</th>
             <th for="dateEnd">Date du fin</th>
             <th for="agentLogistique">Agent Logistique</th>
-            <th for="action">Action</th>
-            <th for="status">Status</th>
+            <th for="action">Actions</th>
+            <th for="status">Statut</th>
         </thead>
         <tbody>
           <tr *ngFor="let mission of missionList">
@@ -30,8 +31,8 @@
             <td>{{ mission.dateEnd }}</td>
             <td>{{ mission.agentLogistique }}</td>
             <div>
-              <span *ngIf="mission.status === 'attend'">En attend</span>
-              <span *ngIf="mission.status === 'valider'">Valider</span>
+              <span *ngIf="mission.status === 'pending'">En attente</span>
+              <span *ngIf="mission.status === 'validate'">Valider</span>
             </div>
             <td>
               <div>

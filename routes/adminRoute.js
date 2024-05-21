@@ -13,7 +13,7 @@ user.use(jsonParser);
 router.get("/request", authMiddleware, async (req, res) => {
   try {
     
-    const request = await Request.find({ status: "en attente" });
+    const request = await Request.find({ status: "pending" });
     res.status(200).json(request);
 
   } catch (error) {
@@ -30,7 +30,7 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
     console.log(req.params.id, "paramss");
     const request = await Request.findByIdAndDelete(
       requestId,
-      { status: "active" },
+      { status: "activate" },
       { new: true }
     );
 
@@ -38,7 +38,7 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
     if (!request) {
       return res
         .status(404)
-        .json({ message: "Request not found", success: false });
+        .json({ message: "Demande introuvable", success: false });
     }
 
     // Create a new user based on the request details
@@ -50,7 +50,7 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
       phoneNumber: request.phoneNumber,
       password: request.password,
       role: request.role, 
-      status: "actif",
+      status: "activate",
       seenNotifications: request.seenNotifications,
       unseenNotifications: request.unseenNotifications, // Set the user's status to active
     });
@@ -68,8 +68,8 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
       .status(200)
       .json({ message: "Utilisateur créé avec succès", success: true });
   } catch (error) {
-    console.error("Error accepting user:", error);
-    res.status(500).json({ message: "Error accepting user", success: false });
+    console.error("Erreur lors de l'acceptation de l'utilisateur :", error);
+    res.status(500).json({ message: "Erreur lors de l'acceptation de l'utilisateur", success: false });
   }
 });
 
@@ -78,8 +78,8 @@ router.get("/get-request", authMiddleware, async (req, res) => {
     const user = await User.findById(req.user.id);
     res.status(200).json(user);
   } catch (error) {
-    console.error("Error fetching user:", error);
-    res.status(500).json({ message: "Error fetching user", success: false });
+    console.error("Erreur lors de la récupération de l'utilisateur:", error);
+    res.status(500).json({ message: "Erreur lors de la récupération de l'utilisateur", success: false });
   }
 });
 
@@ -89,8 +89,8 @@ router.get("/get-all-requests", jsonParser, async (req, res) => {
     res.status(200).json({ data });
 
   } catch (error) {
-    console.error("Error fetching users: ", error);
-    res.status(500).json({ message: "Error fetching users", success: false });
+    console.error("Erreur lors de la récupération des utilisateurs : ", error);
+    res.status(500).json({ message: "Erreur lors de la récupération des utilisateurs ", success: false });
   }
 });
 

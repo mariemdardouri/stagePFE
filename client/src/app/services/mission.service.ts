@@ -101,7 +101,7 @@ export class MissionService {
   getUserMissions(): Observable<any[]> {
     const token = localStorage.getItem('token');
     if (!token) {
-      throw new Error('Token not found');
+      throw new Error('Token introuvable');
     }
 
     const headers = new HttpHeaders({

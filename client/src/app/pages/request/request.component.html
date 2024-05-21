@@ -1,4 +1,5 @@
 <div class="container-fluid">
+  <h1>Table des demandes</h1>
   <div>
     <table class="table table-bordered">
       <thead>
@@ -16,8 +17,8 @@
           <td>{{ user.role }}</td>
           <td>
             <div>
-              <span *ngIf="user.status === 'pending'">Pending</span>
-              <span *ngIf="user.status === 'active'">Active</span>
+              <span *ngIf="user.status === 'pending'">En attente</span>
+              <span *ngIf="user.status === 'activate'">Activer</span>
             </div>
           </td>
           <td>

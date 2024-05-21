@@ -31,7 +31,7 @@ export class LogistiqueClaimsComponent {
         console.log(data, 'claims');
       },
       (error) => {
-        console.error('Error fetching users:', error);
+        console.error('Erreur lors de la récupération des utilisateurs:', error);
       }
     );
   }

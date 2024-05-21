@@ -25,10 +25,10 @@ export class RequestComponent {
     'Prénom',
     'CIN',
     'Email',
-    'NumTél',
+    'NuméroTél',
     'Role',
-    'Status',
-    'Action',
+    'Statut',
+    'Actionz',
   ];
   userRequests: any[] = [];
   constructor(
@@ -60,7 +60,7 @@ export class RequestComponent {
           }
         },
         error: (err) => {
-          console.error('Error accepting user:', err);
+          console.error("Erreur lors de l'acceptation de l'utilisateur:", err);
           if (err.status === 500) {
             this.toast.error("Erreur lors de l'acceptation de l'utilisateur");
           }
