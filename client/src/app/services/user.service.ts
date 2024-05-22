@@ -25,7 +25,18 @@ export class UserService {
       map(response => response.data)
     );
   }
+  getUserProfile(): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token introuvable');
+    }
 
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.get<any>(URL + 'get-user-profile', { headers });
+  }
 
   updateUser(user: any): Observable<any> {
     const token = localStorage.getItem('token');
@@ -40,6 +51,18 @@ export class UserService {
     return this.http.put(URL + 'update-user/' + user._id, user, { headers });
   }
 
+  updateProfile(user: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token introuvable');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.put(URL+'update-profile', user, { headers });
+  }
   updateUserStatus(user: any): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) {

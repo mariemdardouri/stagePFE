@@ -1,0 +1,64 @@
+<div class="row">
+  <div class="col">
+    <nav class="navbar navbar-expand-lg">
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/home']">Acceuil</a>
+          </li>
+          <li class="nav-item" [routerLinkActive]="'active'">
+            <a class="nav-link" [routerLink]="['/login']">Se connecter</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+  </div>
+</div>
+
+<div class="general">
+  <div>
+    <img src="assets/cimf2.png" class="bodyimg" />
+  </div>
+  <div class="container">
+    <p>
+      Le Centre Informatique du Ministère des Finances (CIMF)<br />
+      est un établissement public à caractère non administratif <br />
+      doté de la personnalité civile et de l'autonomie financière.
+    </p>
+
+    <div class="main">
+      <a
+        [routerLink]="['/login']"
+        style="text-decoration: none; color: inherit"
+      >
+        Connecter vous à votre compte maintenat
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col">
+    <nav class="navbar navbar-footer">
+      <div class="row">
+        <div class="col-md-6">
+          <h5>Coordonnées</h5>
+          <p class="size">
+            <b>Adresse :</b> Croisement Avenue Mohamed Ali Akid et Boulevard de
+            la terre-Centre Urbain Nord - 1300 Tunis<br />
+            <b>Tél :</b> (+216) 70 016 700 , <b>Fax :</b> (+216) 71 948 415<br />
+            <b>e-mail : </b>
+            <a href="mailto:contact@cimf.tn">contact&#64;cimf.tn</a>
+          </p>
+        </div>
+        <div class="col-md-6">
+          <h5>Horaires de travail</h5>
+          <p class="size">
+            <b>Lundi-Jeudi :</b>de 8h30 à 12h30 et de 13h à 17h30<br />
+            <b> Vendredi :</b> de 8h30 à 13h et de 14h30 à 17h30
+          </p>
+        </div>
+      </div>
+    </nav>
+  </div>
+</div>

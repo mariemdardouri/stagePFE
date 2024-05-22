@@ -2,9 +2,9 @@
 
   const materielSchema = new mongoose.Schema(
     {
-      categorie: { type: String, required: true },
-      nature: { type: String, required: true },
-      numSerie: { type: String, required: true },
+      categorie: { type: String },
+      nature: { type: String },
+      numSerie: { type: String},
       numInv: { type: String, default: ''},
       status: { type: String, default: 'pending' },
       agent: { type: String,default:'' },

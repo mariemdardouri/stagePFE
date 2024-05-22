@@ -121,5 +121,9 @@ import { NotificationsComponent } from '../notifications/notifications.component
     goToNotifications(): void {
       this.router.navigate(['/notifications']);
     }
+
+    goToUpdateProfile(): void {
+      this.router.navigate(['/profile']);
+    }
     
   }

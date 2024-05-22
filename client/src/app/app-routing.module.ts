@@ -19,9 +19,12 @@ import { ClaimComponent } from './pages/claim/claim.component';
 import { LogistiqueClaimsComponent } from './pages/claim/logistique-claims/logistique-claims.component';
 import { NgModule } from '@angular/core';
 import { FournisseurClaimsComponent } from './pages/claim/fournisseur-claims/fournisseur-claims.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  {path:'home', component:HomeComponent},
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   {
     path: '',
@@ -29,6 +32,7 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'notifications', component: NotificationsComponent },
+      {path:'profile',component: ProfileComponent},
       { path: 'admin', component: UserListComponent },
       { path: 'admin/registre', component: RegisterComponent },
       { path: 'admin/demande', component: RequestComponent },

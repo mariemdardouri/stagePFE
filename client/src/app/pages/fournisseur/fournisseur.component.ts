@@ -10,6 +10,8 @@ import {
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
+import { QRCodeModule } from 'angularx-qrcode';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-fournisseur',
@@ -20,16 +22,20 @@ import { ToastrService } from 'ngx-toastr';
     RouterModule,
     RouterOutlet,
     CommonModule,
+    QRCodeModule
   ],
   templateUrl: './fournisseur.component.html',
   styleUrl: './fournisseur.component.css',
 })
 export class FournisseurComponent {
+  qrCodeData: string ='';
+  file!: File;
   materielList: any[] = [];
   materielForm!: FormGroup;
   selectedMateriel: any = {};
   constructor(
     private materielService: MaterielService,
+    private http: HttpClient,
     private toast: ToastrService
   ) {}
 
@@ -122,5 +128,33 @@ export class FournisseurComponent {
         }
       },
     });
+  }
+  onFileChange(event: any) {
+    this.file = event.target.files[0];
+  }
+  uploadCSV() {
+    const formData = new FormData();
+    formData.append('file', this.file);
+    console.log(formData);
+    this.http.post('http://localhost:3000/api/materiel/uploadCSV', formData).subscribe(
+      (response:any) => {
+        console.log('File uploaded successfully');
+        console.log(response);
+        this.toast.success(response.message);
+        this.getMaterielByFournisseur();
+      },
+      (error) => {
+        console.log(error);
+        console.error('Error uploading CSV:', error);
+      }
+    );
+  }
+  getStringifiedData(data: any[]): string {
+    return JSON.stringify(data);
+  }
+  generateQRCode(): void {
+    if (this.materielList) {
+      this.qrCodeData = this.getStringifiedData(this.materielList);
+    }
   }
 }

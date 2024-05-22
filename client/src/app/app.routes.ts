@@ -17,14 +17,18 @@ import { AuthGuard } from './services/auth.guard';
 import { ClaimComponent } from './pages/claim/claim.component';
 import { LogistiqueClaimsComponent } from './pages/claim/logistique-claims/logistique-claims.component';
 import { FournisseurClaimsComponent } from './pages/claim/fournisseur-claims/fournisseur-claims.component';
+import { ProfileComponent } from './pages/profile/profile.component';
+import { HomeComponent } from './pages/home/home.component';
 
 export const routes: Routes = [
-    
+    { path: '', redirectTo: 'home', pathMatch: 'full' },
+    {path:'home', component:HomeComponent},
     {path:'login', component:LoginComponent},
     {
         path:'',component: LayoutComponent,canActivate:[AuthGuard],
         children:[
             {path:'notifications',component: NotificationsComponent},
+            {path:'profile',component: ProfileComponent},
             {path:'admin',component: UserListComponent},
             {path:'admin/demande',component: RequestComponent},
             {path:'admin/registre',component:RegisterComponent},

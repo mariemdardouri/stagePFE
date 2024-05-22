@@ -56,6 +56,46 @@ router.put("/update-user/:id", authMiddleware, jsonParser, async (req, res) => {
     });
   }
 });
+router.get("/get-user-profile",authMiddleware, jsonParser, async (req, res) => {
+  try {
+   
+    const user = await User.findById(req.body.id); 
+    console.log(user,'user');
+    if (!user) {
+      return res.status(404).json({ message: "Utilisateur introuvable", success: false });
+    }
+    console.log(user,'user');
+    res.status(200).json({user, message: "Récupération du profil avec succes", success: true });
+  } catch (error) {
+    console.error("Erreur lors de la récupération du profil:", error);
+    res.status(500).json({ message: "Erreur lors de la récupération du profil", success: false });
+  }
+});
+router.put("/update-profile", authMiddleware,jsonParser, async (req, res) => {
+  try {
+    const { firstName, lastName, cin, email, phoneNumber, password } = req.body;
+
+    const user = await User.findById(req.body.id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found", success: false });
+    }
+
+    // Mise à jour des informations de l'utilisateur uniquement si elles sont présentes dans la requête
+    if (firstName) user.firstName = firstName;
+    if (lastName) user.lastName = lastName;
+    if (cin) user.cin = cin;
+    if (email) user.email = email;
+    if (phoneNumber) user.phoneNumber = phoneNumber;
+    if (password) user.password = await bcrypt.hash(password, 10);
+    
+
+    await user.save();
+    res.status(200).json({ message: "Profile updated successfully", success: true });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Error updating profile", success: false });
+  }
+});
 
 router.post("/uploadCSV", upload.single("file"), async (req, res) => {
   const csvData = [];
@@ -65,14 +105,14 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
     .then(async (jsonObj) => {
       console.log(jsonObj);
       for (const row of jsonObj) {
-        const hashedPassword = await bcrypt.hash(row.cin, 10); // Hash the password using bcrypt
+        const hashedPassword = await bcrypt.hash(row.cin, 10); 
         csvData.push({
           firstName: row.firstName,
           lastName: row.lastName,
           cin: row.cin,
           email: row.email,
           phoneNumber: row.phoneNumber,
-          password: hashedPassword, // Store the hashed password
+          password: hashedPassword, 
           role: row.role,
           status: "pending",
         });
@@ -103,7 +143,7 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
         console.error("Erreur lors de l'importation des données CSV:", error);
         res.status(500).json({ message: "Erreur lors de l'importation des données CSV" });
       } finally {
-        // Clean up the uploaded file
+        
         fs.unlink(req.file.path, (err) => {
           if (err) {
             console.error("Erreur lors de la suppression du fichier téléchargé:", err);

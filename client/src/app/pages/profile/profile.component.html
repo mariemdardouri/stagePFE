@@ -1,0 +1,93 @@
+<div class="container-fluid register-section ">
+    <div class="card register-card p-2 shadow-lg">
+      <h2>Modifier Profil</h2>
+      <form [formGroup]="profileForm" autocomplete="off">
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="firstName" class="form-label" [formGroup]="profileForm">Prénom</label>
+            <input type="text" class="form-control" name="firstName"formControlName="firstName"/>
+          </div>
+          <div class="col-xl-6 mb-3">
+            <label for="lastName" class="form-label">Nom</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="prénom"
+              name="lastName"
+              formControlName="lastName"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="cin" class="form-label">CIN</label>
+            <input
+              type="cin"
+              class="form-control"
+              placeholder="cin"
+              name="cin"
+              formControlName="cin"
+            />
+      
+          </div>
+          <div class="col-xl-6 mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              placeholder="email"
+              name="email"
+              formControlName="email"
+            />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="phoneNumber" class="form-label"
+              >Numéro du Téléohone</label
+            >
+            <input
+              type="tel"
+              class="form-control"
+              name="phoneNumber"
+              formControlName="phoneNumber"
+            />
+ 
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              formControlName="password"
+            />
+
+          </div>
+          <div class="col-xl-6 mb-3">
+            <label for="password" class="form-label"
+              >Confirmer Mot de passe</label
+            >
+            <input
+              type="password"
+              class="form-control"
+              name="password"
+              formControlName="password"
+            />
+          </div>
+        </div>
+        <button
+          (click)="updateProfile()"
+          type="submit"
+          class="btn btn-primary full-width-button"
+         
+        >
+          Enregistrer
+        </button>
+      </form>
+    </div>
+  </div>
+  
+  <div></div>

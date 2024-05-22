@@ -8,6 +8,11 @@
     >
        <i class="bi bi-plus-circle"></i>
     </button>
+    <button data-bs-toggle="modal" data-bs-target="#FileModal" class="btn btn-primary float-end m-2">   
+      <i class="bi bi-file-earmark-arrow-down-fill"></i>
+      </button>
+   <button data-bs-toggle="modal"  data-bs-target="#QrModal" class="btn btn-primary float-end m-2" (click)="generateQRCode()"> <i i class="bi bi-qr-code"></i>
+     </button>
   </div>
   <div>
     <table class="table table-bordered">
@@ -237,5 +242,64 @@ data-keyboard="false"
   </div>
 </div>
 </div>
+<!-- FileModal -->
+<div class="modal fade" id="FileModal" tabindex="-1"  aria-labelledby="FileModalTitle" aria-hidden="true" data-backdrop="static"
+data-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="UpdateModalLabel">
+          importer materiel
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        
+          <div class="file-upload-container">
+            <h2>importer fichier CSV</h2>
+            <input type="file"  id="fileInput" (change)="onFileChange($event)" />          
+          </div>
+    
+      </div>
+      <div class="modal-footer">
+        <button (click)="uploadCSV()" class="btn btn-primary">Importer</button>
+    </div>
+    </div>
+  </div>
+</div>
 
+
+<!-- QrModal -->
+
+
+
+<div class="modal fade" id="QrModal" tabindex="-1" role="dialog" aria-labelledby="FileModalTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="UpdateModalLabel">
+        Scanner code QR
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+          <div class="file-upload-container">
+            <h2>Scanner code QR</h2>       
+            <qrcode *ngIf="qrCodeData" [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+          </div>
+      </div>
+ 
+    </div>
+  </div>
+</div>
 

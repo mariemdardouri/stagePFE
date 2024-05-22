@@ -79,3 +79,17 @@ tr:nth-child(even) {
 .icon-delete{
     color: red;
 }
+
+.file-upload-container {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.file-upload-container h2 {
+    margin-bottom: 1.5rem;
+    font-size: 20px;
+    color: #333;
+}
