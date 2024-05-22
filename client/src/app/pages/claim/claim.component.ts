@@ -15,6 +15,7 @@ import { AuthService } from '../../services/auth.service';
   styleUrl: './claim.component.css'
 })
 export class ClaimComponent {
+  selectedClaim: any = {};
   claims: any[] = [];
   userId: any;
   
@@ -22,7 +23,6 @@ export class ClaimComponent {
   constructor(private claimService: ClaimService,  private route: ActivatedRoute,private toast: ToastrService, private materielService: MaterielService,) { }
 
   ngOnInit(): void {
-    this.userId = this.route.snapshot.params['userId'];
     this.getClaimsByMateriel();
   }
 
@@ -38,5 +38,65 @@ export class ClaimComponent {
       }
     );
   }
+  
+  editClaim(claim: any): void {
+    this.selectedClaim = claim;
+  }
+  
+  updateClaim(): void {
+    if (this.selectedClaim) {
+      this.claimService.updateClaim(this.selectedClaim).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.getClaimsByMateriel();
+            this.selectedClaim = {};
+          } else {
+            this.toast.error(resp.message);
+          }
+        },
+        error: (err) => {
+          console.error('Erreur lors de la mise à jour de la réclamation:', err);
+          if (err.status === 500) {
+            this.toast.error('Erreur lors de la mise à jour de la réclamation');
+          }
+        },
+      });
+    }
+  }
 
+  acceptClaim(claim: any): void {
+    this.claimService.acceptClaim(claim).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success(resp.message);
+          this.getClaimsByMateriel();
+        } else {
+          this.toast.error(resp.message);
+        }
+      },
+      error:(error) => {
+        console.error('Error receiving reclamation:', error);
+        this.toast.error('Error receiving reclamation.');
+      }
+  });
+  }
+  deleteClaim(claim: any): void {
+    this.claimService.deleteClaim(claim).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success(resp.message);
+          this.getClaimsByMateriel();
+        } else {
+          this.toast.error(resp.message);
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la suppression de la réclamation:', err);
+        if (err.status === 500) {
+          this.toast.error('Erreur lors de la suppression de la réclamation');
+        }
+      },
+    });
+  }
 }

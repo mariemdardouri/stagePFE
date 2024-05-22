@@ -76,6 +76,7 @@ export class RegisterComponent {
         console.log(resp);
         if (resp.success) {
           this.toast.success(resp.message);
+          this.userService.getAllUser();
         } else {
           this.toast.error(resp.message);
         }

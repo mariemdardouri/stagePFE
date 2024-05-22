@@ -1,0 +1,29 @@
+<div class="container">
+    <h2 class="title">Réclamations reçues</h2>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Agent</th>
+          <th>Catégorie</th>
+          <th>Numéro d'inventaire</th>
+          <th>Numéro de série</th>
+          <th>Description</th>
+          <th>Date d'envoi</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let claim of claims">
+          <td>{{ claim.user.firstName +" "+ claim.user.lastName }}</td>
+          <td>{{ claim.materiel.categorie }}</td>
+          <td>{{ claim.materiel.numInv }}</td>
+          <td>{{ claim.materiel.numSerie }}</td>
+          <td>{{ claim.description }}</td>
+          <td>{{ claim.createdAt | date:'short' }}</td>
+          <td>
+            <button (click)="ReceiveClaim(claim)">Received</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+</div>

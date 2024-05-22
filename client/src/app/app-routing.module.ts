@@ -18,6 +18,7 @@ import { NotificationsComponent } from './pages/notifications/notifications.comp
 import { ClaimComponent } from './pages/claim/claim.component';
 import { LogistiqueClaimsComponent } from './pages/claim/logistique-claims/logistique-claims.component';
 import { NgModule } from '@angular/core';
+import { FournisseurClaimsComponent } from './pages/claim/fournisseur-claims/fournisseur-claims.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
@@ -32,6 +33,7 @@ const routes: Routes = [
       { path: 'admin/registre', component: RegisterComponent },
       { path: 'admin/demande', component: RequestComponent },
       { path: 'fournisseur', component: FournisseurComponent },
+      { path: 'fournisseur/réclamation', component: FournisseurClaimsComponent },
       { path: 'deploiement', component: DeploiementComponent },
       { path: 'approvisionnement', component: ApproComponent },
       { path: 'logistique', component: LogistiqueComponent },

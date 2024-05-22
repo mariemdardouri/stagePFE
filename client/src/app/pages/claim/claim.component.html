@@ -7,6 +7,7 @@
         <th>Numéro d'inventaire</th>
         <th>Numéro de série</th>
         <th>Description</th>
+        <th>Statut</th>
         <th>Actions</th>
       </tr>
     </thead>
@@ -17,9 +18,81 @@
         <td>{{ claim.materiel.numSerie }}</td>
         <td>{{ claim.description }}</td>
         <td>
-          
+          <div>
+            <span *ngIf="claim.status === 'pending'">En Attente</span>
+            <span *ngIf="claim.status === 'sent to fournisseur'">reclamation envoyer au fournisseur</span>
+            <span *ngIf="claim.status === 'received'">En proccess</span>
+            <span *ngIf="claim.status === 'accepted'">Reclamation terminer</span>
+            <span *ngIf="claim.status === 'rejected'">Reclamation Rejeter</span>
+          </div>
+        </td>
+        <td>
+          <div>
+            <span class="icon-check" (click)="acceptClaim(claim)">
+              <i class="bi bi-check-square-fill"></i>
+          </span>
+            <span
+              data-bs-toggle="modal"
+              data-bs-target="#UpdateModal"
+              (click)="editClaim(claim)"
+            >
+            <i class="bi bi-pencil-square icon-edit" ></i></span
+            ><span class="icon-delete" (click)="deleteClaim(claim)"> <i class="bi bi-trash-fill"></i></span>
+          </div>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+
+<!-- Update Modal -->
+<div
+class="modal fade"
+id="UpdateModal"
+tabindex="-1"
+aria-labelledby="UpdateModalModalLabel"
+aria-hidden="true"
+data-backdrop="static"
+data-keyboard="false"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="UpdateModalLabel">
+        Modifier réclamation
+      </h1>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form autocomplete="off">
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="description" class="form-label">Déscription</label>
+            <input 
+              name="description"
+              id="description"
+              [(ngModel)]="selectedClaim.description"
+              [ngModelOptions]="{ standalone: true }"
+            >
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="updateClaim()"
+        data-bs-dismiss="modal"
+      >
+        Modifier
+      </button>
+    </div>
+  </div>
+</div>
 </div>

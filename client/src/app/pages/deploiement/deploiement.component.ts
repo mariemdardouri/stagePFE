@@ -34,7 +34,7 @@ export class DeploiementComponent {
     this.materielService.getMateriels().subscribe(
       (data: any[]) => {
         console.log(data, 'data');
-        this.materielList = data;
+        this.materielList = data.filter(materiel => materiel.status === 'pending');
         console.log(data, 'materielList');
       },
       (error) => {
@@ -49,7 +49,7 @@ export class DeploiementComponent {
 
   accepter(): void {
     if (this.allChecked()) {
-      const uncheckedAcceptedMateriels = this.materielList.filter(materiel => !materiel.checked && materiel.status === 'accept');
+      const uncheckedAcceptedMateriels = this.materielList.filter(materiel => materiel.checked && materiel.status === 'pending');
       if (uncheckedAcceptedMateriels.length === 0) {
         this.toast.error('Vous ne pouvez pas vérifier à nouveau les matériels déjà acceptés.');
         return;
@@ -58,6 +58,7 @@ export class DeploiementComponent {
       this.materielService.updateCheckedMateriels(this.materielList).subscribe(
         (response: any) => {
           this.toast.success(response.meesage);
+          this.getAllMateriels();
         },
         (error) => {
           console.error('Erreur lors de la mise à jour des matériels:', error);

@@ -3,23 +3,35 @@
     <table class="table table-bordered">
       <thead>
         <tr>
+          <th>Agent</th>
           <th>Catégorie</th>
           <th>Numéro d'inventaire</th>
           <th>Numéro de série</th>
           <th>Founisseur</th>
-          <th>Description</th>
+          <th>Déscription</th>
+          <th>Statut</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let claim of claims">
+          <td>{{ claim.user.firstName +" "+ claim.user.lastName }}</td>
           <td>{{ claim.materiel.categorie }}</td>
           <td>{{ claim.materiel.numInv }}</td>
           <td>{{ claim.materiel.numSerie }}</td>
           <td>{{ claim.materiel.fournisseur }}</td>
           <td>{{ claim.description }}</td>
           <td>
-            
+            <div>
+              <span *ngIf="claim.status === 'pending'">En Attente</span>
+              <span *ngIf="claim.status === 'sent to fournisseur'">reclamation envoyer au fournisseur</span>
+              <span *ngIf="claim.status === 'received'">En proccess</span>
+              <span *ngIf="claim.status === 'accepted'">Reclamation terminer</span>
+              <span *ngIf="claim.status === 'rejected'">Reclamation Rejeter</span>
+            </div>
+          </td>
+          <td>
+            <button (click)="sendToFournisseur(claim)">Envoyer</button>
           </td>
         </tr>
       </tbody>

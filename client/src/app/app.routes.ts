@@ -16,6 +16,7 @@ import { NotificationsComponent } from './pages/notifications/notifications.comp
 import { AuthGuard } from './services/auth.guard';
 import { ClaimComponent } from './pages/claim/claim.component';
 import { LogistiqueClaimsComponent } from './pages/claim/logistique-claims/logistique-claims.component';
+import { FournisseurClaimsComponent } from './pages/claim/fournisseur-claims/fournisseur-claims.component';
 
 export const routes: Routes = [
     
@@ -28,6 +29,7 @@ export const routes: Routes = [
             {path:'admin/demande',component: RequestComponent},
             {path:'admin/registre',component:RegisterComponent},
             {path:'fournisseur',component: FournisseurComponent},
+            { path: 'fournisseur/réclamation', component: FournisseurClaimsComponent },
             {path:'deploiement',component: DeploiementComponent},
             {path:'approvisionnement',component: ApproComponent},
             {path:'logistique',component: LogistiqueComponent},

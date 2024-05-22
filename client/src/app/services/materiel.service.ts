@@ -40,6 +40,19 @@
       );
     }
 
+    getMaterielByFournisseur(): Observable<any[]>  {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token introuvable');
+      }
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      });
+      return this.http.get<any>(URL + 'get-materiel-by-fournisseur' , { headers }).pipe(
+        map(response => response.materiel)
+      );
+    }
+
     updateMateriel(materiel: any): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {

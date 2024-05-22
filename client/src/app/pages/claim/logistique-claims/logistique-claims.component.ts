@@ -36,4 +36,17 @@ export class LogistiqueClaimsComponent {
     );
   }
 
+  sendToFournisseur(claim: any): void {
+    this.claimService.sendClaimToFournisseur(claim).subscribe(
+      response => {
+        this.toast.success('Réclamation envoyée au fournisseur avec succès!');
+        console.log('Réclamation envoyée:', response);
+        this.getAllClaims(); 
+      },
+      error => {
+        this.toast.error('Erreur lors de l\'envoi de la réclamation.');
+        console.error('Erreur lors de l\'envoi de la réclamation:', error);
+      }
+    );
+  }
 }

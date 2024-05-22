@@ -21,6 +21,7 @@ import { NotificationsComponent } from '../notifications/notifications.component
     ];
     FournisseurMenu = [
       { label: 'Liste de matériel', path: '/fournisseur', icon: 'bi bi-person ' },
+      { label: 'Liste de réclamation', path: '/fournisseur/réclamation', icon: 'bi bi-person ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     DeploiementMenu = [

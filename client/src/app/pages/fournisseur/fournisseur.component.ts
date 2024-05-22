@@ -35,7 +35,7 @@ export class FournisseurComponent {
 
   ngOnInit(): void {
     this.setForm();
-    this.getAllMateriels();
+    this.getMaterielByFournisseur();
   }
 
   setForm(): void {
@@ -53,7 +53,7 @@ export class FournisseurComponent {
         console.log(resp);
         if (resp.success) {
           this.toast.success(resp.message);
-          this.getAllMateriels();
+          this.getMaterielByFournisseur();
         } else {
           this.toast.error(resp.message);
         }
@@ -66,8 +66,8 @@ export class FournisseurComponent {
       },
     });
   }
-  getAllMateriels(): void {
-    this.materielService.getMateriels().subscribe(
+  getMaterielByFournisseur(): void {
+    this.materielService.getMaterielByFournisseur().subscribe(
       (data: any[]) => {
         console.log(data, 'data');
         this.materielList = data;
@@ -89,7 +89,7 @@ export class FournisseurComponent {
         next: (resp: any) => {
           if (resp.success) {
             this.toast.success(resp.message);
-            this.getAllMateriels();
+            this.getMaterielByFournisseur();
             this.selectedMateriel = {};
           } else {
             this.toast.error(resp.message);
@@ -110,7 +110,7 @@ export class FournisseurComponent {
       next: (resp: any) => {
         if (resp.success) {
           this.toast.success(resp.message);
-          this.getAllMateriels();
+          this.getMaterielByFournisseur();
         } else {
           this.toast.error(resp.message);
         }

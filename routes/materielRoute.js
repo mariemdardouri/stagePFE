@@ -8,22 +8,22 @@ const jsonParser = bodyParser.json();
 
 router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
   try {
-    
+    const user = await User.findById(req.body.id);
     const newMateriel = new Materiel({
       ...req.body,
-      fournisseur : userId.firstName + " " + userId.lastName,
+      fournisseur : user.firstName + " " + user.lastName,
       numInv:''
     });
     await newMateriel.save();
-    const user = await User.findOne({ role: 'deploiement' });
-    const unseenNotifications = user.unseenNotifications || [];
+    const deploiementUser = await User.findOne({ role: 'deploiement' });
+    const unseenNotifications = deploiementUser.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-list-matetiel",
       message: 'Vous avez reçu une nouvelle liste de matériel',
       onClickPath: "/deploiement",
     });
-    user.unseenNotifications = unseenNotifications;
-    await user.save();
+    deploiementUser.unseenNotifications = unseenNotifications;
+    await deploiementUser.save();
     res.status(201).json({ message: "Matériel ajouté avec succès", success: true });
   } catch (error) {
     console.error(error);
@@ -34,6 +34,17 @@ router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
 router.get("/get-materiel", authMiddleware, jsonParser, async (req, res) => {
   try {
     const materiel = await Materiel.find({});
+    res.status(200).json({ materiel });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur lors de la récupération des matériels", success: false });
+  }
+});
+router.get("/get-materiel-by-fournisseur", authMiddleware, jsonParser, async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.body.id });
+    const materiel = await Materiel.find({fournisseur: user.firstName + " " + user.lastName});
     res.status(200).json({ materiel });
 
   } catch (error) {
@@ -79,7 +90,7 @@ router.put('/accept-materiels', authMiddleware, jsonParser, async (req, res) => 
   try {
     const updatedMateriels = await Materiel.updateMany(
       { _id: { $in: req.body.map(materiel => materiel._id) } },
-      { $set: { status: 'accepted' } },
+      { $set: { status: 'accept' } },
       { multi: true }
     );
     const user = await User.findOne({ role:'approvisionnement' });
@@ -145,17 +156,10 @@ router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => 
 router.delete( "/delete-materiel/:id", authMiddleware, jsonParser,async (req, res) => {
     try {
       const deletedMateriel = await Materiel.findByIdAndDelete(req.params.id);
-      res.status(200).json({
-        deletedMateriel,
-        message: "Le matériel a été supprimé avec succès",
-        success: true,
-      });
+      res.status(200).json({deletedMateriel,message: "Le matériel a été supprimé avec succès",success: true,});
     } catch (error) {
       console.error("Erreur lors de la suppression du matériel: ", error);
-      res.status(500).json({
-        message: "Erreur lors de la suppression du matériel",
-        success: false,
-      });
+      res.status(500).json({message: "Erreur lors de la suppression du matériel",success: false});
     }
   }
 );
