@@ -48,7 +48,11 @@ export class FournisseurComponent {
     this.materielForm = new FormGroup({
       categorie: new FormControl('', [Validators.required]),
       nature: new FormControl('', [Validators.required]),
-      numSerie: new FormControl('', [Validators.required]),
+      numSerie: new FormControl('',  [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(8),
+      ]),
     });
   }
 

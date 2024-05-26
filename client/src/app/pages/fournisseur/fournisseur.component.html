@@ -116,6 +116,7 @@
                     class="form-control"
                     name="numSerie"
                     formControlName="numSerie"
+                    maxlength="20"
                   />
                   <div
                     *ngIf="
@@ -125,6 +126,13 @@
                     class="text-danger"
                   >
                     Entrez le numéro de serie
+                  </div>
+                  <div *ngIf="
+                          materielForm.controls['cin'].hasError('minlength') &&
+                          materielForm.controls['cin'].touched"
+                          class="text-danger"
+                    >
+                    Le numéro de serie doit être exactement 20 chiffres
                   </div>
                 </div>
               </div>

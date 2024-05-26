@@ -10,6 +10,37 @@ const bcrypt = require("bcryptjs");
 
 user.use(jsonParser);
 
+router.post("/add-request", authMiddleware, jsonParser, async (req, res) => {
+  try {
+    const { firstName, lastName, cin, email, phoneNumber, role } = req.body;
+
+    const hashedPassword = await bcrypt.hash(cin, 10); 
+    const newRequest = new Request({
+      firstName: firstName,
+      lastName: lastName,
+      cin: cin,
+      email: email,
+      phoneNumber: phoneNumber,
+      password: hashedPassword, 
+      role: role,
+      status: "pending",
+    });
+    await newRequest.save();
+    const user = await User.findOne({ role: 'admin' });
+    const unseenNotifications = user.unseenNotifications || [];
+    unseenNotifications.push({
+      type: "new-user",
+      message: 'Vous avez reçu une nouvelle demande d\'utilisateur',
+      onClickPath: "/admin/demande",
+    });
+    user.unseenNotifications = unseenNotifications;
+    await user.save();
+    res.status(201).json({ message: "Demande ajouté avec succès", success: true });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Erreur lors de l'ajout du demande", success: false });
+  }
+});
 router.get("/request", authMiddleware, async (req, res) => {
   try {
     
@@ -24,6 +55,38 @@ router.get("/request", authMiddleware, async (req, res) => {
   }
 });
 
+router.put("/update-request/:id",authMiddleware,jsonParser,async (req, res) => {
+  try {
+    const updatedRequest = await Request.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    
+    res.status(200).json({
+      updatedRequest,
+      message: "La demande a été mis à jour avec succès",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la mise à jour du demande: ", error);
+    res
+      .status(500)
+      .json({ message: "Erreur lors de la mise à jour du demande", success: false });
+  }
+}
+);
+
+router.delete( "/delete-request/:id", authMiddleware, jsonParser,async (req, res) => {
+  try {
+    const deletedRequest = await Request.findByIdAndDelete(req.params.id);
+    res.status(200).json({deletedRequest,message: "La demande a été supprimé avec succès",success: true,});
+  } catch (error) {
+    console.error("Erreur lors de la suppression du demande: ", error);
+    res.status(500).json({message: "Erreur lors de la suppression du demande",success: false});
+  }
+}
+);
 router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
   try {
     const requestId = req.params.id;
@@ -41,7 +104,6 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
         .json({ message: "Demande introuvable", success: false });
     }
 
-    // Create a new user based on the request details
     const newUser = new User({
       firstName: request.firstName,
       lastName: request.lastName,
@@ -52,7 +114,7 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
       role: request.role, 
       status: "activate",
       seenNotifications: request.seenNotifications,
-      unseenNotifications: request.unseenNotifications, // Set the user's status to active
+      unseenNotifications: request.unseenNotifications, 
     });
 
     const notification = {

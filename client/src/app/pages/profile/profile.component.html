@@ -5,28 +5,38 @@
         <div class="row">
           <div class="col-xl-6 mb-3">
             <label for="firstName" class="form-label" [formGroup]="profileForm">Prénom</label>
-            <input type="text" class="form-control" name="firstName"formControlName="firstName"/>
+            <input type="text" class="form-control" name="firstName"formControlName="firstName" (keypress)="onlyLetters($event)"/>
+            <div
+            *ngIf="
+              profileForm.controls['firstName'].hasError('hasNumber') &&
+              profileForm.controls['firstName'].touched
+            "
+            class="text-danger"
+          >
+            Le prénom ne doit pas contenir de chiffres
+          </div>
           </div>
           <div class="col-xl-6 mb-3">
             <label for="lastName" class="form-label">Nom</label>
             <input
               type="text"
               class="form-control"
-              placeholder="prénom"
               name="lastName"
               formControlName="lastName"
+              (keypress)="onlyLetters($event)"
             />
+            
           </div>
         </div>
         <div class="row">
           <div class="col-xl-6 mb-3">
             <label for="cin" class="form-label">CIN</label>
             <input
-              type="cin"
+              type="text"
               class="form-control"
-              placeholder="cin"
               name="cin"
               formControlName="cin"
+              (keypress)="onlyNumbers($event)"
             />
       
           </div>
@@ -35,10 +45,18 @@
             <input
               type="email"
               class="form-control"
-              placeholder="email"
               name="email"
               formControlName="email"
             />
+            <div
+            *ngIf="
+              profileForm.controls['email'].hasError('email') &&
+              profileForm.controls['email'].touched
+            "
+            class="text-danger"
+          >
+            Email invalide
+          </div>
           </div>
         </div>
         <div class="row">
@@ -51,8 +69,18 @@
               class="form-control"
               name="phoneNumber"
               formControlName="phoneNumber"
+              maxlength="8"
             />
- 
+            <div
+            *ngIf="
+              profileForm.controls['phoneNumber'].hasError('minlength') &&
+              profileForm.controls['phoneNumber'].touched
+            "
+            class="text-danger"
+          >
+            Numéro de téléphone doit être exactement 8 chiffres
+          </div>
+            
           </div>
         </div>
         <div class="row">
@@ -63,8 +91,27 @@
               class="form-control"
               name="password"
               formControlName="password"
+              maxlength="8"
+            (keypress)="strongPassword($event)"
             />
-
+            <div
+            *ngIf="
+              profileForm.controls['password'].hasError('minlength') &&
+              profileForm.controls['password'].touched
+            "
+            class="text-danger"
+          >
+            Le mot de passe doit comporter au moins 8 caractères
+          </div>
+          <div
+            *ngIf="
+              profileForm.controls['password'].hasError('strongPassword') &&
+              profileForm.controls['password'].touched
+            "
+            class="text-danger"
+          >
+            Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial
+          </div>
           </div>
           <div class="col-xl-6 mb-3">
             <label for="password" class="form-label"
@@ -75,7 +122,17 @@
               class="form-control"
               name="password"
               formControlName="password"
+              maxlength="8"
             />
+            <div
+            *ngIf="
+              profileForm.controls['confirmPassword'].hasError('passwordMismatch') && 
+              profileForm.controls['confirmPassword'].touched
+            "
+            class="text-danger"
+          >
+            Les mots de passe ne sont pas correspandant
+          </div>
           </div>
         </div>
         <button

@@ -21,8 +21,8 @@ import { UserService } from '../../services/user.service';
 })
 export class RequestComponent {
   displayedColumns: string[] = [
-    'Nom',
     'Prénom',
+    'Nom',
     'CIN',
     'Email',
     'NuméroTél',

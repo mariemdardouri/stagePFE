@@ -67,7 +67,7 @@ export class ClaimService {
     if (!token) {
       throw new Error('Token introuvable');
     }
-  
+
     const headers = new HttpHeaders({
       Authorization: `Bearer ${token}`,
     });

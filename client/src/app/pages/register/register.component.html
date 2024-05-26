@@ -8,9 +8,10 @@
           <input
             type="text"
             class="form-control"
-            placeholder="nom"
+            placeholder="prénom"
             name="firstName"
             formControlName="firstName"
+            (keypress)="onlyLetters($event)"
           />
           <div
             *ngIf="
@@ -21,6 +22,15 @@
           >
             Entrez votre prénom
           </div>
+          <div
+          *ngIf="
+            userRegForm.controls['firstName'].hasError('hasNumber') &&
+            userRegForm.controls['firstName'].touched
+          "
+          class="text-danger"
+        >
+          Le prénom ne doit pas contenir de chiffres
+        </div>
         </div>
 
         <div class="col-xl-6 mb-3">
@@ -28,9 +38,10 @@
           <input
             type="text"
             class="form-control"
-            placeholder="prénom"
+            placeholder="nom"
             name="lastName"
             formControlName="lastName"
+            (keypress)="onlyLetters($event)"
           />
           <div
             *ngIf="
@@ -41,6 +52,15 @@
           >
             Entrez votre nom
           </div>
+          <div
+            *ngIf="
+              userRegForm.controls['lastName'].hasError('hasNumber') &&
+              userRegForm.controls['lastName'].touched
+            "
+            class="text-danger"
+          >
+            Le nom ne doit pas contenir de chiffres
+          </div>
         </div>
       </div>
 
@@ -48,11 +68,13 @@
         <div class="col-xl-6 mb-3">
           <label for="cin" class="form-label">CIN</label>
           <input
-            type="cin"
+            type="text"
             class="form-control"
             placeholder="cin"
             name="cin"
             formControlName="cin"
+            maxlength="8"
+            (keypress)="onlyNumbers($event)"
           />
           <div
             *ngIf="
@@ -62,6 +84,13 @@
             class="text-danger"
           >
             Entrez votre cin
+          </div>
+          <div *ngIf="
+              userRegForm.controls['cin'].hasError('minlength') &&
+              userRegForm.controls['cin'].touched"
+            class="text-danger"
+          >
+            CIN doit être exactement 8 chiffres
           </div>
         </div>
         <div class="col-xl-6 mb-3">
@@ -82,6 +111,15 @@
           >
             Entrez votre email
           </div>
+          <div
+            *ngIf="
+              userRegForm.controls['email'].hasError('email') &&
+              userRegForm.controls['email'].touched
+            "
+            class="text-danger"
+          >
+            Email invalide
+          </div>
         </div>
       </div>
 
@@ -94,7 +132,9 @@
             type="tel"
             class="form-control"
             name="phoneNumber"
+            placeholder="numéro du téléohone"
             formControlName="phoneNumber"
+            maxlength="8"
           />
           <div
             *ngIf="
@@ -104,6 +144,15 @@
             class="text-danger"
           >
             Entrez votre numéro de téléphone
+          </div>
+          <div
+            *ngIf="
+              userRegForm.controls['phoneNumber'].hasError('minlength') &&
+              userRegForm.controls['phoneNumber'].touched
+            "
+            class="text-danger"
+          >
+            Numéro de téléphone doit être exactement 8 chiffres
           </div>
         </div>
         <div class="col-xl-6 mb-3">
@@ -135,6 +184,8 @@
             placeholder="mot de passe"
             name="password"
             formControlName="password"
+            maxlength="8"
+            (keypress)="strongPassword($event)"
           />
           <div
             *ngIf="
@@ -144,6 +195,24 @@
             class="text-danger"
           >
             Entrez votre mot de passe
+          </div>
+          <div
+            *ngIf="
+              userRegForm.controls['password'].hasError('minlength') &&
+              userRegForm.controls['password'].touched
+            "
+            class="text-danger"
+          >
+            Le mot de passe doit comporter au moins 8 caractères
+          </div>
+          <div
+            *ngIf="
+              userRegForm.controls['password'].hasError('strongPassword') &&
+              userRegForm.controls['password'].touched
+            "
+            class="text-danger"
+          >
+            Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial
           </div>
         </div>
         <div class="col-xl-6 mb-3">
@@ -156,6 +225,8 @@
             placeholder="mot de passe"
             name="confirmPassword"
             formControlName="confirmPassword"
+            maxlength="8"
+            
           />
           <div
             *ngIf="
@@ -168,9 +239,8 @@
           </div>
           <div
             *ngIf="
-              userRegForm.controls['confirmPassword'].hasError(
-                'passwordmatcherror'
-              ) && userRegForm.controls['confirmPassword'].touched
+              userRegForm.controls['confirmPassword'].hasError('passwordMismatch') && 
+              userRegForm.controls['confirmPassword'].touched
             "
             class="text-danger"
           >

@@ -43,6 +43,7 @@ import { NotificationsComponent } from '../notifications/notifications.component
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     ResponsableSiteMenu = [
+      { label: 'Les demandes', path: '/responsableSite', icon: 'bi bi-person ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     AgentLogistiqueMenu = [

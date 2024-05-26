@@ -35,22 +35,49 @@ export class ProfileComponent {
       {
       firstName : new FormControl({value:'',disabled:true}) ,
       lastName : new FormControl({value:'',disabled:true})   ,
-      cin : new FormControl({value:'',disabled:true}) ,
+      cin : new FormControl({value:'',disabled:true},[
+        Validators.minLength(8),
+        Validators.maxLength(8), 
+      ]) ,
       email : new FormControl('')  ,
-      phoneNumber : new FormControl('')   ,
-      password :new FormControl('')  ,
-      confirmPassword : new FormControl(''),
-    },
-    {validators:this.matchpassword})
+      phoneNumber : new FormControl('', [Validators.minLength(8),]),
+      password: new FormControl('', [
+        Validators.minLength(8),
+        this.strongPasswordValidator(),
+      ]),
+      confirmPassword: new FormControl('', [
+        Validators.minLength(8),
+        this.matchPasswordValidator(),
+      ]),
+     }
+    )
   }
 
-  matchpassword : ValidatorFn =(control : AbstractControl):ValidationErrors | null =>{
-    const password = control.get('password')?.value;
-    const confirmpassword = control.get('confirmPassword')?.value ;
-   
-   return password === confirmpassword ? null: {passwordmatcherror: true};  
-   }
-   
+  matchPasswordValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const password = control.root.get('password')?.value;
+      const confirmPassword = control.value;
+      return password === confirmPassword ? null : { passwordMismatch: true };
+    };
+  }
+  strongPasswordValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value;
+      if (!value) {
+        return null;
+      }
+      const hasUpperCase = /[A-Z]/.test(value);
+      const hasLowerCase = /[a-z]/.test(value);
+      const hasNumeric = /[0-9]/.test(value);
+      const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(value);
+
+      const isValid =
+        hasUpperCase && hasLowerCase && hasNumeric && hasSpecial;
+      return !isValid ? { strongPassword: true } : null;
+    };
+  }
+
+  
    
    getUpdatedFields(): any {
      const updatedFields: any = {};
@@ -98,5 +125,27 @@ export class ProfileComponent {
         }
       });
     
+  }
+
+  onlyLetters(event: any) {
+    const pattern = /[a-zA-Z]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  strongPassword(event: any) {
+    const pattern = /[a-zA-Z0-9@#$%^&*(),.?":{}|<>]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+  onlyNumbers(event: any) {
+    const pattern = /[0-9]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
   }
 }
