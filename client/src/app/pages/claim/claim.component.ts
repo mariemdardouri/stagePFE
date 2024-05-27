@@ -6,11 +6,12 @@ import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MaterielService } from '../../services/materiel.service';
 import { AuthService } from '../../services/auth.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-claim',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,],
+  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule,],
   templateUrl: './claim.component.html',
   styleUrl: './claim.component.css'
 })
@@ -18,7 +19,7 @@ export class ClaimComponent {
   selectedClaim: any = {};
   claims: any[] = [];
   userId: any;
-  
+  p: number = 1;
 
   constructor(private claimService: ClaimService,  private route: ActivatedRoute,private toast: ToastrService, private materielService: MaterielService,) { }
 

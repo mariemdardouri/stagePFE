@@ -7,6 +7,7 @@ import { UserService } from '../../services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { RequestService } from '../../services/request.service';
 import { PageEvent } from '@angular/material/paginator';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-site',
@@ -17,6 +18,7 @@ import { PageEvent } from '@angular/material/paginator';
     RouterModule,
     RouterOutlet,
     CommonModule,
+    NgxPaginationModule,
   ],
   templateUrl: './site.component.html',
   styleUrl: './site.component.css',
@@ -26,7 +28,7 @@ export class SiteComponent {
   userForm!: FormGroup;
   selectedUser: any = {};
   file!: File;
-  page: number = 1;
+  p: number = 1;
 
   constructor(private requestService: RequestService,
     private http: HttpClient,
@@ -120,9 +122,6 @@ deleteRequest(request: any): void {
     },
   });
 }
-  onFileChange(event: any) {
-    this.file = event.target.files[0];
-  }
 
   uploadCSV() {
     const formData = new FormData();
@@ -165,6 +164,19 @@ deleteRequest(request: any): void {
   }
 
   handlePageChange(event: PageEvent): void {
-    this.page = event.pageIndex + 1; // Adjust as needed based on your pagination logic
+    this.p = event.pageIndex + 1; // Adjust as needed based on your pagination logic
+  }
+  onFileChange(event: any): void {
+    this.file = event.target.files[0];
+    this.updateFileName(event);
+  }
+
+  updateFileName(event: any): void {
+    const input = event.target;
+    const fileName = input.files.length ? input.files[0].name : 'Aucun fichier choisi';
+    const fileNameElement = document.getElementById('fileName');
+    if (fileNameElement) {
+      fileNameElement.textContent = fileName;
+    }
   }
 }

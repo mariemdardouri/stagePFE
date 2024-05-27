@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-logistique',
@@ -15,6 +16,7 @@ import { UserService } from '../../services/user.service';
     RouterOutlet,
     CommonModule,
     FormsModule,
+    NgxPaginationModule,
   ],
   templateUrl: './logistique.component.html',
   styleUrl: './logistique.component.css',
@@ -22,7 +24,7 @@ import { UserService } from '../../services/user.service';
 export class LogistiqueComponent {
   materielList: any[] = [];
   userList: any[] = [];
-
+  p: number = 1;
   constructor(
     private materielService: MaterielService,
     private userService : UserService,

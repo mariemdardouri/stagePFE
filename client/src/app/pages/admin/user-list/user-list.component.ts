@@ -6,6 +6,7 @@ import { RegisterComponent } from '../../register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-user-list',
@@ -17,6 +18,7 @@ import { ToastrService } from 'ngx-toastr';
     RegisterComponent,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css',
@@ -34,6 +36,8 @@ export class UserListComponent {
   ];
   selectedUser: any = {};
   userList: any[] = [];
+  p: number = 1;
+
   constructor(private userService: UserService, private toast: ToastrService) {}
 
   ngOnInit(): void {
@@ -95,4 +99,21 @@ export class UserListComponent {
       },
     });
   }
+
+  onlyLetters(event: any) {
+    const pattern = /[a-zA-Z]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
+  onlyNumbers(event: any) {
+    const pattern = /[0-9]/;
+    const inputChar = String.fromCharCode(event.charCode);
+    if (!pattern.test(inputChar)) {
+      event.preventDefault();
+    }
+  }
+
 }

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
   <h2 class="title">Réclamations</h2>
   <table class="table table-bordered">
     <thead>
@@ -12,7 +12,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let claim of claims">
+      <tr *ngFor="let claim of claims | paginate: { itemsPerPage: 7, currentPage: p }">
         <td>{{ claim.materiel.categorie }}</td>
         <td>{{ claim.materiel.numInv }}</td>
         <td>{{ claim.materiel.numSerie }}</td>
@@ -43,6 +43,10 @@
       </tr>
     </tbody>
   </table>
+  <div class="d-flex justify-content-end">
+    <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+    nextLabel="Suivant"></pagination-controls>
+  </div>
 </div>
 
 <!-- Update Modal -->
@@ -86,7 +90,7 @@ data-keyboard="false"
     <div class="modal-footer">
       <button
         type="button"
-        class="btn btn-primary"
+        class="btn btn-primary float-end m-2"
         (click)="updateClaim()"
         data-bs-dismiss="modal"
       >

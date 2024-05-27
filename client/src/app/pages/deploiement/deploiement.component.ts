@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-deploiement',
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     CommonModule,
     FormsModule,
+    NgxPaginationModule,
   ],
   templateUrl: './deploiement.component.html',
   styleUrl: './deploiement.component.css',
@@ -21,6 +23,8 @@ import { CommonModule } from '@angular/common';
 export class DeploiementComponent {
   materielList: any[] = [];
   checkedMateriels: any[] = [];
+  p: number = 1;
+
   constructor(
     private materielService: MaterielService,
     private toast: ToastrService
@@ -57,7 +61,7 @@ export class DeploiementComponent {
   
       this.materielService.updateCheckedMateriels(this.materielList).subscribe(
         (response: any) => {
-          this.toast.success(response.meesage);
+          this.toast.success(response.message);
           this.getAllMateriels();
         },
         (error) => {

@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-request',
@@ -15,6 +16,7 @@ import { UserService } from '../../services/user.service';
     RouterModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxPaginationModule,
   ],
   templateUrl: './request.component.html',
   styleUrl: './request.component.css',
@@ -31,6 +33,8 @@ export class RequestComponent {
     'Actionz',
   ];
   userRequests: any[] = [];
+  p: number = 1;
+
   constructor(
     private requestService: RequestService,
     private userService: UserService,

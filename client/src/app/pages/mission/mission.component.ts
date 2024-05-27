@@ -12,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-mission',
@@ -22,6 +23,7 @@ import { AuthService } from '../../services/auth.service';
     RouterModule,
     RouterOutlet,
     CommonModule,
+    NgxPaginationModule,
   ],
   templateUrl: './mission.component.html',
   styleUrl: './mission.component.css',
@@ -32,6 +34,8 @@ export class MissionComponent {
   missionForm!: FormGroup;
   selectedMission: any = {};
   agentLogistique: any;
+  p: number = 1;
+  
   constructor(
     private missionService: MissionService,
     private authService: AuthService,

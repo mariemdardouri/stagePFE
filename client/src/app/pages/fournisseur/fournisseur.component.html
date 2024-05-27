@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h1>Table des materiels</h1>
+  <h2 class="title">Table des Materiels</h2>
   <div>
     <button
       data-bs-toggle="modal"
@@ -24,7 +24,7 @@
           <th for="action">Actions</th>
       </thead>
       <tbody>
-        <tr *ngFor="let materiel of materielList">
+        <tr *ngFor="let materiel of materielList | paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ materiel.categorie }}</td>
           <td>{{ materiel.nature }}</td>
           <td>{{ materiel.numSerie }}</td>
@@ -42,6 +42,10 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-end">
+      <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+      nextLabel="Suivant"></pagination-controls>
+    </div>
   </div>
 </div>
 
@@ -118,22 +122,6 @@
                     formControlName="numSerie"
                     maxlength="20"
                   />
-                  <div
-                    *ngIf="
-                      materielForm.controls['numSerie'].hasError('required') &&
-                      materielForm.controls['numSerie'].touched
-                    "
-                    class="text-danger"
-                  >
-                    Entrez le numéro de serie
-                  </div>
-                  <div *ngIf="
-                          materielForm.controls['cin'].hasError('minlength') &&
-                          materielForm.controls['cin'].touched"
-                          class="text-danger"
-                    >
-                    Le numéro de serie doit être exactement 20 chiffres
-                  </div>
                 </div>
               </div>
             </form>
@@ -141,6 +129,7 @@
           <div class="modal-footer">
             <button
               mat-raised-button 
+              class="btn btn-primary"
               type="submit" 
               (click)="submit()"
               data-bs-dismiss="modal">
@@ -232,6 +221,7 @@ data-keyboard="false"
                 id="numSerie"
                 [(ngModel)]="selectedMateriel.numSerie"
                 [ngModelOptions]="{ standalone: true }"
+                maxlength="20"
               />
             </div>
         </div>
@@ -257,7 +247,7 @@ data-keyboard="false">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="UpdateModalLabel">
-          importer materiel
+          Importer Matériel
         </h1>
         <button
           type="button"
@@ -267,15 +257,18 @@ data-keyboard="false">
         ></button>
       </div>
       <div class="modal-body">
-        
           <div class="file-upload-container">
-            <h2>importer fichier CSV</h2>
-            <input type="file"  id="fileInput" (change)="onFileChange($event)" />          
+            <h2>Importer fichier CSV</h2>
+            <label class="custom-file-upload">
+              Choisir un fichier
+              <input type="file"  (change)="onFileChange($event)" />
+            </label>
+            <span id="fileName">Aucun fichier choisi</span>  
+              
           </div>
-    
       </div>
       <div class="modal-footer">
-        <button (click)="uploadCSV()" class="btn btn-primary">Importer</button>
+        <button type="button" (click)="uploadCSV()" class="btn btn-primary" data-bs-dismiss="modal">Importer</button>
     </div>
     </div>
   </div>
@@ -301,12 +294,13 @@ data-keyboard="false">
         ></button>
       </div>
       <div class="modal-body">
-          <div class="file-upload-container">
-            <h2>Scanner code QR</h2>       
-            <qrcode *ngIf="qrCodeData" [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
-          </div>
-      </div>
- 
+        <div class="file-upload-container" #qr>      
+          <qrcode *ngIf="qrCodeData" [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        </div>
+    </div>
+    <div class="modal-footer">
+      <button  class="btn btn-primary" (click)="downloadqr()">Télecharger</button>
+  </div>
     </div>
   </div>
 </div>

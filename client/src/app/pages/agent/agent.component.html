@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container-fluid">
     <h2 class="title">Materiel du l'agent</h2>
     <hr>
     <table class="table table-bordered">
@@ -12,23 +12,26 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let materiel of affectedMateriels">
+        <tr *ngFor="let materiel of affectedMateriels | paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ materiel.categorie }}</td>
           <td>{{ materiel.nature }}</td>
           <td>{{ materiel.numSerie }}</td>
           <td>{{ materiel.numInv }}</td>
           <td>
-            <span class="icon-check" (click)="receiveMateriel(materiel)">
-                <i class="bi bi-check-square-fill"></i>
-            </span>
-            <span class="btn btn-primary" data-bs-toggle="modal"
-               (click)="selectMateriel(materiel)" data-bs-target="#addModal" >
-               Créé Réclamation
-          </span>
+            <button *ngIf="materiel.status !== 'received'" class="btn btn-success m-2" [class.received]="materiel.received" (click)="receiveMateriel(materiel)">
+              Recevoir matériel
+            </button>
+            <button class="btn btn-primary m-2" data-bs-toggle="modal" (click)="selectMateriel(materiel)" data-bs-target="#addModal">
+              Créer réclamation
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-end">
+      <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+      nextLabel="Suivant"></pagination-controls>
+    </div>
   </div>
 
 <div 

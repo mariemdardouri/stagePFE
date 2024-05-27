@@ -5,11 +5,12 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { NotificationService } from '../../services/notification.service';
 import { LayoutComponent } from '../layout/layout.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-notifications',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, RouterOutlet, CommonModule],
+  imports: [ReactiveFormsModule, RouterModule, RouterOutlet, CommonModule,NgxPaginationModule,],
   templateUrl: './notifications.component.html',
   styleUrl: './notifications.component.css',
 })
@@ -21,6 +22,7 @@ export class NotificationsComponent implements OnInit {
   notification: any;
   notificationList: any;
   activeTab: 'unseen' | 'seen' = 'unseen';
+  p: number = 1;
 
   constructor(
     private router: Router,

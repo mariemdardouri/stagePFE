@@ -13,6 +13,16 @@ router.post("/add-mission", authMiddleware, jsonParser, async (req, res) => {
       ...req.body,
     });
     await newMission.save();
+
+    const user = await User.findOne({ role:"logistique"});
+    const unseenNotifications = user.unseenNotifications || [];
+    unseenNotifications.push({
+      type: "new-mission",
+      message: `Vous avez une nouvelle mission de la part du responsable logistique ${user.firstName +' '+ user.lastName}`,
+      onClickPath: "/agentLogistique",
+    });
+    user.unseenNotifications = unseenNotifications;
+    await user.save();
     res.status(201).json({ message: "Mission ajouté avec succès", success: true });
   } catch (error) {
     console.error(error);
@@ -103,14 +113,7 @@ router.get("/missions", authMiddleware,jsonParser, async (req, res) => {
     const user = await User.findOne({ _id: req.body.id });
     const missions = await Mission.find({ agentLogistique : user.firstName + " " + user.lastName });
     res.status(200).json(missions);
-    const unseenNotifications = user.unseenNotifications || [];
-    unseenNotifications.push({
-      type: "new-mission",
-      message: `Vous avez une nouvelle mission de la part du responsable logistique ${user.role}`,
-      onClickPath: "/agentLogistique",
-    });
-    user.unseenNotifications = unseenNotifications;
-    await user.save();
+   
     
   } catch (error) {
     console.error("Erreur lors de la récupération des missions utilisateur:", error);

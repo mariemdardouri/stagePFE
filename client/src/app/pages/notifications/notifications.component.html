@@ -17,11 +17,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let notification of unseenNotifications" (click)="navigateToRequests(notification.onClickPath)">
+          <tr *ngFor="let notification of unseenNotifications | paginate: { itemsPerPage: 10, currentPage: p }" (click)="navigateToRequests(notification.onClickPath) ">
             <td>{{ notification.message }}</td>
           </tr>
         </tbody>
       </table>
+      <div class="d-flex justify-content-end">
+        <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+        nextLabel="Suivant"></pagination-controls>
+      </div>
       <div class="actions-container">
         <button (click)="markAllAsSeen()" class="btn btn-primary float-end m-2">Marquer tout comme vu</button>
       </div>
@@ -35,11 +39,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let notification of seenNotifications" (click)="navigateToRequests(notification.onClickPath)">
+          <tr *ngFor="let notification of seenNotifications | paginate: { itemsPerPage: 10, currentPage: p }" (click)="navigateToRequests(notification.onClickPath)">
             <td>{{ notification.message }}</td>
           </tr>
         </tbody>
       </table>
+      <div class="d-flex justify-content-end">
+        <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+        nextLabel="Suivant"></pagination-controls>
+      </div>
       <div class="actions-container">
         <button (click)="deleteAllNotifications()" class="btn btn-primary float-end m-2">Supprimer toutes les notifications</button>
       </div>

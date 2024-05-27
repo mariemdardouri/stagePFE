@@ -39,7 +39,7 @@ router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
     const unseenNotifications = deploiementUser.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-list-matetiel",
-      message: 'Vous avez reçu une nouvelle liste de matériel',
+      message: `Vous avez reçu un matériel a été envoyée par ${newMateriel.fournisseur}` ,
       onClickPath: "/deploiement",
     });
     deploiementUser.unseenNotifications = unseenNotifications;
@@ -95,14 +95,14 @@ router.put("/update-materiel/:id",authMiddleware,jsonParser,async (req, res) => 
       }
       res.status(200).json({
         updatedMateriel,
-        message: "Le matériel a été mis à jour avec succès",
+        message: "Le numéro d'inventaire a été afféctuer avec succès",
         success: true,
       });
     } catch (error) {
-      console.error("Erreur lors de la mise à jour du matériel: ", error);
+      console.error("Erreur lors de l'affectation du numéro d'inventaire: ", error);
       res
         .status(500)
-        .json({ message: "Erreur lors de la mise à jour du matériel", success: false });
+        .json({ message: "Erreur lors de l'affectation du numéro d'inventaire", success: false });
     }
   }
 );
@@ -113,13 +113,14 @@ router.put('/accept-materiels', authMiddleware, jsonParser, async (req, res) => 
       { $set: { status: 'accept' } },
       { multi: true }
     );
+    
     const user = await User.findOne({ role:'approvisionnement' });
     console.log(user,'ooooo');
     if (user) {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "accepted-list-materiel",
-        message: 'La liste des matériels a été acceptée',
+        message: `La liste des matériels a été acceptée par le responsable de deploiement `,
         onClickPath: "/approvisionnement",
       });
       user.unseenNotifications = unseenNotifications;
@@ -127,13 +128,13 @@ router.put('/accept-materiels', authMiddleware, jsonParser, async (req, res) => 
     }
     res.status(200).json({
       updatedMateriels,
-      message: "Les matériels ont été mis à jour avec succès",
-      success: true
+      message: "Les matériels ont été acceptée  avec succès",
+      success: true,
     });
   } catch (error) {
-    console.error("Erreur lors de la mise à jour du matériel: ", error);
+    console.error("Erreur lors de l' acceptation  du matériel: ", error);
     res.status(500).json({
-      message: "Erreur lors de la mise à jour du matériel",
+      message: "Erreur lors de l' acceptation du matériel",
       success: false
     });
   }
@@ -202,7 +203,7 @@ router.put('/affecter-materiels', authMiddleware, jsonParser, async (req, res) =
         const unseenNotifications = user.unseenNotifications || [];
         unseenNotifications.push({
           type: "materiel-assigned",
-          message: `Un nouveau matériel vous a été affecté : ${materiel.nature}`,
+          message: `Un nouveau matériel vous a été affecté : categorie ${ materiel.categorie} et nature ${materiel.nature}`,
           onClickPath: "/agent"
         });
         user.unseenNotifications = unseenNotifications;
@@ -276,7 +277,7 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
   const user = await User.findOne(req.body.id);
   console.log(user,'user');
   if (!user) {
-    return res.status(404).json({ message: "User not found", success: false });
+    return res.status(404).json({ message: "Utilisateur non trouvé", success: false });
   }
  
   const csvData = [];
@@ -295,18 +296,28 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
       try {
         if (csvData.length > 0) {
           await Materiel.insertMany(csvData);
-          res.status(200).json({ message: "CSV data imported successfully" ,success:true });
+          const userDeploiement = await User.findOne({ role:"deploiement"});
+          if (userDeploiement) {
+            userDeploiement.unseenNotifications = userDeploiement.unseenNotifications || [];
+            userDeploiement.unseenNotifications.push({
+              type: "materiel-list",
+              message: `Une nouvelle liste de matériel a été envoyée par fournisseur ${user.firstName + ' '+user.lastName} `,
+              onClickPath: "/deploiement",
+            });
+            await userDeploiement.save();
+          }
+          res.status(200).json({ message: "Données CSV importées avec succès" ,success:true });
         } else {
-          console.error("No valid data to import");
-          res.status(400).json({ message: "No valid data to import" });
+          console.error("Aucune donnée valide à importer");
+          res.status(400).json({ message: "Aucune donnée valide à importer",success:false });
         }
       } catch (error) {
-        console.error("Error importing CSV data:", error);
-        res.status(500).json({ message: "Error importing CSV data" ,success:false });
+        console.error("Erreur lors de l'importation des données CSV:", error);
+        res.status(500).json({ message: "Erreur lors de l'importation des données CSV" ,success:false });
       } finally {
         fs.unlink(req.file.path, (err) => {
           if (err) {
-            console.error("Error deleting uploaded file:", err);
+            console.error("Erreur lors de la suppression du fichier téléchargé:", err);
           }
         });
       }

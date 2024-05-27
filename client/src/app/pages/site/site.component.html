@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h1>Table de demandes des comptes </h1>
+  <h2 class="title">Table de demandes des comptes </h2>
   <div>
     <button
       data-bs-toggle="modal"
@@ -12,8 +12,7 @@
       <i class="bi bi-file-earmark-arrow-down-fill"></i>
       </button>
   </div>
-  <div>
-    <table class="table table-bordered">
+  <table class="table table-bordered">
       <thead>
         <tr>
           <th for="firstName">Prénom</th>
@@ -25,8 +24,8 @@
           <th>Actions</th>
 
       </thead>
-      <tbody style="max-height: 400px; overflow-y: auto;">
-        <tr *ngFor="let user of userList">
+      <tbody>
+        <tr *ngFor="let user of userList | paginate: { itemsPerPage: 10, currentPage: p }">
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.cin }}</td>
@@ -46,20 +45,10 @@
           </td>
         </tr>
       </tbody>
-    </table>
-    <nav aria-label="Page navigation example">
-      <ul class="pagination justify-content-end">
-        <li class="page-item disabled">
-          <a class="page-link">Previous</a>
-        </li>
-        <li class="page-item"><a class="page-link" href="#">1</a></li>
-        <li class="page-item"><a class="page-link" href="#">2</a></li>
-        <li class="page-item"><a class="page-link" href="#">3</a></li>
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>
+  </table>
+  <div class="d-flex justify-content-end">
+    <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+    nextLabel="Suivant"></pagination-controls>
   </div>
 </div>
 
@@ -304,7 +293,7 @@ data-keyboard="false"
       <form autocomplete="off">
         <div class="row">
           <div class="col-xl-6 mb-3">
-            <label for="firstName" class="form-label">Nom</label>
+            <label for="firstName" class="form-label">Prénom</label>
             <input
               type="text"
               name="firstName"
@@ -312,11 +301,31 @@ data-keyboard="false"
               class="form-control"
               [(ngModel)]="selectedUser.firstName"
               [ngModelOptions]="{ standalone: true }"
-            />
+              (keypress)="onlyLetters($event)"
+              />
+              <div
+                *ngIf="
+                  userForm.controls['firstName'].hasError('required') &&
+                  userForm.controls['firstName'].touched
+                "
+                class="text-danger"
+              >
+                Entrez votre prénom
+              </div>
+              <div
+              *ngIf="
+                userForm.controls['firstName'].hasError('hasNumber') &&
+                userForm.controls['firstName'].touched
+              "
+              class="text-danger"
+            >
+              Le prénom ne doit pas contenir de chiffres
+            </div>
+            
           </div>
 
           <div class="col-xl-6 mb-3">
-            <label for="lastName" class="form-label">Prénom</label>
+            <label for="lastName" class="form-label">Nom</label>
             <input
               type="text"
               name="lastName"
@@ -324,7 +333,23 @@ data-keyboard="false"
               class="form-control"
               [(ngModel)]="selectedUser.lastName"
               [ngModelOptions]="{ standalone: true }"
-            />
+              (keypress)="onlyLetters($event)"
+              />
+              <div
+                *ngIf="userForm.controls['lastName'].hasError('required') &&
+                       userForm.controls['lastName'].touched"
+                    class="text-danger">
+                    Entrez votre nom
+              </div>
+              <div
+                *ngIf="
+                     userForm.controls['lastName'].hasError('hasNumber') &&
+                    userForm.controls['lastName'].touched
+                    "
+                    class="text-danger"
+                  >
+                    Le nom ne doit pas contenir de chiffres
+               </div>
           </div>
         </div>
 
@@ -338,7 +363,25 @@ data-keyboard="false"
               class="form-control"
               [(ngModel)]="selectedUser.cin"
               [ngModelOptions]="{ standalone: true }"
+              maxlength="8"
+              (keypress)="onlyNumbers($event)"
             />
+            <div
+              *ngIf="
+                userForm.controls['cin'].hasError('required') &&
+                userForm.controls['cin'].touched
+              "
+              class="text-danger"
+            >
+              Entrez votre cin
+            </div>
+            <div *ngIf="
+                userForm.controls['cin'].hasError('minlength') &&
+                userForm.controls['cin'].touched"
+              class="text-danger"
+            >
+              CIN doit être exactement 8 chiffres
+            </div>
           </div>
           <div class="col-xl-6 mb-3">
             <label for="email" class="form-label">Email</label>
@@ -350,6 +393,15 @@ data-keyboard="false"
               [(ngModel)]="selectedUser.email"
               [ngModelOptions]="{ standalone: true }"
             />
+            <div
+            *ngIf="
+              userForm.controls['email'].hasError('email') &&
+              userForm.controls['email'].touched
+            "
+            class="text-danger"
+          >
+            Email invalide
+          </div>
           </div>
         </div>
 
@@ -359,12 +411,31 @@ data-keyboard="false"
               >Numéro du Téléohone</label
             >
             <input
-              type="number"
+              type="tel"
               name="phoneNumber"
               id="phoneNumber"
               [(ngModel)]="selectedUser.phoneNumber"
               [ngModelOptions]="{ standalone: true }"
-            />
+              maxlength="8"
+              />
+              <div
+                *ngIf="
+                  userForm.controls['phoneNumber'].hasError('required') &&
+                  userForm.controls['phoneNumber'].touched
+                "
+                class="text-danger"
+              >
+                Entrez votre numéro de téléphone
+              </div>
+              <div
+                *ngIf="
+                  userForm.controls['phoneNumber'].hasError('minlength') &&
+                  userForm.controls['phoneNumber'].touched
+                "
+                class="text-danger"
+              >
+                Numéro de téléphone doit être exactement 8 chiffres
+              </div>
           </div>
           <div class="col-xl-6 mb-3">
             <label for="role" class="form-label">Role</label>
@@ -423,16 +494,19 @@ data-keyboard="false">
         ></button>
       </div>
       <div class="modal-body">
-        
-          <div class="file-upload-container">
-            <h4>Importer fichier CSV</h4>
-            <input type="file"  id="fileInput" (change)="onFileChange($event)" />          
-          </div>
-    
-      </div>
-      <div class="modal-footer">
-        <button (click)="uploadCSV()" class="btn btn-primary">Importer</button>
+        <div class="file-upload-container">
+          <h2>Importer fichier CSV</h2>
+          <label class="custom-file-upload">
+            Choisir un fichier
+            <input type="file"  (change)="onFileChange($event)" />
+          </label>
+          <span id="fileName">Aucun fichier choisi</span>  
+            
+        </div>
     </div>
+    <div class="modal-footer">
+      <button type="button" (click)="uploadCSV()" class="btn btn-primary" data-bs-dismiss="modal">Importer</button>
+  </div>
     </div>
   </div>
 </div>

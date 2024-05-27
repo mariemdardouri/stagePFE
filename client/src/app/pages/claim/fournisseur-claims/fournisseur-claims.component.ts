@@ -4,17 +4,19 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ClaimService } from '../../../services/claim.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 @Component({
   selector: 'app-fournisseur-claims',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule],
+  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule,],
   templateUrl: './fournisseur-claims.component.html',
   styleUrl: './fournisseur-claims.component.css'
 })
 export class FournisseurClaimsComponent {
   claims: any[] = [];
+  p: number = 1;
 
   constructor(private claimService: ClaimService, private toast: ToastrService) { }
 
@@ -39,8 +41,8 @@ export class FournisseurClaimsComponent {
     this.claimService.receiveClaim(claim).subscribe({
       next: (resp: any) => {
         if (resp.success) {
-          this.toast.success('Réclamation mise à jour avec succès');
           this.toast.success(resp.message);
+          this.getClaimsForFournisseur();
         } else {
           this.toast.error(resp.message);
         }

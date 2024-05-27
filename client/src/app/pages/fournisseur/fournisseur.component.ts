@@ -1,28 +1,26 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild , ElementRef } from '@angular/core';
 import { MaterielService } from '../../services/materiel.service';
-import {
-  FormControl,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-  Validators,
-} from '@angular/forms';
+import {FormControl,FormGroup,FormsModule,ReactiveFormsModule,Validators,} from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { QRCodeModule } from 'angularx-qrcode';
 import { HttpClient } from '@angular/common/http';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { saveAs } from 'file-saver';  
+import { QRCodeComponent } from 'angularx-qrcode';
 
 @Component({
   selector: 'app-fournisseur',
   standalone: true,
   imports: [
+    RouterOutlet,
     FormsModule,
     ReactiveFormsModule,
     RouterModule,
-    RouterOutlet,
     CommonModule,
-    QRCodeModule
+    QRCodeModule,
+    NgxPaginationModule,
   ],
   templateUrl: './fournisseur.component.html',
   styleUrl: './fournisseur.component.css',
@@ -33,10 +31,14 @@ export class FournisseurComponent {
   materielList: any[] = [];
   materielForm!: FormGroup;
   selectedMateriel: any = {};
+  p: number = 1;
+  @ViewChild('qr', { static: false })qr!:ElementRef;
+
   constructor(
     private materielService: MaterielService,
     private http: HttpClient,
-    private toast: ToastrService
+    private toast: ToastrService,
+    
   ) {}
 
   ngOnInit(): void {
@@ -48,10 +50,10 @@ export class FournisseurComponent {
     this.materielForm = new FormGroup({
       categorie: new FormControl('', [Validators.required]),
       nature: new FormControl('', [Validators.required]),
-      numSerie: new FormControl('',  [
+      numSerie: new FormControl('', [
         Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(8),
+        Validators.minLength(20),
+        Validators.maxLength(20),
       ]),
     });
   }
@@ -133,8 +135,19 @@ export class FournisseurComponent {
       },
     });
   }
-  onFileChange(event: any) {
+
+  downloadqr():void{
+    const qr=this.qr.nativeElement.querySelector('canvas');
+    if(qr){
+     qr.toBlob((blob:Blob)=>{
+       saveAs(blob,'qrcode.png');
+     });
+    }
+    }
+
+  onFileChange(event: any): void {
     this.file = event.target.files[0];
+    this.updateFileName(event);
   }
   uploadCSV() {
     const formData = new FormData();
@@ -146,6 +159,7 @@ export class FournisseurComponent {
         console.log(response);
         this.toast.success(response.message);
         this.getMaterielByFournisseur();
+        
       },
       (error) => {
         console.log(error);
@@ -161,4 +175,14 @@ export class FournisseurComponent {
       this.qrCodeData = this.getStringifiedData(this.materielList);
     }
   }
+  
+  updateFileName(event: any): void {
+    const input = event.target;
+    const fileName = input.files.length ? input.files[0].name : 'Aucun fichier choisi';
+    const fileNameElement = document.getElementById('fileName');
+    if (fileNameElement) {
+      fileNameElement.textContent = fileName;
+    }
+  }
 }
+

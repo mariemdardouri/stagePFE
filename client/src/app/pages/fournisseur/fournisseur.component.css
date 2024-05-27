@@ -1,9 +1,14 @@
 .container-fluid{
-    margin-top: 130px;
+    margin-top: 50px;
     margin-right: 200px;
     width:80% !important;
    
 } 
+.title {
+    text-align: left;
+    color: #023047;
+    font-weight: bold;
+  }
 .table{
     justify-content: center;
     width: 100%;
@@ -36,10 +41,10 @@ tr:nth-child(even) {
     cursor: pointer;
 }
 
-.modal-dialog{
-    position: absolute ;
-    top:20%;
-    left:35%;
+.modal-dialog {
+    position: absolute;
+    top: 20%;
+    left: 35%;
     transform: translate(-50%, -50%);
     z-index: 1050;
     overflow: hidden;
@@ -49,7 +54,7 @@ tr:nth-child(even) {
     padding: 1rem;
     background-color: #fff;
     border-radius: 0.3rem;
-    box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .modal-backdrop {
@@ -60,36 +65,43 @@ tr:nth-child(even) {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1040;
-  }
+}
 
-  .icon-edit,.icon-delete{
+.icon-edit, .icon-delete {
     font-size: 1.5rem;
     cursor: pointer;
     margin-right: 0.5rem;
 }
 
-.icon-edit:hover,.icon-delete:hover{
-    color:#007bff;
+.icon-edit:hover, .icon-delete:hover {
+    color: #007bff;
 }
 
-.icon-edit{
+.icon-edit {
     color: blue;
 }
 
-.icon-delete{
+.icon-delete {
     color: red;
+}
+
+.custom-file-upload {
+    display: inline-block;
+    cursor: pointer;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+}
+
+.custom-file-upload input[type="file"] {
+    display: none;
 }
 
 .file-upload-container {
     background-color: #fff;
-    padding: 2rem;
+    padding: 1rem;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-}
-
-.file-upload-container h2 {
-    margin-bottom: 1.5rem;
-    font-size: 20px;
-    color: #333;
 }

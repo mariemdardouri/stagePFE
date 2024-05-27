@@ -1,6 +1,5 @@
 <div class="container-fluid">
-  <h1>Table des missions</h1>
-    <div>
+  <h2 class="title">Table des Missions</h2>
       <table class="table table-bordered">
         <thead>
           <tr>
@@ -12,7 +11,7 @@
             <th for="action">Actions</th>
         </thead>
         <tbody>
-          <tr *ngFor="let mission of userMissions">
+          <tr *ngFor="let mission of userMissions | paginate: { itemsPerPage: 7, currentPage: p }">
             <td>{{ mission.title }}</td>
             <td>{{ mission.place }}</td>
             <td>{{ mission.hour }}</td>
@@ -27,7 +26,10 @@
           </tr>
         </tbody>
       </table>
-    </div>
+      <div class="d-flex justify-content-end">
+        <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+        nextLabel="Suivant"></pagination-controls>
+      </div>
   </div>
   
  

@@ -1,6 +1,5 @@
 <div class="container-fluid">
-  <h1>Table des demandes</h1>
-  <div>
+  <h2 class="title">Table des Demandes</h2>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -8,7 +7,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of userRequests">
+        <tr *ngFor="let user of userRequests | paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.cin }}</td>
@@ -34,5 +33,8 @@
         </tr>
       </tbody>
     </table>
-  </div>
+    <div class="d-flex justify-content-end">
+      <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+      nextLabel="Suivant"></pagination-controls>
+    </div>
 </div>

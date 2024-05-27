@@ -20,24 +20,24 @@ import { NotificationsComponent } from '../notifications/notifications.component
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left ' },
     ];
     FournisseurMenu = [
-      { label: 'Liste de matériel', path: '/fournisseur', icon: 'bi bi-person ' },
+      { label: 'Liste de matériel', path: '/fournisseur', icon: 'bi bi-pc-display' },
       { label: 'Liste de réclamation', path: '/fournisseur/réclamation', icon: 'bi bi-person ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     DeploiementMenu = [
-      { label: 'Liste de matériel', path: '/deploiement', icon: 'bi bi-person ' },
+      { label: 'Liste de matériel', path: '/deploiement', icon: 'bi bi-pc-display ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     ApproMenu = [
       {
         label: 'Liste de matériel',
         path: '/approvisionnement',
-        icon: 'bi bi-person ',
+        icon: 'bi bi-pc-display ',
       },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     LogistiqueMenu = [
-      { label: 'Liste de matériel', path: '/logistique', icon: 'bi bi-person ' },
+      { label: 'Liste de matériel', path: '/logistique', icon: 'bi bi-pc-display ' },
       { label: 'Liste de mission', path: '/logistique/mission', icon: 'bi bi-person '},
       { label: 'Liste de réclamation', path: '/logistique/réclamation', icon: 'bi bi-person ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
@@ -51,7 +51,7 @@ import { NotificationsComponent } from '../notifications/notifications.component
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];
     AgentMenu = [
-      { label: 'Liste de matériel', path: '/agent', icon: 'bi bi-person ' },
+      { label: 'Liste de matériel', path: '/agent', icon: 'bi bi-pc-display' },
       { label: 'Liste de réclamation', path: '/agent/réclamation', icon: 'bi bi-person ' },
       { label: 'Déconnexion', path: '/login', icon: 'bi bi-box-arrow-left' },
     ];

@@ -29,6 +29,16 @@ router.post("/add-reclamation", authMiddleware, jsonParser, async (req, res) => 
     const newReclamation = new Claim({ materiel: materiel._id, user: user._id, description });
     console.log(newReclamation,'newReclamation');
     await newReclamation.save();
+
+    const logistiqueUser = await User.findOne({ role: 'logistique' });
+    const unseenNotifications = logistiqueUser.unseenNotifications || [];
+    unseenNotifications.push({
+      type: "new-list-matetiel",
+      message: `Vous avez reçu une réclamation de description "${description}"`,
+      onClickPath: "/logistique",
+    });
+    logistiqueUser.unseenNotifications = unseenNotifications;
+    await logistiqueUser.save();
     res.status(201).json({ message: "Réclamation créée avec succès", success: true });
   } catch (error) {
     console.error("Erreur lors de la création de la réclamation:", error);
@@ -70,12 +80,17 @@ router.get("/get-claims-by-materiel/:id",authMiddleware,jsonParser,async (req, r
 router.post('/send-to-fournisseur',authMiddleware,jsonParser,async (req, res) => {
   try {
     const claim = req.body;
-    // Add your logic to send the claim to the fournisseur here.
-    // This could involve updating the claim status, sending an email, etc.
+    const updatedClaim = await Claim.findByIdAndUpdate(claim._id, { status: 'sent to fournisseur' }, { new: true }).populate('materiel').populate('user');
 
-    // Example: updating claim status to "sent to fournisseur"
-    const updatedClaim = await Claim.findByIdAndUpdate(claim._id, { status: 'sent to fournisseur' }, { new: true });
-
+    const fournisseurUser = await User.findOne({ role: 'fournisseur' });
+    const unseenNotifications = fournisseurUser.unseenNotifications || [];
+    unseenNotifications.push({
+      type: "send-to-fournisseur",
+      message: `Une réclamation de description "${claim.description}" a été envoyée par le responsable logistique`,
+      onClickPath: "/fournisseur/réclamation",
+    });
+    fournisseurUser.unseenNotifications = unseenNotifications;
+    await fournisseurUser.save();
     res.status(200).json(updatedClaim);
   } catch (error) {
     console.error('Erreur lors de l\'envoi de la réclamation:', error);
@@ -99,13 +114,13 @@ router.put('/receive-claim', authMiddleware, jsonParser, async (req, res) => {
     // Update the materiel status or any other necessary changes
     const updatedClaim = await Claim.findByIdAndUpdate(claim._id, { status: 'received' }, { new: true });
 
-    const user = await User.findOne({ role:'logistique' });
+    const user = await User.findOne({ role:'agent' });
     if (user) {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "received-claim",
-        message: `Claim a ete recus et dans le process`,
-        onClickPath: "/logitique/réclamation",
+        message: `Réclamation est dans le process par le fournisseur ${claim.materiel.fournisseur}`,
+        onClickPath: "/agent/réclamation",
       });
       user.unseenNotifications = unseenNotifications;
       await user.save();

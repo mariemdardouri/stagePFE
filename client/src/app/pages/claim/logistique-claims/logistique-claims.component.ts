@@ -4,16 +4,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ClaimService } from '../../../services/claim.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-logistique-claims',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule],
+  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule],
   templateUrl: './logistique-claims.component.html',
   styleUrl: './logistique-claims.component.css'
 })
 export class LogistiqueClaimsComponent {
-
+  p: number = 1;
   claims: any[] = [];
 
   constructor(private claimService: ClaimService,private toast: ToastrService) { }

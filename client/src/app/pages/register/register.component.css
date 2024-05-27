@@ -1,9 +1,15 @@
 
 .container-fluid{
-    margin-top: 100px;
+    margin-top: 50px;
     height:auto !important;
     width:70%;
 }
+.title {
+    text-align: left;
+    margin-bottom: 50px;
+    color: #023047;
+    font-weight: bold;
+  }
 .register-card{
     width: 600px;
     padding: 20px;

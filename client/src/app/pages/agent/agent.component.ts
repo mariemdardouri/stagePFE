@@ -7,11 +7,12 @@ import { MaterielService } from '../../services/materiel.service';
 import { ClaimService } from '../../services/claim.service';
 import { response } from 'express';
 import { AuthService } from '../../services/auth.service';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-agent',
   standalone: true,
-  imports: [CommonModule,RouterOutlet,RouterModule,ReactiveFormsModule,FormsModule],
+  imports: [CommonModule,RouterOutlet,RouterModule,ReactiveFormsModule,FormsModule,NgxPaginationModule,],
   templateUrl: './agent.component.html',
   styleUrl: './agent.component.css'
 })
@@ -20,7 +21,7 @@ export class AgentComponent {
   showClaimModal: boolean = false;
   selectedMateriel: any = null;
   description: any;
-
+  p: number = 1;
  
 
   constructor(
@@ -49,10 +50,12 @@ export class AgentComponent {
   }
 
   receiveMateriel(materiel: any): void {
+    materiel.received = true;
     this.materielService.receiveMateriel(materiel).subscribe({
       next: (resp: any) => {
         if (resp.success) {
           this.toast.success(resp.message);
+          this.getMaterielsAffectedToAgent();
         } else {
           this.toast.error(resp.message);
         }

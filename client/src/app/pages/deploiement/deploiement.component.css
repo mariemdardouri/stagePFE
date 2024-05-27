@@ -1,9 +1,15 @@
 .container-fluid{
-    margin-top: 130px;
+    margin-top: 50px;
     margin-right: 200px;
     width:80% !important;
    
 } 
+.title {
+  text-align: left;
+  margin-bottom: 50px;
+  color: #023047;
+  font-weight: bold;
+}
 .table{
     justify-content: center;
     width: 100%;

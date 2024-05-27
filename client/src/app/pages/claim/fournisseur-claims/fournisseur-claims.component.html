@@ -1,5 +1,5 @@
-<div class="container">
-  <h2 class="title">Réclamations reçues</h2>
+<div class="container-fluid">
+  <h2 class="title">Réclamations Reçues</h2>
   <table class="table table-bordered">
     <thead>
       <tr>
@@ -9,21 +9,27 @@
         <th>Numéro de série</th>
         <th>Description</th>
         <th>Date d'envoi</th>
+        <th>Statut</th>
         <th>Actions</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let claim of claims">
+      <tr *ngFor="let claim of claims  | paginate: { itemsPerPage: 7, currentPage: p }">
         <td>{{ claim.user.firstName + " " + claim.user.lastName }}</td>
         <td>{{ claim.materiel.categorie }}</td>
         <td>{{ claim.materiel.numInv }}</td>
         <td>{{ claim.materiel.numSerie }}</td>
         <td>{{ claim.description }}</td>
         <td>{{ claim.createdAt | date : "short" }}</td>
+        <td>{{ claim.status }}</td>
         <td>
-          <button (click)="ReceiveClaim(claim)">Received</button>
+          <button (click)="ReceiveClaim(claim)" class="btn btn-primary float-end m-2">Received</button>
         </td>
       </tr>
     </tbody>
   </table>
+</div>
+<div class="d-flex justify-content-end">
+  <pagination-controls (pageChange)="p = $event" previousLabel="Précédent"
+  nextLabel="Suivant"></pagination-controls>
 </div>

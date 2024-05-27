@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-appro',
@@ -14,6 +15,7 @@ import { CommonModule } from '@angular/common';
     RouterOutlet,
     CommonModule,
     FormsModule,
+    NgxPaginationModule,
   ],
   templateUrl: './appro.component.html',
   styleUrl: './appro.component.css',
@@ -23,6 +25,7 @@ export class ApproComponent {
   isNumInvDisabled: boolean = false;
   isClicked: boolean = false;
   materiel: any;
+  p: number = 1;
 
   constructor(
     private materielService: MaterielService,
@@ -53,7 +56,7 @@ export class ApproComponent {
   }
 
   hasAllNumInvFilled(): boolean {
-    return this.materielList.every((materiel) => materiel.numInv);
+    return this.materielList.every((materiel) => materiel.numInv && materiel.numInv.trim() !== '');
   }
 
   editNumInv(materiel: any): void {

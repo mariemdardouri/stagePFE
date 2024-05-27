@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h1>Table des utilisateurs</h1>
+  <h2 class="title">Table des Utilisateurs</h2>
   <div>
     <button
       class="btn btn-primary float-end m-2"
@@ -16,7 +16,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of userList">
+        <tr *ngFor="let user of userList | paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.cin }}</td>
@@ -45,6 +45,10 @@
         </tr>
       </tbody>
     </table>
+    <div class="d-flex justify-content-end">
+      <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+      nextLabel="Suivant"></pagination-controls>
+    </div>
   </div>
 </div>
 
@@ -75,7 +79,7 @@
         <form autocomplete="off">
           <div class="row">
             <div class="col-xl-6 mb-3">
-              <label for="firstName" class="form-label">Nom</label>
+              <label for="firstName" class="form-label">Prénom</label>
               <input
                 type="text"
                 name="firstName"
@@ -83,11 +87,12 @@
                 class="form-control"
                 [(ngModel)]="selectedUser.firstName"
                 [ngModelOptions]="{ standalone: true }"
+                (keypress)="onlyLetters($event)"
               />
             </div>
 
             <div class="col-xl-6 mb-3">
-              <label for="lastName" class="form-label">Prénom</label>
+              <label for="lastName" class="form-label">Nom</label>
               <input
                 type="text"
                 name="lastName"
@@ -95,6 +100,7 @@
                 class="form-control"
                 [(ngModel)]="selectedUser.lastName"
                 [ngModelOptions]="{ standalone: true }"
+                (keypress)="onlyLetters($event)"
               />
             </div>
           </div>
@@ -103,12 +109,14 @@
             <div class="col-xl-6 mb-3">
               <label for="cin" class="form-label">CIN</label>
               <input
-                type="number"
+                type="text"
                 name="cin"
                 id="cin"
                 class="form-control"
                 [(ngModel)]="selectedUser.cin"
                 [ngModelOptions]="{ standalone: true }"
+                maxlength="8"
+                (keypress)="onlyNumbers($event)"
               />
             </div>
             <div class="col-xl-6 mb-3">
@@ -130,11 +138,12 @@
                 >Numéro du Téléohone</label
               >
               <input
-                type="number"
+                type="tel"
                 name="phoneNumber"
                 id="phoneNumber"
                 [(ngModel)]="selectedUser.phoneNumber"
                 [ngModelOptions]="{ standalone: true }"
+                maxlength="8"
               />
             </div>
             <div class="col-xl-6 mb-3">
