@@ -5,17 +5,19 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ClaimService } from '../../../services/claim.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from '../../../filter.pipe';
 
 @Component({
   selector: 'app-logistique-claims',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule],
+  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule,FilterPipe,],
   templateUrl: './logistique-claims.component.html',
   styleUrl: './logistique-claims.component.css'
 })
 export class LogistiqueClaimsComponent {
   p: number = 1;
   claims: any[] = [];
+  searchText: string = '';
 
   constructor(private claimService: ClaimService,private toast: ToastrService) { }
 

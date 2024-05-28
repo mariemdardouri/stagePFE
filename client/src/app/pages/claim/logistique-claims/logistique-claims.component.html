@@ -1,5 +1,10 @@
 <div class="container-fluid">
+  <div class="search-title-container">
     <h2 class="title">Réclamations</h2>
+    <div class="search-box">
+      <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
+    </div>
+  </div>
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -14,7 +19,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let claim of claims  | paginate: { itemsPerPage: 7, currentPage: p }">
+        <tr *ngFor="let claim of claims | filter: searchText | paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ claim.user.firstName +" "+ claim.user.lastName }}</td>
           <td>{{ claim.materiel.categorie }}</td>
           <td>{{ claim.materiel.numInv }}</td>

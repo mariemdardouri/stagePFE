@@ -1,9 +1,16 @@
 <div class="container-fluid">
-  <h2 class="title">Table des Utilisateurs</h2>
+  <div class="search-title-container">
+    <h2 class="title">Table des Utilisateurs</h2>
+    <div class="search-box">
+      <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
+    </div>
+  </div>
+  
   <div>
     <button
       class="btn btn-primary float-end m-2"
-      [routerLink]="['/admin/registre']"
+      data-bs-toggle="modal"
+      data-bs-target="#AddModal"
     >
       <i class="bi bi-person-add icon-add"></i>
     </button>
@@ -16,7 +23,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of userList | paginate: { itemsPerPage: 7, currentPage: p }">
+        <tr *ngFor="let user of userList | filter: searchText | paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.cin }}</td>
@@ -38,7 +45,7 @@
                 (click)="editUser(user)"
               >
               <i class="bi bi-pencil-square icon-edit"></i></span
-              > <span class="icon-check"> <i class="bi bi-check-square-fill"></i> </span>|
+              > <span class="icon-check" (click)="activateUser(user)"> <i class="bi bi-check-square-fill"></i> </span>
               <span class="icon-desactivate" (click)="desactivateUser(user)"> <i class="bi bi-power"></i>  </span>
             </div>
           </td>
@@ -52,7 +59,296 @@
   </div>
 </div>
 
-<!-- Modal -->
+<!-- Add Modal -->
+<div
+class="modal fade"
+id="AddModal"
+tabindex="-1"
+aria-labelledby="AddModalLabel"
+aria-hidden="true"
+data-backdrop="static"
+data-keyboard="false"
+>
+<div class="modal-dialog">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="addModalLabel">
+        Créer Compte utilisateur
+      </h1>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <form [formGroup]="userRegForm" autocomplete="off">
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="firstName" class="form-label">Prénom</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="prénom"
+              name="firstName"
+              formControlName="firstName"
+              (keypress)="onlyLetters($event)"
+            />
+            <div
+              *ngIf="
+                userRegForm.controls['firstName'].hasError('required') &&
+                userRegForm.controls['firstName'].touched
+              "
+              class="text-danger"
+            >
+              Entrez votre prénom
+            </div>
+            <div
+            *ngIf="
+              userRegForm.controls['firstName'].hasError('hasNumber') &&
+              userRegForm.controls['firstName'].touched
+            "
+            class="text-danger"
+          >
+            Le prénom ne doit pas contenir de chiffres
+          </div>
+          </div>
+  
+          <div class="col-xl-6 mb-3">
+            <label for="lastName" class="form-label">Nom</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="nom"
+              name="lastName"
+              formControlName="lastName"
+              (keypress)="onlyLetters($event)"
+            />
+            <div
+              *ngIf="
+                userRegForm.controls['lastName'].hasError('required') &&
+                userRegForm.controls['lastName'].touched
+              "
+              class="text-danger"
+            >
+              Entrez votre nom
+            </div>
+            <div
+              *ngIf="
+                userRegForm.controls['lastName'].hasError('hasNumber') &&
+                userRegForm.controls['lastName'].touched
+              "
+              class="text-danger"
+            >
+              Le nom ne doit pas contenir de chiffres
+            </div>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="cin" class="form-label">CIN</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="cin"
+              name="cin"
+              formControlName="cin"
+              maxlength="8"
+              (keypress)="onlyNumbers($event)"
+            />
+            <div
+              *ngIf="
+                userRegForm.controls['cin'].hasError('required') &&
+                userRegForm.controls['cin'].touched
+              "
+              class="text-danger"
+            >
+              Entrez votre cin
+            </div>
+            <div *ngIf="
+                userRegForm.controls['cin'].hasError('minlength') &&
+                userRegForm.controls['cin'].touched"
+              class="text-danger"
+            >
+              CIN doit être exactement 8 chiffres
+            </div>
+          </div>
+          <div class="col-xl-6 mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input
+              type="email"
+              class="form-control"
+              placeholder="email"
+              name="email"
+              formControlName="email"
+            />
+            <div
+              *ngIf="
+                userRegForm.controls['email'].hasError('required') &&
+                userRegForm.controls['email'].touched
+              "
+              class="text-danger"
+            >
+              Entrez votre email
+            </div>
+            <div
+              *ngIf="
+                userRegForm.controls['email'].hasError('email') &&
+                userRegForm.controls['email'].touched
+              "
+              class="text-danger"
+            >
+              Email invalide
+            </div>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="phoneNumber" class="form-label"
+              >Numéro du Téléohone</label
+            >
+            <input
+              type="tel"
+              class="form-control"
+              name="phoneNumber"
+              placeholder="numéro du téléohone"
+              formControlName="phoneNumber"
+              maxlength="8"
+            />
+            <div
+              *ngIf="
+                userRegForm.controls['phoneNumber'].hasError('required') &&
+                userRegForm.controls['phoneNumber'].touched
+              "
+              class="text-danger"
+            >
+              Entrez votre numéro de téléphone
+            </div>
+            <div
+              *ngIf="
+                userRegForm.controls['phoneNumber'].hasError('minlength') &&
+                userRegForm.controls['phoneNumber'].touched
+              "
+              class="text-danger"
+            >
+              Numéro de téléphone doit être exactement 8 chiffres
+            </div>
+          </div>
+          <div class="col-xl-6 mb-3">
+            <label for="role"  class="form-label">Role</label>
+            <select formControlName="role" name="role" id="role">
+              <option value="fournisseur">Fournisseur</option>
+              <option value="deploiement">
+                Résponsable de déploiement
+              </option>
+              <option value="approvisionnement">
+                Résponsable approvisionnement
+              </option>
+              <option value="logistique">
+                Résponsable logistique
+              </option>
+              <option value="responsableSite">Résponsable site</option>
+              <option value="agentLogistique">Agent logistique</option>
+              <option value="agent">Agent</option>
+            </select>
+          </div>
+        </div>
+  
+        <div class="row">
+          <div class="col-xl-6 mb-3">
+            <label for="password" class="form-label">Mot de passe</label>
+            <input
+              type="password"
+              class="form-control"
+              placeholder="mot de passe"
+              name="password"
+              formControlName="password"
+              maxlength="8"
+              (keypress)="strongPassword($event)"
+            />
+            <div
+              *ngIf="
+                userRegForm.controls['password'].hasError('required') &&
+                userRegForm.controls['password'].touched
+              "
+              class="text-danger"
+            >
+              Entrez votre mot de passe
+            </div>
+            <div
+              *ngIf="
+                userRegForm.controls['password'].hasError('minlength') &&
+                userRegForm.controls['password'].touched
+              "
+              class="text-danger"
+            >
+              Le mot de passe doit comporter au moins 8 caractères
+            </div>
+            <div
+              *ngIf="
+                userRegForm.controls['password'].hasError('strongPassword') &&
+                userRegForm.controls['password'].touched
+              "
+              class="text-danger"
+            >
+              Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial
+            </div>
+          </div>
+          <div class="col-xl-6 mb-3">
+            <label for="confirmPassword" class="form-label"
+              >Confirmer Mot de passe</label
+            >
+            <input
+              type="password"
+              class="form-control"
+              placeholder="mot de passe"
+              name="confirmPassword"
+              formControlName="confirmPassword"
+              maxlength="8"
+              
+            />
+            <div
+              *ngIf="
+                userRegForm.controls['confirmPassword'].hasError('required') &&
+                userRegForm.controls['confirmPassword'].touched
+              "
+              class="text-danger"
+            >
+              Confirmer votre mot de passe
+            </div>
+            <div
+              *ngIf="
+                userRegForm.controls['confirmPassword'].hasError('passwordMismatch') && 
+                userRegForm.controls['confirmPassword'].touched
+              "
+              class="text-danger"
+            >
+              Les mots de passe ne sont pas correspandant
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button
+        mat-raised-button 
+        type="submit" 
+        (click)="Register()"
+        type="submit"
+        class="btn btn-primary full-width-button"
+        data-bs-dismiss="modal">
+        Ajouter
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+
+<!-- UpdateModal -->
 <div
   class="modal fade"
   id="UpdateModal"

@@ -6,6 +6,7 @@ import { ActivatedRoute, RouterModule, RouterOutlet } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../../services/user.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from '../../filter.pipe';
 
 @Component({
   selector: 'app-request',
@@ -17,6 +18,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     FormsModule,
     ReactiveFormsModule,
     NgxPaginationModule,
+    FilterPipe,
   ],
   templateUrl: './request.component.html',
   styleUrl: './request.component.css',
@@ -29,11 +31,13 @@ export class RequestComponent {
     'Email',
     'NuméroTél',
     'Role',
+    'Résponsable Site',
     'Statut',
-    'Actionz',
+    'Actions',
   ];
   userRequests: any[] = [];
   p: number = 1;
+  searchText: string = '';
 
   constructor(
     private requestService: RequestService,
@@ -72,4 +76,26 @@ export class RequestComponent {
       });
     }
   }
+  rejectRequest(request: any): void {
+    if (request) {
+      console.log(request, 'iddddd');
+      this.requestService.rejectRequest(request).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.loadUserRequests();
+          } else {
+            this.toast.error(resp.message);
+          }
+        },
+        error: (err) => {
+          console.error("Erreur lors de la réjection du demande:", err);
+          if (err.status === 500) {
+            this.toast.error("Erreur lors de la réjection du demande");
+          }
+        },
+      });
+    }
+  }
+  
 }

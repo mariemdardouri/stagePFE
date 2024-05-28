@@ -5,18 +5,20 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ClaimService } from '../../../services/claim.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from '../../../filter.pipe';
 
 
 @Component({
   selector: 'app-fournisseur-claims',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule,],
+  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule,FilterPipe],
   templateUrl: './fournisseur-claims.component.html',
   styleUrl: './fournisseur-claims.component.css'
 })
 export class FournisseurClaimsComponent {
   claims: any[] = [];
   p: number = 1;
+  searchText: string = '';
 
   constructor(private claimService: ClaimService, private toast: ToastrService) { }
 

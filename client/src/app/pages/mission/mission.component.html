@@ -1,5 +1,12 @@
 <div class="container-fluid">
-   <h2 class="title">Table des Missions</h2>
+  <div class="search-title-container">
+    <h2 class="title">Table des Missions</h2>
+    <div class="search-box">
+      <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
+    </div>
+  </div>
+ 
+
       <button
         data-bs-toggle="modal"
         data-bs-target="#AddModal"
@@ -20,7 +27,7 @@
             <th for="status">Statut</th>
         </thead>
         <tbody>
-          <tr *ngFor="let mission of missionList | paginate: { itemsPerPage: 7, currentPage: p }">
+          <tr *ngFor="let mission of missionList | filter: searchText | paginate: { itemsPerPage: 7, currentPage: p }">
             <td>{{ mission.title }}</td>
             <td>{{ mission.place }}</td>
             <td>{{ mission.hour }}</td>

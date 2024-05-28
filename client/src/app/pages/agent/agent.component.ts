@@ -8,11 +8,12 @@ import { ClaimService } from '../../services/claim.service';
 import { response } from 'express';
 import { AuthService } from '../../services/auth.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from '../../filter.pipe';
 
 @Component({
   selector: 'app-agent',
   standalone: true,
-  imports: [CommonModule,RouterOutlet,RouterModule,ReactiveFormsModule,FormsModule,NgxPaginationModule,],
+  imports: [CommonModule,RouterOutlet,RouterModule,ReactiveFormsModule,FormsModule,NgxPaginationModule,FilterPipe],
   templateUrl: './agent.component.html',
   styleUrl: './agent.component.css'
 })
@@ -22,6 +23,7 @@ export class AgentComponent {
   selectedMateriel: any = null;
   description: any;
   p: number = 1;
+  searchText: string = '';
  
 
   constructor(

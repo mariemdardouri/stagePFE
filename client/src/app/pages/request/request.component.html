@@ -1,5 +1,11 @@
 <div class="container-fluid">
-  <h2 class="title">Table des Demandes</h2>
+  <div class="search-title-container">
+    <h2 class="title">Table des Demandes</h2>
+    <div class="search-box">
+      <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
+    </div>
+  </div>
+  
     <table class="table table-bordered">
       <thead>
         <tr>
@@ -7,17 +13,19 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let user of userRequests | paginate: { itemsPerPage: 7, currentPage: p }">
+        <tr *ngFor="let user of userRequests | filter: searchText | paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.cin }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.phoneNumber }}</td>
           <td>{{ user.role }}</td>
+          <td>{{ user.responsableSite.firstName +' '+ user.responsableSite.lastName }}</td>
           <td>
             <div>
               <span *ngIf="user.status === 'pending'">En attente</span>
               <span *ngIf="user.status === 'activate'">Activer</span>
+              <span *ngIf="user.status === 'rejected'">Rejeter</span>
             </div>
           </td>
           <td>
@@ -25,7 +33,7 @@
               <span class="icon-check"  *ngIf="user.status === 'pending'" (click)="acceptRequest(user)">
                 <i class="bi bi-check-square-fill"></i> </span
               >
-              <span class="icon-desactivate">
+              <span class="icon-desactivate" (click)="rejectRequest(user)">
                 <i class="bi bi-power"></i>
               </span>
             </div>

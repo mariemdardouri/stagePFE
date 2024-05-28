@@ -7,11 +7,12 @@ import { CommonModule } from '@angular/common';
 import { MaterielService } from '../../services/materiel.service';
 import { AuthService } from '../../services/auth.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from '../../filter.pipe';
 
 @Component({
   selector: 'app-claim',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule,],
+  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule,FilterPipe,],
   templateUrl: './claim.component.html',
   styleUrl: './claim.component.css'
 })
@@ -20,6 +21,7 @@ export class ClaimComponent {
   claims: any[] = [];
   userId: any;
   p: number = 1;
+  searchText: string = '';
 
   constructor(private claimService: ClaimService,  private route: ActivatedRoute,private toast: ToastrService, private materielService: MaterielService,) { }
 

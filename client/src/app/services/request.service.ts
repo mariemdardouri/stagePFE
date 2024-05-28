@@ -23,6 +23,34 @@ export class RequestService {
 
   }
 
+  uploadCSV(file: File, userId: string): Observable<any> {
+    const formData: FormData = new FormData();
+    formData.append('file', file);
+    formData.append('id', userId);
+
+    const token = localStorage.getItem('token')
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`
+    });
+
+    return this.http.post(URL+ 'uploadCSV', formData, { headers });
+  }
+  getRequestByResponsableSite(): Observable<any[]> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token introuvable');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http
+      .get<any>(URL + 'get-requests-by-responsable-site', { headers })
+      .pipe(map((response) => response.requests));
+  }
+
   getAllRequest(): Observable<any[]> {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -34,7 +62,7 @@ export class RequestService {
     });
 
     return this.http
-      .get<any>(URL + 'get-all-requests ', { headers })
+      .get<any>(URL + 'get-all-requests', { headers })
       .pipe(map((response) => response.data));
   }
 
@@ -74,5 +102,17 @@ export class RequestService {
     });
 
     return this.http.put<any>(URL + 'accept-user/' + user._id, user, { headers });
+  }
+  rejectRequest(request: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token introuvable');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.put<any>(URL + 'reject-request/' + request._id, request, { headers });
   }
 }

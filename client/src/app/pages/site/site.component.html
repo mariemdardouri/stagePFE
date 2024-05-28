@@ -1,5 +1,11 @@
 <div class="container-fluid">
-  <h2 class="title">Table de demandes des comptes </h2>
+  <div class="search-title-container">
+    <h2 class="title">Table de demandes des comptes </h2>
+    <div class="search-box">
+      <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
+    </div>
+  </div>
+  
   <div>
     <button
       data-bs-toggle="modal"
@@ -66,7 +72,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="addModalLabel">
-              Ajouter compte utilisateur
+              Ajouter une demande d'un compte
             </h1>
             <button
               type="button"
@@ -78,7 +84,7 @@
           <div class="modal-body">
             <form [formGroup]="userForm" autocomplete="off">
               <div class="row">
-                <div class="col-xl-4 mb-3">
+                <div class="col-xl-6 mb-3">
                   <label for="firstName" class="form-label">Prénom</label>
                   <input
                     type="text"
@@ -108,7 +114,7 @@
                 </div>
                 </div>
         
-                <div class="col-xl-4 mb-3">
+                <div class="col-xl-6 mb-3">
                   <label for="lastName" class="form-label">Nom</label>
                   <input
                     type="text"
@@ -140,7 +146,7 @@
               </div>
         
               <div class="row">
-                <div class="col-xl-4 mb-3">
+                <div class="col-xl-6 mb-3">
                   <label for="cin" class="form-label">CIN</label>
                   <input
                     type="text"
@@ -168,7 +174,7 @@
                     CIN doit être exactement 8 chiffres
                   </div>
                 </div>
-                <div class="col-xl-4 mb-3">
+                <div class="col-xl-6 mb-3">
                   <label for="email" class="form-label">Email</label>
                   <input
                     type="email"
@@ -199,7 +205,7 @@
               </div>
         
               <div class="row">
-                <div class="col-xl-4 mb-3">
+                <div class="col-xl-6 mb-3">
                   <label for="phoneNumber" class="form-label"
                     >Numéro du Téléohone</label
                   >
@@ -230,7 +236,7 @@
                     Numéro de téléphone doit être exactement 8 chiffres
                   </div>
                 </div>
-                <div class="col-xl-4 mb-2">
+                <div class="col-xl-6 mb-3">
                   <label for="role"  class="form-label">Role</label>
                   <select formControlName="role" name="role" id="role">
                     <option value="fournisseur">Fournisseur</option>
@@ -357,7 +363,7 @@ data-keyboard="false"
           <div class="col-xl-6 mb-3">
             <label for="cin" class="form-label">CIN</label>
             <input
-              type="number"
+              type="text"
               name="cin"
               id="cin"
               class="form-control"
@@ -498,7 +504,7 @@ data-keyboard="false">
           <h2>Importer fichier CSV</h2>
           <label class="custom-file-upload">
             Choisir un fichier
-            <input type="file"  (change)="onFileChange($event)" />
+            <input type="file"  (change)="onFileSelected($event)" />
           </label>
           <span id="fileName">Aucun fichier choisi</span>  
             

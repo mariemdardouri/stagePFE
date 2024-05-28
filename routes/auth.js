@@ -42,6 +42,7 @@ router.post("/register", jsonParser, async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
     req.body.password = hashedPassword;
+    req.body.status = "activate";
     const newuser = new User(req.body);
     await newuser.save();
     res.status(200).json({ message: "Utilisateur créé avec succès", success: true });

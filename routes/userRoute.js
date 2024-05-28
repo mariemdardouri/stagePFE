@@ -6,27 +6,12 @@ const User = require("../models/userModel");
 const Request = require("../models/requestModel");
 const bodyParser = require("body-parser");
 const jsonParser = bodyParser.json();
-const fs = require("fs");
-const csvtojson = require("csvtojson");
-const multer = require("multer");
-const path = require("path");
+
 const bcrypt = require("bcryptjs");
 
 
 user.use(jsonParser);
 user.use(bodyParser.urlencoded({ extended: true }));
-user.use(express.static(path.resolve(__dirname, "public")));
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "./public/uploads");
-  },
-  filename: (req, file, cb) => {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage });
 
 router.get("/get-all-users", authMiddleware, jsonParser, async (req, res) => {
   try {
@@ -97,75 +82,22 @@ router.put("/update-profile", authMiddleware,jsonParser, async (req, res) => {
   }
 });
 
-router.post("/uploadCSV", upload.single("file"), async (req, res) => {
-  const csvData = [];
-  console.log(req.file.path, "pathh");
-  csvtojson()
-    .fromFile(req.file.path)
-    .then(async (jsonObj) => {
-      console.log(jsonObj);
-      for (const row of jsonObj) {
-        const hashedPassword = await bcrypt.hash(row.cin, 10); 
-        csvData.push({
-          firstName: row.firstName,
-          lastName: row.lastName,
-          cin: row.cin,
-          email: row.email,
-          phoneNumber: row.phoneNumber,
-          password: hashedPassword, 
-          role: row.role,
-          status: "pending",
-        });
-      }
-      console.log(csvData, "csvvvv");
-    
-      try {
-        if (csvData.length > 0) {
-          const requests = await Request.insertMany(csvData);
-          const user = await User.findOne({ role:"admin"});
-          console.log(user,'iiiiii');
-          if (user) {
-            user.unseenNotifications = user.unseenNotifications || [];
-            user.unseenNotifications.push({
-              type: "request-list",
-              message: "Une nouvelle liste de demandes a été envoyée",
-              onClickPath: "/admin/request",
-            });
-            await user.save();
-          }
+router.put("/user-activate/:id", authMiddleware, jsonParser, async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { status: "activate" },
+      { new: true }
+    );
 
-          res.status(200).json({ requests ,message: "Données CSV importées avec succès" });
-        } else {
-          console.error("Aucune donnée valide à importer");
-          res.status(400).json({ message: "Aucune donnée valide à importer",success:false });
-        }
-      } catch (error) {
-        console.error("Erreur lors de l'importation des données CSV:", error);
-        res.status(500).json({ message: "Erreur lors de l'importation des données CSV" });
-      } finally {
-        
-        fs.unlink(req.file.path, (err) => {
-          if (err) {
-            console.error("Erreur lors de la suppression du fichier téléchargé:", err);
-          }
-        });
-      }
-    });
-});
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "utilisateur non trouvé", success: false });
+    }
 
-router.put( "/user-activate/:id", authMiddleware, jsonParser, async (req, res) => {
-    try {
-      const user = await User.findByIdAndUpdate(
-        req.params.id,
-        { status: "activate" },
-        { new: true }
-      );
-      if (!user) {
-        res
-          .status(404)
-          .json({ message: "utilisateur non trouvé", success: false });
-      }
-      const unseenNotifications = user.unseenNotifications;
+    const unseenNotifications = user.unseenNotifications;
       unseenNotifications.push({
         type: "user-account-activate",
         message: 'Votre compte a été activé',
@@ -176,17 +108,16 @@ router.put( "/user-activate/:id", authMiddleware, jsonParser, async (req, res) =
           message: "l'utilisateur a été activé avec succès",
           success: true,
         });
-    } catch (error) {
-      console.error("Erreur lors de l'activation de l'utilisateur:", error);
-      res
-        .status(500)
-        .json({
-          message: "Erreur lors de l'activation de l'utilisateur",
-          success: false,
-        });
-    }
+  } catch (error) {
+    console.error("Erreur lors de l'activation de l'utilisateur:", error);
+    res
+      .status(500)
+      .json({
+        message: "Erreur lors de l'activation de l'utilisateur",
+        success: false,
+      });
   }
-);
+});
 router.put("/desactivate-user/:id",authMiddleware,jsonParser,async (req, res) => {
     try {
       const userId = req.params.id;

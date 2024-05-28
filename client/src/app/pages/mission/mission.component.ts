@@ -13,6 +13,7 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from '../../filter.pipe';
 
 @Component({
   selector: 'app-mission',
@@ -24,6 +25,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RouterOutlet,
     CommonModule,
     NgxPaginationModule,
+    FilterPipe,
   ],
   templateUrl: './mission.component.html',
   styleUrl: './mission.component.css',
@@ -35,6 +37,7 @@ export class MissionComponent {
   selectedMission: any = {};
   agentLogistique: any;
   p: number = 1;
+  searchText: string = '';
   
   constructor(
     private missionService: MissionService,

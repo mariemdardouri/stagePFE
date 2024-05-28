@@ -1,5 +1,10 @@
 <div class="container-fluid">
+  <div class="search-title-container">
     <h2 class="title">Materiel du l'agent</h2>
+    <div class="search-box">
+      <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
+    </div>
+  </div>
     <hr>
     <table class="table table-bordered">
       <thead>
@@ -12,7 +17,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let materiel of affectedMateriels | paginate: { itemsPerPage: 7, currentPage: p }">
+        <tr *ngFor="let materiel of affectedMateriels | filter: searchText |  paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ materiel.categorie }}</td>
           <td>{{ materiel.nature }}</td>
           <td>{{ materiel.numSerie }}</td>

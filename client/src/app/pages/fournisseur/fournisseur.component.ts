@@ -9,6 +9,7 @@ import { HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { saveAs } from 'file-saver';  
 import { QRCodeComponent } from 'angularx-qrcode';
+import { FilterPipe } from '../../filter.pipe';
 
 @Component({
   selector: 'app-fournisseur',
@@ -21,6 +22,7 @@ import { QRCodeComponent } from 'angularx-qrcode';
     CommonModule,
     QRCodeModule,
     NgxPaginationModule,
+    FilterPipe,
   ],
   templateUrl: './fournisseur.component.html',
   styleUrl: './fournisseur.component.css',
@@ -32,6 +34,7 @@ export class FournisseurComponent {
   materielForm!: FormGroup;
   selectedMateriel: any = {};
   p: number = 1;
+  searchText: string = '';
   @ViewChild('qr', { static: false })qr!:ElementRef;
 
   constructor(

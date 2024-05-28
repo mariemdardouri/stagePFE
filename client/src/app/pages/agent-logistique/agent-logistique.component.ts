@@ -13,11 +13,12 @@ import { CommonModule } from '@angular/common';
 import { UserService } from '../../services/user.service';
 import { AuthService } from '../../services/auth.service';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from '../../filter.pipe';
 
 @Component({
   selector: 'app-agent-logistique',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule, RouterOutlet, CommonModule,NgxPaginationModule,],
+  imports: [ReactiveFormsModule,RouterModule,RouterOutlet,CommonModule,FormsModule,NgxPaginationModule,FilterPipe],
   templateUrl: './agent-logistique.component.html',
   styleUrl: './agent-logistique.component.css',
 })
@@ -25,6 +26,7 @@ export class AgentLogistiqueComponent {
   userMissions: any[] = [];
   users: any[] = [];
   p: number = 1;
+  searchText: string = '';
 
   constructor(
     private missionService: MissionService,

@@ -43,8 +43,12 @@ tr:nth-child(even) {
     color: white;
     display: block;
     border: none;
+    
     border-radius: 5px;
     cursor: pointer;
+}
+.full-width-button{
+    width: 100%;
 }
 .liste{
     width: 100%;
@@ -52,13 +56,13 @@ tr:nth-child(even) {
 
 .modal-dialog{
     position: absolute ;
-    top:20%;
+    top:10%;
     left:35%;
     transform: translate(-50%, -50%);
     z-index: 1050;
     overflow: hidden;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     margin: 1.75rem auto;
     padding: 1rem;
     background-color: #fff;
@@ -101,3 +105,17 @@ tr:nth-child(even) {
 .icon-desactivate{
     color: red;
 }
+
+
+  .search-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-box input {
+    width: 300px;
+    font-size: 1rem;
+  }
+  

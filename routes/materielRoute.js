@@ -196,9 +196,10 @@ router.put('/affecter-materiels', authMiddleware, jsonParser, async (req, res) =
 
     for (const materiel of materielsToUpdate) {
       console.log(materiel,'materiel');
-      await Materiel.findByIdAndUpdate(materiel._id, { agent: materiel.agent });
-      
       const user = await User.findOne({ _id: materiel.agent });
+      await Materiel.findByIdAndUpdate(materiel._id, { agent: user.firstName+' '+ user.lastName});
+      
+
       if (user) {
         const unseenNotifications = user.unseenNotifications || [];
         unseenNotifications.push({

@@ -8,6 +8,8 @@ import { HttpClient } from '@angular/common/http';
 import { RequestService } from '../../services/request.service';
 import { PageEvent } from '@angular/material/paginator';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { FilterPipe } from '../../filter.pipe';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-site',
@@ -19,6 +21,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RouterOutlet,
     CommonModule,
     NgxPaginationModule,
+    FilterPipe,
   ],
   templateUrl: './site.component.html',
   styleUrl: './site.component.css',
@@ -28,11 +31,15 @@ export class SiteComponent {
   userForm!: FormGroup;
   selectedUser: any = {};
   file!: File;
+  userId!:string;
   p: number = 1;
+  searchText: string = '';
 
   constructor(private requestService: RequestService,
     private http: HttpClient,
-    private toast: ToastrService) {}
+    private toast: ToastrService,
+    private authService: AuthService,
+  ) {}
 
     ngOnInit():void{
       this.setForm();
@@ -52,10 +59,11 @@ export class SiteComponent {
  }
 
  getAllRequest(): void {
-  this.requestService.getAllRequest().subscribe((requests) => {
+  this.requestService.getRequestByResponsableSite().subscribe((requests) => {
     this.userList = requests;
   });
-}
+} 
+
 
  submit(): void {
   console.log(this.userForm.value);
@@ -123,29 +131,24 @@ deleteRequest(request: any): void {
   });
 }
 
-  uploadCSV() {
-    const formData = new FormData();
-    formData.append('file', this.file);
-    console.log(formData);
-    this.http
-      .post('http://localhost:3000/api/user/uploadCSV', formData)
-      .subscribe({
-        next: (response:any) => {
-          console.log('Fichier téléchargé avec succès');
-          console.log(response);
-          if (response.success) {
-            this.toast.success(response.message);
-            this.getAllRequest();
-          } else {
-            this.toast.error(response.message);
-          }
-        },
-        error:(error) => {
-          console.log(error);
-          console.error('Erreur lors du téléchargement du CSV:', error);
-        }}
-      );
-  }
+uploadCSV() {
+
+  this.requestService.uploadCSV(this.file, this.userId).subscribe({
+    next: (response: any) => {
+      console.log('Fichier téléchargé avec succès');
+      console.log(response);
+      if (response.success) {
+        this.toast.success(response.message);
+        this.getAllRequest();
+      } else {
+        this.toast.error(response.message);
+      }
+    },
+    error: (error) => {
+      console.error('Erreur lors du téléchargement du CSV:', error);
+    }
+  });
+}
 
   onlyLetters(event: any) {
     const pattern = /[a-zA-Z]/;
@@ -166,7 +169,7 @@ deleteRequest(request: any): void {
   handlePageChange(event: PageEvent): void {
     this.p = event.pageIndex + 1; // Adjust as needed based on your pagination logic
   }
-  onFileChange(event: any): void {
+  onFileSelected(event: any) {
     this.file = event.target.files[0];
     this.updateFileName(event);
   }

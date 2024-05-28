@@ -84,7 +84,17 @@ tr:nth-child(even) {
 .icon-delete {
     color: red;
 }
-
+.search-title-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .search-box input {
+    width: 300px;
+    font-size: 1rem;
+  }
 .custom-file-upload {
     display: inline-block;
     cursor: pointer;
