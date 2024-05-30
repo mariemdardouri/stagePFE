@@ -1,8 +1,8 @@
 
 .container-fluid{
     margin-top: 50px;
-    margin-right: 150px;
-    width:80% !important;
+    margin-right: 200px;
+    width:100% !important;
    
 } 
 
@@ -79,6 +79,15 @@ tr:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1040;
   }
+  .modal-body {
+    text-align: center; 
+}
+.bi-exclamation-circle {
+    font-size: 5rem;
+    color: rgb(255, 98, 0);
+    margin-bottom: 10px; 
+  }
+
   .icon-add{
     font-size: 1.5rem;
     cursor: pointer;

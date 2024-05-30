@@ -42,8 +42,11 @@
               data-bs-target="#UpdateModal"
               (click)="editClaim(claim)"
             >
-            <i class="bi bi-pencil-square icon-edit" ></i></span
-            ><span class="icon-delete" (click)="deleteClaim(claim)"> <i class="bi bi-trash-fill"></i></span>
+            <i class="bi bi-pencil-square icon-edit" ></i></span>
+            <span class="icon-delete" data-bs-toggle="modal"
+            data-bs-target="#DeleteModal" (click)="openDeleteModal(claim)">
+            <i class="bi bi-trash-fill"></i>
+            </span>
           </div>
         </td>
       </tr>
@@ -69,7 +72,7 @@ data-keyboard="false"
   <div class="modal-content">
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="UpdateModalLabel">
-        Modifier réclamation
+        Modifier une réclamation
       </h1>
       <button
         type="button"
@@ -80,17 +83,16 @@ data-keyboard="false"
     </div>
     <div class="modal-body">
       <form autocomplete="off">
-        <div class="row">
           <div class="col-xl-6 mb-3">
             <label for="description" class="form-label">Déscription</label>
             <input 
               name="description"
               id="description"
+              class="form-control"
               [(ngModel)]="selectedClaim.description"
               [ngModelOptions]="{ standalone: true }"
             >
           </div>
-        </div>
       </form>
     </div>
     <div class="modal-footer">
@@ -105,4 +107,25 @@ data-keyboard="false"
     </div>
   </div>
 </div>
+</div>
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <i class="bi bi-exclamation-circle"></i>
+        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="deleteClaim()" data-bs-dismiss="modal">Supprimer</button>
+      </div>
+    </div>
+  </div>
 </div>

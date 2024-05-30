@@ -26,6 +26,7 @@ export class ApproComponent {
   isClicked: boolean = false;
   materiel: any;
   p: number = 1;
+  selectedMateriel: any;
 
   constructor(
     private materielService: MaterielService,
@@ -83,11 +84,13 @@ export class ApproComponent {
       },
     });
   }
-
-  deleteNumInv(materiel: any): void {
-    materiel.numInv = '';
-    materiel.isNumInvDisabled = false;
-    this.materielService.updateMateriel(materiel).subscribe(
+  openDeleteModal(materiel: any): void {
+    this.selectedMateriel = materiel;
+  }
+  deleteNumInv(): void {
+    this.selectedMateriel.numInv = '';
+    this.selectedMateriel.isNumInvDisabled = false;
+    this.materielService.updateMateriel(this.selectedMateriel).subscribe(
       () => {
         this.toast.success("Numéro d'inventaire supprimé avec succès.");
       },

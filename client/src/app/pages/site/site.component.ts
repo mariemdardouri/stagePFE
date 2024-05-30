@@ -29,7 +29,7 @@ import { AuthService } from '../../services/auth.service';
 export class SiteComponent {
   userList: any[] = [];
   userForm!: FormGroup;
-  selectedUser: any = {};
+  selectedRequest: any = {};
   file!: File;
   userId!:string;
   p: number = 1;
@@ -87,17 +87,17 @@ export class SiteComponent {
 }
 
 editRequest(request: any): void {
-  this.selectedUser = request;
+  this.selectedRequest = request;
 }
 
 updateRequest(): void {
-  if (this.selectedUser) {
-    this.requestService.updateRequest(this.selectedUser).subscribe({
+  if (this.selectedRequest) {
+    this.requestService.updateRequest(this.selectedRequest).subscribe({
       next: (resp: any) => {
         if (resp.success) {
           this.toast.success(resp.message);
           this.getAllRequest();
-          this.selectedUser = {};
+          this.selectedRequest = {};
         } else {
           this.toast.error(resp.message);
         }
@@ -112,23 +112,29 @@ updateRequest(): void {
   }
 }
 
-deleteRequest(request: any): void {
-  this.requestService.deleteRequest(request).subscribe({
-    next: (resp: any) => {
-      if (resp.success) {
-        this.toast.success(resp.message);
-        this.getAllRequest();
-      } else {
-        this.toast.error(resp.message);
-      }
-    },
-    error: (err) => {
-      console.error('Erreur lors de la suppression du demande:', err);
-      if (err.status === 500) {
-        this.toast.error('Erreur lors de la suppression du demande');
-      }
-    },
-  });
+openDeleteModal(materiel: any): void {
+  this.selectedRequest = materiel;
+}
+
+deleteRequest(): void {
+  if (this.selectedRequest) {
+    this.requestService.deleteRequest(this.selectedRequest).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success(resp.message);
+          this.getAllRequest();
+        } else {
+          this.toast.error(resp.message);
+        }
+      },
+      error: (err) => {
+        console.error('Erreur lors de la suppression du demande:', err);
+        if (err.status === 500) {
+          this.toast.error('Erreur lors de la suppression du demande');
+        }
+      },
+    });
+  }
 }
 
 uploadCSV() {

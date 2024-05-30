@@ -52,8 +52,8 @@ export class AgentLogistiqueComponent {
   }
 
   validateMission(mission: any): void {
-    mission.status = 'validate'; // Update the status to "Valider"
-    this.missionService.updateMission(mission).subscribe({
+    
+    this.missionService.validMission(mission).subscribe({
       next: (resp: any) => {
         if (resp.success) {
           this.toast.success('Mission validée avec succès');
@@ -62,8 +62,24 @@ export class AgentLogistiqueComponent {
         }
       },
       error:(error) => {
-        console.error('Erreur lors de la mise à jour de la mission:', error);
-        this.toast.error('Erreur lors de la mise à jour de la mission');
+        console.error('Erreur lors de la validation de la mission:', error);
+        this.toast.error('Erreur lors de la validation de la mission');
+      }
+  });
+  }
+  rejectMission(mission: any): void {
+    
+    this.missionService.rejectMission(mission).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success('Mission rejetée avec succès');
+        } else {
+          this.toast.error(resp.message);
+        }
+      },
+      error:(error) => {
+        console.error('Erreur lors de la rejection de la mission:', error);
+        this.toast.error('Erreur lors de la rejection de la mission');
       }
   });
   }

@@ -1,9 +1,10 @@
 .container-fluid{
-    margin-top: 50px;
-    margin-right: 200px;
-    width:80% !important;
-   
+  margin-top: 50px;
+  margin-right: 200px;
+  width:100% !important;
+ 
 } 
+
 .title {
     text-align: left;
     margin-bottom: 60px;

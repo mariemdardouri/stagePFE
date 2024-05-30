@@ -48,22 +48,9 @@ router.put("/update-mission/:id",authMiddleware,jsonParser,async (req, res) => {
     try {
       const updatedMission = await Mission.findByIdAndUpdate(
         req.params.id,
-        req.body,
-        { status: "validate" }, 
+        req.body, 
         { new: true }
       );
-
-      const user = await User.findOne({ role:"logistique"});
-      // Add a notification for the responsible logistique
-      if (user) {
-        user.unseenNotifications = user.unseenNotifications || [];
-        user.unseenNotifications.push({
-          type: "mission-validated",
-          message: `Ce ${updatedMission.title} a été validé par ${updatedMission.agentLogistique}`,
-          onClickPath: "/logistique/mission",
-        });
-        await user.save();
-      }
 
       res.status(200).json({
         updatedMission,
@@ -79,6 +66,69 @@ router.put("/update-mission/:id",authMiddleware,jsonParser,async (req, res) => {
   }
 );
 
+router.put('/valider-mission/:id', authMiddleware, jsonParser, async (req, res) => {
+  try {
+    const updatedMission = await Mission.findByIdAndUpdate(
+      req.params.id,
+      {status: 'validate'},
+      { new: true }
+    );
+    
+    const user = await User.findOne({ role:"logistique"});
+      if (user) {
+        user.unseenNotifications = user.unseenNotifications || [];
+        user.unseenNotifications.push({
+          type: "mission-validated",
+          message: `Cette ${updatedMission.title} a été validé par ${updatedMission.agentLogistique}`,
+          onClickPath: "/logistique/mission",
+        });
+        await user.save();
+      }
+    res.status(200).json({
+      updatedMission,
+      message: "Les missions ont été validé avec succès",
+      success: true,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la validation de la mission: ", error);
+    res.status(500).json({
+      message: "Erreur lors de la validation de la mission",
+      success: false
+    });
+  }
+});
+router.put('/reject-mission/:id', authMiddleware, jsonParser, async (req, res) => {
+  try {
+    const updatedMission = await Mission.findByIdAndUpdate(
+      req.params.id,
+      {status: 'rejected'},
+      { new: true }
+    );
+
+    const user = await User.findOne({ role:"logistique"});
+    if (user) {
+      user.unseenNotifications = user.unseenNotifications || [];
+      user.unseenNotifications.push({
+        type: "mission-validated",
+        message: `Cette ${updatedMission.title} a été rejeté par ${updatedMission.agentLogistique}`,
+        onClickPath: "/logistique/mission",
+      });
+      await user.save();
+    }
+
+    res.status(200).json({
+      updatedMission,
+      message: "Les missions ont été rejetés avec succès",
+      success: true
+    });
+  } catch (error) {
+    console.error("Erreur lors du rejet des missions: ", error);
+    res.status(500).json({
+      message: "Erreur lors du rejet des missions",
+      success: false
+    });
+  }
+});
 router.delete("/delete-mission/:id",authMiddleware,jsonParser,async (req, res) => {
     try {
       const deletedMission = await Mission.findByIdAndDelete(req.params.id);

@@ -1,7 +1,7 @@
 .container-fluid{
     margin-top: 50px;
     margin-right: 200px;
-    width:80% !important;
+    width:100% !important;
    
 } 
 
@@ -42,9 +42,40 @@ tr:nth-child(even) {
     border-radius: 5px;
     cursor: pointer;
 }
+.modal-dialog {
+    position: absolute;
+    top: 20%;
+    left: 35%;
+    transform: translate(-50%, -50%);
+    z-index: 1050;
+    overflow: hidden;
+    width: 100%;
+    max-width: 500px;
+    margin: 1.75rem auto;
+    padding: 1rem;
+    background-color: #fff;
+    border-radius: 0.3rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
 
-
-  .icon-edit,.icon-delete,.icon-check{
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1040;
+}
+.modal-body {
+    text-align: center; 
+}
+.bi-exclamation-circle {
+    font-size: 5rem;
+    color: rgb(255, 98, 0);
+    margin-bottom: 10px; 
+}
+.icon-edit,.icon-delete,.icon-check{
     font-size: 1.5rem;
     cursor: pointer;
     margin-right: 0.5rem;

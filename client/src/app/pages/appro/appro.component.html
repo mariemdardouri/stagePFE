@@ -1,60 +1,83 @@
-<div class="container-fluid">
-  <h2 class="title">Affectation du numéro d'inventaire</h2>
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th for="categorie">Catégorie</th>
-          <th for="nature">Nature du model</th>
-          <th for="numSerie">Numéro du serie</th>
-          <th>Fournisseur</th>
-          <th>Numéro d'inventaire</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
+  <div class="container-fluid">
+    <h2 class="title">Affectation du numéro d'inventaire</h2>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th for="categorie">Catégorie</th>
+            <th for="nature">Nature du model</th>
+            <th for="numSerie">Numéro du serie</th>
+            <th>Fournisseur</th>
+            <th>Numéro d'inventaire</th>
+            <th class="actions">Actions</th>
+          </tr>
+        </thead>
 
-      <tbody>
-        <tr *ngFor="let materiel of materielList | paginate: { itemsPerPage: 6, currentPage: p }">
-          <td>{{ materiel.categorie }}</td>
-          <td>{{ materiel.nature }}</td>
-          <td>{{ materiel.numSerie }}</td>
-          <td>{{ materiel.fournisseur }}</td>
-          <td>
-            <div>
-              <input
-                [disabled]="materiel.isNumInvDisabled"
-                [(ngModel)]="materiel.numInv"
-              />
-            </div>
-          </td>
-          <td>
-            <button
-              class="btn btn-success float-end m-1"
-              (click)="updateMateriel(materiel)"
-              [disabled]="!materiel.numInv"
-            >
-              affecter
-            </button>
-            <button
-              name="edit"
-              class="btn btn-primary float-end m-1"
-              (click)="editNumInv(materiel)"
-              [disabled]="!materiel.numInv"
-            >
-              modifier
-            </button>
-            <button
-              class="btn btn-danger float-end m-1"
-              (click)="deleteNumInv(materiel)"
-              [disabled]="!materiel.numInv"
-            >
-              supprimer
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="d-flex justify-content-end">
-      <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
-      nextLabel="Suivant"></pagination-controls>
+        <tbody>
+          <tr *ngFor="let materiel of materielList | paginate: { itemsPerPage: 6, currentPage: p }">
+            <td>{{ materiel.categorie }}</td>
+            <td>{{ materiel.nature }}</td>
+            <td>{{ materiel.numSerie }}</td>
+            <td>{{ materiel.fournisseur }}</td>
+            <td>
+              <div>
+                <input
+                  [disabled]="materiel.isNumInvDisabled"
+                  [(ngModel)]="materiel.numInv"
+                />
+              </div>
+            </td>
+            <td>
+              <button
+                class="btn btn-success float-end m-1"
+                (click)="updateMateriel(materiel)"
+                [disabled]="!materiel.numInv"
+              >
+                affecter
+              </button>
+              <button
+                name="edit"
+                class="btn btn-primary float-end m-1"
+                (click)="editNumInv(materiel)"
+                [disabled]="!materiel.numInv"
+              >
+                modifier
+              </button>
+              <button
+                class="btn btn-danger float-end m-1"
+                data-bs-toggle="modal"
+                data-bs-target="#DeleteModal" 
+                (click)="openDeleteModal(materiel)"
+                [disabled]="!materiel.numInv"
+              >
+                supprimer
+              </button>
+            </td>
+          </tr>
+        </tbody>
+        
+      </table>
+      <div class="d-flex justify-content-end">
+        <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
+        nextLabel="Suivant"></pagination-controls>
+      </div>
+  </div>
+
+  <!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <i class="bi bi-exclamation-circle"></i>
+        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="deleteNumInv()" data-bs-dismiss="modal">Supprimer</button>
+      </div>
     </div>
+  </div>
 </div>

@@ -38,6 +38,7 @@ export class RequestComponent {
   userRequests: any[] = [];
   p: number = 1;
   searchText: string = '';
+  selectedRequest: any;
 
   constructor(
     private requestService: RequestService,
@@ -76,10 +77,13 @@ export class RequestComponent {
       });
     }
   }
-  rejectRequest(request: any): void {
-    if (request) {
-      console.log(request, 'iddddd');
-      this.requestService.rejectRequest(request).subscribe({
+  openDeleteModal(request: any): void {
+    this.selectedRequest = request;
+  }
+
+  rejectRequest(): void {
+    if (this.selectedRequest) {
+      this.requestService.rejectRequest(this.selectedRequest).subscribe({
         next: (resp: any) => {
           if (resp.success) {
             this.toast.success(resp.message);

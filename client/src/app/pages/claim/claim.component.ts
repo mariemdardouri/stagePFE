@@ -84,22 +84,28 @@ export class ClaimComponent {
       }
   });
   }
-  deleteClaim(claim: any): void {
-    this.claimService.deleteClaim(claim).subscribe({
-      next: (resp: any) => {
-        if (resp.success) {
-          this.toast.success(resp.message);
-          this.getClaimsByMateriel();
-        } else {
-          this.toast.error(resp.message);
-        }
-      },
-      error: (err) => {
-        console.error('Erreur lors de la suppression de la réclamation:', err);
-        if (err.status === 500) {
-          this.toast.error('Erreur lors de la suppression de la réclamation');
-        }
-      },
-    });
+  openDeleteModal(claim: any): void {
+    this.selectedClaim = claim;
   }
+
+  deleteClaim(): void {
+    if(this.selectedClaim){
+      this.claimService.deleteClaim(this.selectedClaim).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.getClaimsByMateriel();
+          } else {
+            this.toast.error(resp.message);
+          }
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression de la réclamation:', err);
+          if (err.status === 500) {
+            this.toast.error('Erreur lors de la suppression de la réclamation');
+          }
+        },
+      });
+    }
+  }    
 }

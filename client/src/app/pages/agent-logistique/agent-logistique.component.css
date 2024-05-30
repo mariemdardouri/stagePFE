@@ -1,7 +1,7 @@
 .container-fluid{
     margin-top: 50px;
     margin-right: 200px;
-    width:80% !important;
+    width:100% !important;
    
 } 
 .title {
@@ -80,20 +80,22 @@ tr:nth-child(even) {
     z-index: 1040;
   }
 
-  .icon-check,.icon-delete{
+  .icon-check,.icon-delete,.icon-reject{
     font-size: 1.5rem;
     cursor: pointer;
     margin-right: 0.5rem;
 }
 
-.icon-edit:hover,.icon-delete:hover{
+.icon-edit:hover,.icon-delete:hover,.icon-reject:hover{
     color:#007bff;
 }
 
 .icon-check{
     color: green;
 }
-
+.icon-reject{
+    color: red;
+}
 
 .icon-delete{
     color: red;

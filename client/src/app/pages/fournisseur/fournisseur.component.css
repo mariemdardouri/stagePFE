@@ -1,7 +1,7 @@
 .container-fluid{
     margin-top: 50px;
     margin-right: 200px;
-    width:80% !important;
+    width:100% !important;
    
 } 
 .title {
@@ -84,6 +84,14 @@ tr:nth-child(even) {
 .icon-delete {
     color: red;
 }
+.modal-body {
+    text-align: center; 
+}
+.bi-exclamation-circle {
+    font-size: 5rem;
+    color: rgb(255, 98, 0);
+    margin-bottom: 10px; 
+  }
 .search-title-container {
     display: flex;
     justify-content: space-between;

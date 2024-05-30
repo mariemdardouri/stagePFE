@@ -30,6 +30,7 @@
           <td>{{ user.email }}</td>
           <td>{{ user.phoneNumber }}</td>
           <td>{{ user.role }}</td>
+          <td>{{ user.createdAt | date : "short" }}</td>
           <td>
             <div>
               <span *ngIf="user.status === 'pending'">En Attente</span>
@@ -46,8 +47,11 @@
               >
               <i class="bi bi-pencil-square icon-edit"></i></span
               > <span class="icon-check" (click)="activateUser(user)"> <i class="bi bi-check-square-fill"></i> </span>
-              <span class="icon-desactivate" (click)="desactivateUser(user)"> <i class="bi bi-power"></i>  </span>
-            </div>
+              <span class="icon-desactivate" data-bs-toggle="modal"
+                data-bs-target="#DeleteModal" (click)="openDeleteModal(user)">
+                <i class="bi bi-x-square-fill"></i> 
+              </span>
+              </div>
           </td>
         </tr>
       </tbody>
@@ -239,7 +243,7 @@ data-keyboard="false"
           </div>
           <div class="col-xl-6 mb-3">
             <label for="role"  class="form-label">Role</label>
-            <select formControlName="role" name="role" id="role">
+            <select formControlName="role" class="form-select" name="role">
               <option value="fournisseur">Fournisseur</option>
               <option value="deploiement">
                 Résponsable de déploiement
@@ -445,9 +449,8 @@ data-keyboard="false"
             <div class="col-xl-6 mb-3">
               <label for="role" class="form-label">Role</label>
               <select
-                class="liste"
+                class="form-select"
                 name="role"
-                id="role"
                 [(ngModel)]="selectedUser.role"
                 [ngModelOptions]="{ standalone: true }"
               >
@@ -478,6 +481,26 @@ data-keyboard="false"
         >
           Modifier
         </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteModalLabel">Désactiver ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <i class="bi bi-exclamation-circle"></i>
+        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="desactivateUser()" data-bs-dismiss="modal">Désactiver</button>
       </div>
     </div>
   </div>

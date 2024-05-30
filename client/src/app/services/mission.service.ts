@@ -70,7 +70,35 @@ export class MissionService {
       headers,
     });
   }
+  rejectMission(mission: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
 
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.put(URL + 'reject-mission/' + mission._id, mission, {
+      headers,
+    });
+  }
+  validMission(mission: any): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      throw new Error('Token not found');
+    }
+
+    const headers = new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+    });
+
+    return this.http.put(URL + 'valider-mission/' + mission._id, mission, {
+      headers,
+    });
+  }
+  
   deleteMission(mission: any): Observable<any> {
     const token = localStorage.getItem('token');
     if (!token) {

@@ -184,36 +184,31 @@ router.delete( "/delete-materiel/:id", authMiddleware, jsonParser,async (req, re
     }
   }
 );
-router.put('/affecter-materiels', authMiddleware, jsonParser, async (req, res) => {
+router.put('/affecter-materiel/:id', authMiddleware, jsonParser, async (req, res) => {
   try {
-    const materielsToUpdate = req.body.materiels;
+    const updatedMateriel = await Materiel.findByIdAndUpdate(
+      req.params.id,
+      { agent: req.body.agent },
+      { new: true }
+    );
+    console.log(req.body.agent,'req.body.agent');
 
-    console.log(materielsToUpdate,'materielsToUpdate');
-
-    if (!Array.isArray(materielsToUpdate)) {
-      throw new Error('materielsToUpdate is not an array');
-    }
-
-    for (const materiel of materielsToUpdate) {
-      console.log(materiel,'materiel');
-      const user = await User.findOne({ _id: materiel.agent });
-      await Materiel.findByIdAndUpdate(materiel._id, { agent: user.firstName+' '+ user.lastName});
-      
-
-      if (user) {
-        const unseenNotifications = user.unseenNotifications || [];
-        unseenNotifications.push({
-          type: "materiel-assigned",
-          message: `Un nouveau matériel vous a été affecté : categorie ${ materiel.categorie} et nature ${materiel.nature}`,
-          onClickPath: "/agent"
-        });
-        user.unseenNotifications = unseenNotifications;
-        await user.save();
-      }
+    const user = await User.findById({_id: req.body.agent});
+    console.log(user,'2222222222');
+    if (user) {
+      const unseenNotifications = user.unseenNotifications || [];
+      unseenNotifications.push({
+        type: "materiel-assigned",
+        message: `Le matériel a été affecté à ${req.body.agent}`,
+        onClickPath: "/agent",
+      });
+      user.unseenNotifications = unseenNotifications;
+      await user.save();
     }
 
     res.status(200).json({
-      message: "Matériels affectés avec succès",
+      updatedMateriel,
+      message: "Matériel affecté avec succès",
       success: true
     });
   } catch (error) {
@@ -230,7 +225,7 @@ router.get("/get-materiels-affected-to-agent",authMiddleware, jsonParser, async 
   try {
     const user = await User.findOne({ _id: req.body.id });
     
-    const affectedMateriels = await Materiel.find({ agent: user._id });
+    const affectedMateriels = await Materiel.find({ agent: user._id});
 
     res.status(200).json(affectedMateriels);
   } catch (error) {

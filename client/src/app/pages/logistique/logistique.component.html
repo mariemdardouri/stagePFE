@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="search-title-container">
-    <h2 class="title"> Affectation du materiel </h2>
+    <h2 class="title"> Affectation du  matériel</h2>
     <div class="search-box">
       <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
     </div>
@@ -13,7 +13,9 @@
             <th for="nature">Nature du model</th>
             <th for="numSerie">Numéro du serie</th>
             <th>Numéro d'inventaire</th>
+            <th>Statut</th>
             <th>Agent</th>
+            <th>Actions</th>
           </tr>
         </thead>
   
@@ -24,11 +26,27 @@
             <td>{{ materiel.numSerie }}</td>
             <td>{{ materiel.numInv }}</td>
             <td>
-              <select class="form-select" [(ngModel)]="materiel.agent">
-                <option *ngFor="let user of userList" [value]="user.firstName+' '+user.lastName">
+              <div>
+                <span *ngIf="materiel.status === 'pending'">En attente</span>
+                <span *ngIf="materiel.status === 'validate'">Valider</span>
+                <span *ngIf="materiel.status === 'received'">Reçus</span>
+              </div>
+            </td>
+            <td>
+              <select class="form-select" [(ngModel)]="materiel.agent" [disabled]="materiel.isAgentDisabled">
+                <option *ngFor="let user of userList" [ngValue]="user._id">
                   {{ user.firstName }} {{ user.lastName }}
                 </option>
               </select>
+            </td>
+            <td>
+              <button class="btn btn-success float-end m-1" (click)="affecterMateriel(materiel)" [disabled]="!materiel.agent">
+                Affecter
+              </button>
+              <button name="edit" class="btn btn-primary float-end m-1"
+              (click)="editNumInv(materiel)" [disabled]="!materiel.agent">
+              Modifier
+              </button>
             </td>
           </tr>
         </tbody>
@@ -37,6 +55,5 @@
         <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
         nextLabel="Suivant"></pagination-controls>
       </div>
-    <button class="btn btn-primary" (click)="affecterMateriels()">Affecter</button>
 </div>
   

@@ -12,8 +12,9 @@
             <th for="title">Titre</th>
             <th for="place">Lieu du mission</th>
             <th for="hour">Heure du mission</th>
-            <th for="dateStart">Date du debut</th>
+            <th for="dateStart">Date du début</th>
             <th for="dateEnd">Date du fin</th>
+            <th for="status">Statut</th>
             <th for="action">Actions</th>
         </thead>
         <tbody>
@@ -25,8 +26,15 @@
             <td>{{ mission.dateEnd }}</td>
             <td>
               <div>
+                <span *ngIf="mission.status === 'pending'">En attente</span>
+                <span *ngIf="mission.status === 'validate'">Valider</span>
+                <span *ngIf="mission.status === 'rejected'">Rejeter</span>
+              </div>
+            </td>
+            <td>
+              <div>
                 <span class="icon-check" *ngIf="mission.status !== 'validate'" (click)="validateMission(mission)"><i class="bi bi-check-square-fill"></i> </span>
-                <span class="icon-delete"> <i class="bi bi-trash-fill"></i></span>
+                <span class="icon-reject" *ngIf="mission.status !== 'rejected'" (click)="rejectMission(mission)"><i class="bi bi-x-square-fill"></i> </span>
               </div>
             </td>
           </tr>

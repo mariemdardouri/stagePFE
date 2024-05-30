@@ -108,7 +108,7 @@
       return this.http.delete(URL + 'delete-materiel/' + materiel._id, { headers });
     }
 
-    affectMateriels(materiels: any): Observable<any> {
+    affectMateriel(materiel: any): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {
         throw new Error('Token introuvable');
@@ -118,7 +118,7 @@
         Authorization: `Bearer ${token}`,
       });
   
-      return this.http.put(URL + 'affecter-materiels', materiels, { headers });
+      return this.http.put(URL + 'affecter-materiel/' + materiel._id, materiel, { headers });
     }
 
     getMaterielsAffectedToAgent(): Observable<any[]> {

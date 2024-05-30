@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="search-title-container">
-    <h2 class="title">Table des Materiels</h2>
+    <h2 class="title">Table des Maté  riels</h2>
     <div class="search-box">
       <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
     </div>
@@ -27,6 +27,7 @@
           <th for="categorie">Catégorie</th>
           <th for="nature">Nature du model</th>
           <th for="numSerie">Numéro du serie</th>
+          <th for="dateCreate">Date de creation</th>
           <th for="action">Actions</th>
       </thead>
       <tbody>
@@ -34,6 +35,7 @@
           <td>{{ materiel.categorie }}</td>
           <td>{{ materiel.nature }}</td>
           <td>{{ materiel.numSerie }}</td>
+          <td>{{ materiel.createdAt | date : "short" }}</td>
           <td>
             <div>
               <span
@@ -41,8 +43,11 @@
                 data-bs-target="#UpdateModal"
                 (click)="editMateriel(materiel)"
               >
-              <i class="bi bi-pencil-square icon-edit" ></i></span
-              ><span class="icon-delete" (click)="deleteMateriel(materiel)"> <i class="bi bi-trash-fill"></i></span>
+              <i class="bi bi-pencil-square icon-edit" ></i></span>
+              <span class="icon-delete" data-bs-toggle="modal"
+                data-bs-target="#DeleteModal" (click)="openDeleteModal(materiel)">
+                <i class="bi bi-trash-fill"></i>
+              </span>
             </div>
           </td>
         </tr>
@@ -69,7 +74,7 @@
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="addModalLabel">
-              Ajouter Materiel
+              Ajouter un matériel
             </h1>
             <button
               type="button"
@@ -81,9 +86,9 @@
           <div class="modal-body">
             <form [formGroup]="materielForm" autocomplete="off">
               <div class="row">
-                <div class="col-xl-4 mb-3">
-                  <label for="categorie" class="form-label">Categorie</label>
-                  <select formControlName="categorie" name="categorie" id="categorie">
+                <div class="col-xl-6 mb-3">
+                  <label for="categorie" class="form-label">Catégorie</label>
+                  <select formControlName="categorie"class="form-select" name="categorie" id="categorie">
                     <option value="ordinateurs">Ordinateurs</option>
                     <option value="alimentation">Alimentation</option>
                     <option value="processeur">Processeur</option>
@@ -99,11 +104,9 @@
                     <option value="scanner">Scanner</option>
                   </select>
                 </div>
-              </div>
-              <div class="row">
                 <div class="col-xl-6 mb-3">
-                  <label for="nature" class="form-label">Nature du materiel</label>
-                  <select formControlName="nature" name="nature" id="nature">
+                  <label for="nature" class="form-label">Nature du matériel</label>
+                  <select formControlName="nature" class="form-select" name="nature" id="nature">
                     <option value="apple">APPLE</option>
                     <option value="asus">ASUS</option>
                     <option value="hp">HP</option>
@@ -161,7 +164,7 @@ data-keyboard="false"
   <div class="modal-content">
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="UpdateModalLabel">
-        Modifier materiel
+        Modifier un matériel
       </h1>
       <button
         type="button"
@@ -172,13 +175,13 @@ data-keyboard="false"
     </div>
     <div class="modal-body">
       <form autocomplete="off">
-
-        
+        <div class="row">
           <div class="col-xl-6 mb-3">
-            <label for="categorie" class="form-label">Categorie</label>
+            <label for="categorie" class="form-label">Catégorie</label>
             <select 
               name="categorie"
               id="categorie"
+              class="form-select"
               [(ngModel)]="selectedMateriel.categorie"
               [ngModelOptions]="{ standalone: true }"
             >
@@ -198,10 +201,11 @@ data-keyboard="false"
             </select>
           </div>
           <div class="col-xl-6 mb-3">
-            <label for="nature" class="form-label">Nature du materiel</label>
+            <label for="nature" class="form-label">Nature du matériel</label>
             <select 
               name="nature"
               id="nature"
+              class="form-select"
               [(ngModel)]="selectedMateriel.nature"
               [ngModelOptions]="{ standalone: true }"
             >
@@ -217,6 +221,7 @@ data-keyboard="false"
                     <option value="logitech">LOGITECH</option>
             </select>
           </div>
+        </div>
           <div class="row">
             <div class="col-xl-6 mb-3">
               <label for="numSerie" class="form-label"
@@ -225,9 +230,24 @@ data-keyboard="false"
               <input
                 name="numSerie"
                 id="numSerie"
+                class="form-control"
                 [(ngModel)]="selectedMateriel.numSerie"
                 [ngModelOptions]="{ standalone: true }"
                 maxlength="20"
+              />
+            </div>
+            <div class="col-xl-6 mb-3">
+              <label  class="form-label"
+                >Date de création</label
+              >
+              <input
+                type="datetime"
+                name="createdAt"
+                class="form-control"
+                id="createdAt"
+                [(ngModel)]="selectedMateriel.createdAt"
+                [ngModelOptions]="{ standalone: true }"
+                
               />
             </div>
         </div>
@@ -311,3 +331,22 @@ data-keyboard="false">
   </div>
 </div>
 
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <i class="bi bi-exclamation-circle"></i>
+        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="deleteMateriel()" data-bs-dismiss="modal">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>

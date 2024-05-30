@@ -34,6 +34,7 @@ export class UserListComponent {
     'Email',
     'NumTél',
     'Role',
+    'Date de création',
     'Statut',
     'Actions',
   ];
@@ -176,23 +177,29 @@ export class UserListComponent {
     }
   }
 
-  desactivateUser(userId: string): void {
-    this.userService.desactivateUser(userId).subscribe({
-      next: (resp: any) => {
-        if (resp.success) {
-          this.toast.success(resp.message);
-          this.getAllUsers();
-        } else {
-          this.toast.error(resp.message);
-        }
-      },
-      error: (err) => {
-        console.error('Erreur lors du desactivation de l\'utilisateur:', err);
-        if (err.status === 500) {
-          this.toast.error("Erreur lors du desactivation de l'utilisateur");
-        }
-      },
-    });
+  openDeleteModal(user: any): void {
+    this.selectedUser = user;
+  }
+
+  desactivateUser(): void {
+    if(this.selectedUser){
+      this.userService.desactivateUser(this.selectedUser).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.getAllUsers();
+          } else {
+            this.toast.error(resp.message);
+          }
+        },
+        error: (err) => {
+          console.error('Erreur lors du desactivation de l\'utilisateur:', err);
+          if (err.status === 500) {
+            this.toast.error("Erreur lors du desactivation de l'utilisateur");
+          }
+        },
+      });
+    }
   }
 
   activateUser(userId: string): void {

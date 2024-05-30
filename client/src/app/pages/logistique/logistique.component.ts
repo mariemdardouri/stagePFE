@@ -26,6 +26,7 @@ import { FilterPipe } from '../../filter.pipe';
 export class LogistiqueComponent {
   materielList: any[] = [];
   userList: any[] = [];
+  isAgentDisabled:boolean =false;
   p: number = 1;
   searchText: string = '';
 
@@ -43,8 +44,15 @@ export class LogistiqueComponent {
     this.materielService.getMateriels().subscribe(
       (data: any[]) => {
         console.log(data, 'data');
-        this.materielList = data.filter((materiel) => materiel.numInv);
+        this.materielList = data;
         console.log(data, 'materielList');
+        this.materielList.forEach((materiel) => {
+          if (materiel.agent) {
+            materiel.isAgentDisabled = true;
+          } else {
+            materiel.isAgentDisabled = false;
+          }
+        });
       },
       (error) => {
         console.error(
@@ -66,22 +74,27 @@ export class LogistiqueComponent {
       }
     );
   }
+    affecterMateriel(materiel: any): void {
+      console.log(materiel,'materiel');
+      this.materielService.affectMateriel(materiel).subscribe({
+        next: (resp: any) => {
+          console.log(resp);
+          if (resp.success) {
+            this.toast.success(resp.message);
 
-  affecterMateriels(): void {
-    const materielsToUpdate = this.materielList.filter(
-      (materiel) => materiel.agent
-    );
-    console.log(materielsToUpdate, 'materielsToUpdate');
-    this.materielService
-      .affectMateriels({ materiels: materielsToUpdate })
-      .subscribe(
-        (response: any) => {
-          this.toast.success(response.message);
+            this.getAllMateriels();
+          } else {
+            this.toast.error(resp.message);
+          }
         },
-        (error) => {
-          console.error("Erreur lors de l'affectation des matériels:", error);
-          this.toast.error("Erreur lors de l'affectation des matériels.");
+        error: (error) => {
+          console.error("Erreur lors de l'affectation du matériel:", error);
+          this.toast.error("Erreur lors de l'affectation du matériel.");
         }
-      );
-  }
+    });
+    }
+
+  editNumInv(materiel: any): void {
+    materiel.isAgentDisabled = false;
+  } 
 }

@@ -146,22 +146,28 @@ export class MissionComponent {
     }
   }
 
-  deleteMission(mission: any): void {
-    this.missionService.deleteMission(mission).subscribe({
-      next: (resp: any) => {
-        if (resp.success) {
-          this.toast.success(resp.message);
-          this.getAllMissions();
-        } else {
-          this.toast.error(resp.message);
-        }
-      },
-      error: (err) => {
-        console.error('Erreur lors de la suppression du materiel:', err);
-        if (err.status === 500) {
-          this.toast.error('Erreur lors de la suppression du materiel');
-        }
-      },
-    });
+  openDeleteModal(mission: any): void {
+    this.selectedMission = mission;
+  }
+
+  deleteMission(): void {
+    if(this.selectedMission){
+      this.missionService.deleteMission(this.selectedMission).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.getAllMissions();
+          } else {
+            this.toast.error(resp.message);
+          }
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression du materiel:', err);
+          if (err.status === 500) {
+            this.toast.error('Erreur lors de la suppression du materiel');
+          }
+        },
+      });
+    }
   }
 }

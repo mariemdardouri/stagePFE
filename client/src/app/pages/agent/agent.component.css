@@ -1,61 +1,63 @@
 /* agent-interface.component.css */
 .container-fluid {
-    margin-top: 50px;
-    width: 80%;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  
-  .title {
-    text-align: left;
-    margin-bottom: 50px;
-    color: #023047;
-    font-weight: bold;
-  }
-  
-  .table {
-    justify-content: center;
-    width: 100%;
-    border-collapse: collapse;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .table th,
-  .table td {
-    padding: 15px;
-    text-align: left;
-  }
-  
-  .table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-    text-align:center ;
-  }
-  
-  .table tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
-  }
-
-  .icon-check{
-    color: green;
+  margin-top: 50px;
+  margin-right: 200px;
+  width: 100% !important;
 }
 
-.icon-check{
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin-right: 0.5rem;
+.title {
+  text-align: left;
+  margin-bottom: 50px;
+  color: #023047;
+  font-weight: bold;
 }
 
-.received {
-  background-color: green;
+.table {
+  justify-content: center;
+  width: 100%;
+  height: auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  text-align: center;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: center;
+}
+th.actions {
+  width: 350px;
+}
+.btn-primary {
+  background-color: #023047;
+  padding: 8px 10px;
   color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-primary:hover, .btn-success:hover {
+  background-color: #007bff;
 }
 
 
-.modal-dialog{
-  position: absolute ;
-  top:20%;
-  left:35%;
+.btn-success {
+  background-color: rgb(3, 143, 3);
+  padding: 8px 10px;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.modal-dialog {
+  position: absolute;
+  top: 20%;
+  left: 35%;
   transform: translate(-50%, -50%);
   z-index: 1050;
   overflow: hidden;
@@ -65,7 +67,7 @@
   padding: 1rem;
   background-color: #fff;
   border-radius: 0.3rem;
-  box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
 }
 
 .modal-backdrop {
@@ -88,4 +90,3 @@
   width: 300px;
   font-size: 1rem;
 }
-

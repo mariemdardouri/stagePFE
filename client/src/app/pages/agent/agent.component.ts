@@ -38,7 +38,6 @@ export class AgentComponent {
   }
 
   getMaterielsAffectedToAgent(): void {
-    // Assuming you have a method in MaterielService to fetch affected materiels for the agent
     this.materielService.getMaterielsAffectedToAgent().subscribe(
       (data: any[]) => {
         this.affectedMateriels = data;
@@ -72,7 +71,7 @@ export class AgentComponent {
   selectMateriel(materiel: any): void {
     this.selectedMateriel = materiel;
     console.log(this.selectedMateriel,'selected');
-    this.description = ''; // Reset the description when selecting a new materiel
+    this.description = ''; 
   }
   createReclamation(description:any): void {
     if (this.selectedMateriel && this.selectedMateriel._id) {
@@ -80,7 +79,7 @@ export class AgentComponent {
       const materielId = this.selectedMateriel._id;
       const reclamationData = {
         userId: userId,
-        description: description, // Corrected parameter name
+        description: description,
         materielId: materielId,
       };
   

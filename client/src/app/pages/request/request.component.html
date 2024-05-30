@@ -30,11 +30,12 @@
           </td>
           <td>
             <div>
-              <span class="icon-check"  *ngIf="user.status === 'pending'" (click)="acceptRequest(user)">
+              <span class="icon-check"  (click)="acceptRequest(user)">
                 <i class="bi bi-check-square-fill"></i> </span
               >
-              <span class="icon-desactivate" (click)="rejectRequest(user)">
-                <i class="bi bi-power"></i>
+              <span class="icon-desactivate" data-bs-toggle="modal"
+              data-bs-target="#DeleteModal" (click)="openDeleteModal(user)">
+                <i class="bi bi-x-square-fill"></i>
               </span>
             </div>
           </td>
@@ -45,4 +46,24 @@
       <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
       nextLabel="Suivant"></pagination-controls>
     </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteModalLabel">Rejeter ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <i class="bi bi-exclamation-circle"></i>
+        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="rejectRequest()" data-bs-dismiss="modal">Rejeter</button>
+      </div>
+    </div>
+  </div>
 </div>

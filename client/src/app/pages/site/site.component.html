@@ -45,8 +45,12 @@
                 data-bs-target="#UpdateModal"
                 (click)="editRequest(user)"
               >
-              <i class="bi bi-pencil-square icon-edit" ></i></span
-              ><span class="icon-delete" (click)="deleteRequest(user)"> <i class="bi bi-trash-fill"></i></span>
+              <i class="bi bi-pencil-square icon-edit" ></i></span>
+              <span class="icon-delete" data-bs-toggle="modal"
+              data-bs-target="#DeleteModal" (click)="openDeleteModal(user)">
+              <i class="bi bi-trash-fill"></i>
+              </span>
+
             </div>
           </td>
         </tr>
@@ -238,7 +242,7 @@
                 </div>
                 <div class="col-xl-6 mb-3">
                   <label for="role"  class="form-label">Role</label>
-                  <select formControlName="role" name="role" id="role">
+                  <select formControlName="role" class="form-select" name="role" id="role">
                     <option value="fournisseur">Fournisseur</option>
                     <option value="deploiement">
                       Résponsable de déploiement
@@ -305,7 +309,7 @@ data-keyboard="false"
               name="firstName"
               id="firstName"
               class="form-control"
-              [(ngModel)]="selectedUser.firstName"
+              [(ngModel)]="selectedRequest.firstName"
               [ngModelOptions]="{ standalone: true }"
               (keypress)="onlyLetters($event)"
               />
@@ -337,7 +341,7 @@ data-keyboard="false"
               name="lastName"
               id="lastName"
               class="form-control"
-              [(ngModel)]="selectedUser.lastName"
+              [(ngModel)]="selectedRequest.lastName"
               [ngModelOptions]="{ standalone: true }"
               (keypress)="onlyLetters($event)"
               />
@@ -367,7 +371,7 @@ data-keyboard="false"
               name="cin"
               id="cin"
               class="form-control"
-              [(ngModel)]="selectedUser.cin"
+              [(ngModel)]="selectedRequest.cin"
               [ngModelOptions]="{ standalone: true }"
               maxlength="8"
               (keypress)="onlyNumbers($event)"
@@ -396,7 +400,7 @@ data-keyboard="false"
               name="email"
               id="email"
               class="form-control"
-              [(ngModel)]="selectedUser.email"
+              [(ngModel)]="selectedRequest.email"
               [ngModelOptions]="{ standalone: true }"
             />
             <div
@@ -419,8 +423,9 @@ data-keyboard="false"
             <input
               type="tel"
               name="phoneNumber"
+              class="form-control"
               id="phoneNumber"
-              [(ngModel)]="selectedUser.phoneNumber"
+              [(ngModel)]="selectedRequest.phoneNumber"
               [ngModelOptions]="{ standalone: true }"
               maxlength="8"
               />
@@ -446,10 +451,10 @@ data-keyboard="false"
           <div class="col-xl-6 mb-3">
             <label for="role" class="form-label">Role</label>
             <select
-              class="liste"
+              class="form-select"
               name="role"
               id="role"
-              [(ngModel)]="selectedUser.role"
+              [(ngModel)]="selectedRequest.role"
               [ngModelOptions]="{ standalone: true }"
             >
               <option value="fournisseur">Fournisseur</option>
@@ -513,6 +518,26 @@ data-keyboard="false">
     <div class="modal-footer">
       <button type="button" (click)="uploadCSV()" class="btn btn-primary" data-bs-dismiss="modal">Importer</button>
   </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <i class="bi bi-exclamation-circle"></i>
+        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="deleteRequest()" data-bs-dismiss="modal">Supprimer</button>
+      </div>
     </div>
   </div>
 </div>

@@ -1,41 +1,29 @@
-<nav class="navbar navbar-expand-lg y">
-  <span class="list-icon"
-    ><i class="bi bi-list" (click)="toggleSidebar()"></i
-  > <img src="assets/cimf.png" class="bodyimg" /></span>
-  <div>
-    
-  </div>
-  <div >
+<nav class="navbar navbar-expand-lg">
+  <span class="list-icon" ><i class="bi bi-list" (click)="toggleSidebar()"></i>
+    <img src="assets/cimf.png" class="bodyimg" />
+  </span>
+  <div class="navbar-right">
     <span class="firstName">{{ firstName }}</span>
-    <span class="profile-icon"(click)="goToUpdateProfile()"> <i class="bi bi-person-circle"></i></span>
-    <span class="notification bill-icon" (click)="goToNotifications()"><i class="bi bi-bell-fill"></i>
+    <span class="profile-icon"(click)="goToUpdateProfile()"><i class="bi bi-person-circle"></i></span>
+    <span class="notification bill-icon" (click)="goToNotifications()">
+      <i class="bi bi-bell-fill"></i>
       <span class="badge-notification" *ngIf="unseenNotificationsCount > 0">{{ unseenNotificationsCount }}</span>
     </span>
   </div>
 </nav>
 <div class="container-fluid">
-  <div class="container sidebar">
+  <div class="container sidebar sidebar-expand-lg" [ngClass]="{ 'sidebar-open': isSidebarOpen, 'sidebar-collapsed': !isSidebarOpen && isSmallScreen }">
     <nav>
       <div class="menu">
-        <div
-          class="menu-item"
-          *ngFor="let item of menuItems"
-          [routerLinkActive]="['active']"
-        >
-          <a
-            class="menu-link"
-            [routerLink]="item.path"
-            [ngClass]="{ active: itemActive === item.label }"
-            (click)="itemActive = item.label"
-          >
-            <i class="{{ item.icon }}"> </i>
+        <div class="menu-item" *ngFor="let item of menuItems" [routerLinkActive]="['active']">
+          <a class="menu-link" [routerLink]="item.path" [ngClass]="{ active: itemActive === item.label }" (click)="itemActive = item.label">
+            <i class="{{ item.icon }}"></i>
             <span class="menu-label">{{ item.label }}</span>
           </a>
         </div>
       </div>
     </nav>
   </div>
-
   <div class="container main">
     <router-outlet></router-outlet>
   </div>

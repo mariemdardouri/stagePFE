@@ -120,23 +120,29 @@ export class FournisseurComponent {
     }
   }
 
-  deleteMateriel(materiel: any): void {
-    this.materielService.deleteMateriel(materiel).subscribe({
-      next: (resp: any) => {
-        if (resp.success) {
-          this.toast.success(resp.message);
-          this.getMaterielByFournisseur();
-        } else {
-          this.toast.error(resp.message);
-        }
-      },
-      error: (err) => {
-        console.error('Erreur lors de la suppression du materiel:', err);
-        if (err.status === 500) {
-          this.toast.error('Erreur lors de la suppression du materiel');
-        }
-      },
-    });
+  openDeleteModal(materiel: any): void {
+    this.selectedMateriel = materiel;
+  }
+
+  deleteMateriel(): void {
+    if (this.selectedMateriel) {
+      this.materielService.deleteMateriel(this.selectedMateriel).subscribe({
+        next: (resp: any) => {
+          if (resp.success) {
+            this.toast.success(resp.message);
+            this.getMaterielByFournisseur();
+          } else {
+            this.toast.error(resp.message);
+          }
+        },
+        error: (err) => {
+          console.error('Erreur lors de la suppression du materiel:', err);
+          if (err.status === 500) {
+            this.toast.error('Erreur lors de la suppression du materiel');
+          }
+        },
+      });
+    }
   }
 
   downloadqr():void{

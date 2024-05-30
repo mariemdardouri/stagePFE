@@ -20,7 +20,7 @@
             <th for="title">Titre</th>
             <th for="place">Lieu du mission</th>
             <th for="hour">Heure du mission</th>
-            <th for="dateStart">Date du debut</th>
+            <th for="dateStart">Date du début</th>
             <th for="dateEnd">Date du fin</th>
             <th for="agentLogistique">Agent Logistique</th>
             <th for="action">Actions</th>
@@ -34,10 +34,13 @@
             <td>{{ mission.dateStart }}</td>
             <td>{{ mission.dateEnd }}</td>
             <td>{{ mission.agentLogistique }}</td>
-            <div>
-              <span *ngIf="mission.status === 'pending'">En attente</span>
-              <span *ngIf="mission.status === 'validate'">Valider</span>
-            </div>
+            <td>
+              <div>
+                <span *ngIf="mission.status === 'pending'">En attente</span>
+                <span *ngIf="mission.status === 'validate'">Valider</span>
+                <span *ngIf="mission.status === 'rejected'">Rejeter</span>
+              </div>
+            </td>
             <td>
               <div>
                 <span
@@ -45,8 +48,12 @@
                   data-bs-target="#UpdateModal"
                   (click)="editMission(mission)"
                 >
-                <i class="bi bi-pencil-square icon-edit" ></i></span
-                ><span class="icon-delete" (click)="deleteMission(mission)"> <i class="bi bi-trash-fill"></i></span>
+                <i class="bi bi-pencil-square icon-edit" ></i>
+                </span>
+                <span class="icon-delete" data-bs-toggle="modal"
+                data-bs-target="#DeleteModal" (click)="openDeleteModal(mission)">
+                <i class="bi bi-trash-fill"></i>
+                </span>
               </div>
             </td>
           </tr>
@@ -72,7 +79,7 @@
           <div class="modal-content">
             <div class="modal-header">
               <h1 class="modal-title fs-5" id="addModalLabel">
-                Ajouter Mission
+                Ajouter une mission
               </h1>
               <button
                 type="button"
@@ -84,7 +91,7 @@
             <div class="modal-body">
               <form [formGroup]="missionForm" autocomplete="off">
                 <div class="row">
-                  <div class="col-xl-4 mb-3">
+                  <div class="col-xl-6 mb-3">
                     <label for="title" class="form-label">Titre</label>
                     <input type="text" class="form-control" name="title" formControlName="title"/>
                     <div
@@ -97,8 +104,6 @@
                       Entrez titre du mission
                     </div>
                   </div>
-                </div>
-                <div class="row">
                   <div class="col-xl-6 mb-3">
                     <label for="place" class="form-label">Lieu du mission</label>
                     <input type="text" class="form-control" name="place" formControlName="place"/>
@@ -127,9 +132,7 @@
                       Entrez l'heure du mission
                     </div>
                   </div>
-                </div>
-                <div class="row">
-                    <div class="col-xl-4 mb-3">
+                    <div class="col-xl-6 mb-3">
                       <label for="dateStart" class="form-label">Date du debut</label>
                       <input type="date" class="form-control" name="dateStart" formControlName="dateStart"/>
                       <div
@@ -144,7 +147,7 @@
                     </div>
                   </div>
                   <div class="row">
-                    <div class="col-xl-4 mb-3">
+                    <div class="col-xl-6 mb-3">
                       <label for="dateEnd" class="form-label">Date du fin</label>
                       <input type="date" class="form-control" name="dateEnd" formControlName="dateEnd"/>
                       <div
@@ -157,9 +160,7 @@
                         Entrez la date du fin du mission
                       </div>
                     </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-xl-4 mb-3">
+                    <div class="col-xl-6 mb-3">
                         <label for="agentLogistique" class="form-label">Agent Logistique</label>
                         <select class="form-select" name="agentLogistique" formControlName="agentLogistique">
                           <option *ngFor="let user of users" [value]="user.firstName + ' ' + user.lastName">{{ user.firstName + ' ' + user.lastName }}</option>
@@ -175,6 +176,7 @@
               <button
                 mat-raised-button 
                 type="submit" 
+                class="btn btn-primary"
                 (click)="submit()"
                 data-bs-dismiss="modal">
                 Ajouter
@@ -199,7 +201,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="UpdateModalLabel">
-          Modifier mission
+          Modifier une mission
         </h1>
         <button
           type="button"
@@ -210,25 +212,30 @@
       </div>
       <div class="modal-body">
         <form autocomplete="off">
-            <div class="col-xl-6 mb-3">
-              <label for="title" class="form-label">Titre</label>
-              <input name="title" id="title" [(ngModel)]="selectedMission.title" [ngModelOptions]="{ standalone: true }" >
+            <div class="row">
+              <div class="col-xl-6 mb-3">
+                <label for="title" class="form-label">Titre</label>
+                <input name="title" id="title" class="form-control" [(ngModel)]="selectedMission.title" [ngModelOptions]="{ standalone: true }" >
+              </div>
+              <div class="col-xl-6 mb-3">
+                  <label for="place" class="form-label">Lieu du mission</label>
+                  <input name="place" id="place"class="form-control" [(ngModel)]="selectedMission.place"  >
+              </div>
             </div>
-            <div class="col-xl-6 mb-3">
-                <label for="place" class="form-label">Lieu du mission</label>
-                <input name="place" id="place" [(ngModel)]="selectedMission.place" [ngModelOptions]="{ standalone: true }" >
-            </div>
-            <div class="col-xl-6 mb-3">
+            <div class="row">
+              <div class="col-xl-6 mb-3">
                 <label for="hour" class="form-label">Heure du mission </label>
-                <input type="time" name="hour" id="hour" [(ngModel)]="selectedMission.hour" [ngModelOptions]="{ standalone: true }" >
-            </div>
-            <div class="col-xl-6 mb-3">
+                <input type="time" name="hour" id="hour" class="form-control"[(ngModel)]="selectedMission.hour" [ngModelOptions]="{ standalone: true }" >
+              </div>
+              <div class="col-xl-6 mb-3">
                 <label for="dateStart" class="form-label">Date du debut</label>
-                <input type="date" name="dateStart" id="dateStart" [(ngModel)]="selectedMission.dateStart" [ngModelOptions]="{ standalone: true }" >
+                <input type="date" name="dateStart" id="dateStart" class="form-control"[(ngModel)]="selectedMission.dateStart" [ngModelOptions]="{ standalone: true }" >
+              </div>
             </div>
-            <div class="col-xl-6 mb-3">
+            <div class="row">
+              <div class="col-xl-6 mb-3">
                 <label for="dateEnd" class="form-label">Date du fin</label>
-                <input type="date" name="dateEnd" id="dateEnd" [(ngModel)]="selectedMission.dateEnd" [ngModelOptions]="{ standalone: true }" >
+                <input type="date" name="dateEnd" id="dateEnd" class="form-control" [(ngModel)]="selectedMission.dateEnd" [ngModelOptions]="{ standalone: true }" >
             </div>
             <div class="col-xl-6 mb-3">
                 <label for="agentLogistique" class="form-label">Agent Logistique</label>
@@ -236,6 +243,8 @@
                   <option *ngFor="let user of users" [value]="user.firstName + ' ' + user.lastName">{{ user.firstName + ' ' + user.lastName }}</option>
                 </select>
             </div>
+            </div>
+            
         </form>
       </div>
       <div class="modal-footer">
@@ -252,5 +261,25 @@
   </div>
   </div>
   
+  <!-- Delete Modal -->
+<div class="modal fade" id="DeleteModal" tabindex="-1" aria-labelledby="DeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <i class="bi bi-exclamation-circle"></i>
+        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="deleteMission()" data-bs-dismiss="modal">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
   
   

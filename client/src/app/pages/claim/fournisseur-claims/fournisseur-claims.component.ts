@@ -18,7 +18,6 @@ import { FilterPipe } from '../../../filter.pipe';
 export class FournisseurClaimsComponent {
   claims: any[] = [];
   p: number = 1;
-  searchText: string = '';
 
   constructor(private claimService: ClaimService, private toast: ToastrService) { }
 

@@ -1,19 +1,19 @@
 <div class="container-fluid">
   <div class="search-title-container">
-    <h2 class="title">Materiel du l'agent</h2>
+    <h2 class="title">Matériel du l'agent</h2>
     <div class="search-box">
       <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
     </div>
   </div>
-    <hr>
     <table class="table table-bordered">
       <thead>
         <tr>
-          <th>Category</th>
+          <th>Catégory</th>
           <th>Nature</th>
-          <th>Numero du serie</th>
+          <th>Numero du série</th>
           <th>Numero d'inventaire</th>
-          <th>Actions</th>
+          <th>statut</th>
+          <th class="actions">Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -23,12 +23,20 @@
           <td>{{ materiel.numSerie }}</td>
           <td>{{ materiel.numInv }}</td>
           <td>
-            <button *ngIf="materiel.status !== 'received'" class="btn btn-success m-2" [class.received]="materiel.received" (click)="receiveMateriel(materiel)">
-              Recevoir matériel
-            </button>
-            <button class="btn btn-primary m-2" data-bs-toggle="modal" (click)="selectMateriel(materiel)" data-bs-target="#addModal">
-              Créer réclamation
-            </button>
+            <div>
+              <span *ngIf="materiel.status === 'pending'">En attente</span>
+              <span *ngIf="materiel.status === 'validate'">Valider</span>
+              <span *ngIf="materiel.status === 'received'">Reçu</span>
+            </div>
+          </td>
+          <td>
+            
+              <span class="btn btn-success m-1" [class.received]="materiel.received" (click)="receiveMateriel(materiel)">
+                Recevoir matériel
+              </span>
+              <span class="btn btn-primary m-1" data-bs-toggle="modal" (click)="selectMateriel(materiel)" data-bs-target="#addModal">
+                Créer réclamation
+              </span>
           </td>
         </tr>
       </tbody>
