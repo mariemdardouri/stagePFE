@@ -69,7 +69,7 @@ tr:nth-child(even) {
     z-index: 1040;
 }
 
-.modal-body {
+.exclamation {
     text-align: center; 
 }
 .bi-exclamation-circle {

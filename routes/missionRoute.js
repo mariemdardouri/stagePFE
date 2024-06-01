@@ -14,11 +14,11 @@ router.post("/add-mission", authMiddleware, jsonParser, async (req, res) => {
     });
     await newMission.save();
 
-    const user = await User.findOne({ role:"logistique"});
+    const user = await User.findById(req.body.agentLogistique);
     const unseenNotifications = user.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-mission",
-      message: `Vous avez une nouvelle mission de la part du responsable logistique ${user.firstName +' '+ user.lastName}`,
+      message: `Vous avez une nouvelle mission du titre "${newMission.title}" de la part du résponsable logistique`,
       onClickPath: "/agentLogistique",
     });
     user.unseenNotifications = unseenNotifications;
@@ -54,7 +54,7 @@ router.put("/update-mission/:id",authMiddleware,jsonParser,async (req, res) => {
 
       res.status(200).json({
         updatedMission,
-        message: "Le mission a été mis à jour avec succès",
+        message: "Mission a été mis à jour avec succès",
         success: true,
       });
     } catch (error) {
@@ -73,13 +73,13 @@ router.put('/valider-mission/:id', authMiddleware, jsonParser, async (req, res) 
       {status: 'validate'},
       { new: true }
     );
-    
+    const agentLogistique = await User.findById(updatedMission.agentLogistique);
     const user = await User.findOne({ role:"logistique"});
       if (user) {
         user.unseenNotifications = user.unseenNotifications || [];
         user.unseenNotifications.push({
           type: "mission-validated",
-          message: `Cette ${updatedMission.title} a été validé par ${updatedMission.agentLogistique}`,
+          message: `Cette "${updatedMission.title}" a été validé par l'agent logistique "${agentLogistique.firstName +' '+agentLogistique.lastName}"`,
           onClickPath: "/logistique/mission",
         });
         await user.save();
@@ -110,7 +110,7 @@ router.put('/reject-mission/:id', authMiddleware, jsonParser, async (req, res) =
       user.unseenNotifications = user.unseenNotifications || [];
       user.unseenNotifications.push({
         type: "mission-validated",
-        message: `Cette ${updatedMission.title} a été rejeté par ${updatedMission.agentLogistique}`,
+        message: `Cette "${updatedMission.title}" a été rejeté par l'agent logistique ${updatedMission.agentLogistique}`,
         onClickPath: "/logistique/mission",
       });
       await user.save();
@@ -149,7 +149,7 @@ router.delete("/delete-mission/:id",authMiddleware,jsonParser,async (req, res) =
 
 router.get("/get-user", authMiddleware, jsonParser,async (req, res) => {
   try {
-    const users = await User.find({ role: 'agentLogistique' }, 'firstName');
+    const users = await User.find({ role: 'agentLogistique' }, 'firstName lastName');
     console.log(users,'zzzzz');
     res.status(200).json({ users });
   } catch (error) {
@@ -161,7 +161,7 @@ router.get("/get-user", authMiddleware, jsonParser,async (req, res) => {
 router.get("/missions", authMiddleware,jsonParser, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.body.id });
-    const missions = await Mission.find({ agentLogistique : user.firstName + " " + user.lastName });
+    const missions = await Mission.find({ agentLogistique : user._id });
     res.status(200).json(missions);
    
     

@@ -32,6 +32,7 @@ router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
     const newMateriel = new Materiel({
       ...req.body,
       fournisseur : user.firstName + " " + user.lastName,
+      numLot: req.body.numLot,
       numInv:''
     });
     await newMateriel.save();
@@ -53,7 +54,7 @@ router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
 
 router.get("/get-materiel", authMiddleware, jsonParser, async (req, res) => {
   try {
-    const materiel = await Materiel.find({});
+    const materiel = await Materiel.find({numLot: req.query.numLot,});
     res.status(200).json({ materiel });
 
   } catch (error) {
@@ -64,7 +65,9 @@ router.get("/get-materiel", authMiddleware, jsonParser, async (req, res) => {
 router.get("/get-materiel-by-fournisseur", authMiddleware, jsonParser, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.body.id });
-    const materiel = await Materiel.find({fournisseur: user.firstName + " " + user.lastName});
+    const materiel = await Materiel.find({
+      fournisseur: user.firstName + " " + user.lastName,
+      numLot: req.query.numLot});
     res.status(200).json({ materiel });
 
   } catch (error) {
@@ -80,21 +83,40 @@ router.put("/update-materiel/:id",authMiddleware,jsonParser,async (req, res) => 
         req.body,
         { new: true }
       );
+      res.status(200).json({
+        updatedMateriel,
+        message:  "Matériel a été mis à jour avec succès",
+        success: true,
+      });
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du matériel: ", error);
+      res
+        .status(500)
+        .json({ message: "Erreur lors de la mise à jour du matériel", success: false });
+    }
+  }
+);
 
-      const user = await User.findOne({ role:'logistique' });
-      console.log(user,'ooooo');
+router.put("/add-numInv/:id",authMiddleware,jsonParser,async (req, res) => {
+  try {
+    const addNumInv = await Materiel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    const user = await User.findOne({ role:'logistique' });
       if (user) {
         const unseenNotifications = user.unseenNotifications || [];
         unseenNotifications.push({
           type: "numInv-added",
-          message: "Le responsable de l'approvisionnement a ajouté numéro d'inventaire au matériel",
+          message: "Le responsable d'approvisionnement a ajouté le numéro d'inventaire au matériel ",
           onClickPath: "/logistique",
         });
         user.unseenNotifications = unseenNotifications;
         await user.save();
       }
       res.status(200).json({
-        updatedMateriel,
+        addNumInv,
         message: "Le numéro d'inventaire a été afféctuer avec succès",
         success: true,
       });
@@ -106,6 +128,7 @@ router.put("/update-materiel/:id",authMiddleware,jsonParser,async (req, res) => 
     }
   }
 );
+
 router.put('/accept-materiels', authMiddleware, jsonParser, async (req, res) => {
   try {
     const updatedMateriels = await Materiel.updateMany(
@@ -120,7 +143,7 @@ router.put('/accept-materiels', authMiddleware, jsonParser, async (req, res) => 
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "accepted-list-materiel",
-        message: `La liste des matériels a été acceptée par le responsable de deploiement `,
+        message: `La liste des matériels a été acceptée par le responsable de déploiement `,
         onClickPath: "/approvisionnement",
       });
       user.unseenNotifications = unseenNotifications;
@@ -191,15 +214,17 @@ router.put('/affecter-materiel/:id', authMiddleware, jsonParser, async (req, res
       { agent: req.body.agent },
       { new: true }
     );
-    console.log(req.body.agent,'req.body.agent');
 
-    const user = await User.findById({_id: req.body.agent});
-    console.log(user,'2222222222');
+    if (!updatedMateriel) {
+      return res.status(404).json({ message: 'Matériel non trouvé', success: false });
+    }
+   const materiel = await Materiel.findById(req.params.id);
+    const user = await User.findById(req.body.agent);
     if (user) {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "materiel-assigned",
-        message: `Le matériel a été affecté à ${req.body.agent}`,
+        message: `Le matériel de catégorie ${materiel.categorie} et de nature ${materiel.nature} a été affecté pour vous ${user.firstName} ${user.lastName}`,
         onClickPath: "/agent",
       });
       user.unseenNotifications = unseenNotifications;
@@ -212,7 +237,6 @@ router.put('/affecter-materiel/:id', authMiddleware, jsonParser, async (req, res
       success: true
     });
   } catch (error) {
-    console.log(error,'error');
     console.error("Erreur lors de l'affectation des matériels: ", error);
     res.status(500).json({
       message: "Erreur lors de l'affectation des matériels",
@@ -240,8 +264,9 @@ router.get("/get-materiels-affected-to-agent",authMiddleware, jsonParser, async 
 router.put('/receive-materiel', authMiddleware, jsonParser, async (req, res) => {
   try {
     const materiel = req.body;
-    // Update the materiel status or any other necessary changes
     const updatedMateriel = await Materiel.findByIdAndUpdate(materiel._id, { status: 'received' }, { new: true });
+    
+    const agent = await User.findById(req.body.id);
 
     const user = await User.findOne({ role:'logistique' });
     console.log(user,'oooo');
@@ -249,7 +274,7 @@ router.put('/receive-materiel', authMiddleware, jsonParser, async (req, res) => 
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "received-list-materiel",
-        message: `Le matériel a été reçu à ${materiel.categorie} `,
+        message: `Le matériel ${materiel.categorie} ${materiel.nature} a été reçus par l'agent ${agent.firstName +' '+agent.lastName} `,
         onClickPath: "/logitique",
       });
       user.unseenNotifications = unseenNotifications;
@@ -285,6 +310,7 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
           nature: row.nature,
           numSerie: row.numSerie,  
           fournisseur: user.firstName+ ' ' +user.lastName,
+          numLot: row.numLot,
         });
       }
       

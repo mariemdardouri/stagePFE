@@ -1,4 +1,4 @@
-import { Component, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -15,9 +15,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
   styleUrl: './notifications.component.css',
 })
 export class NotificationsComponent implements OnInit {
+  @Output() notificationsCountUpdated = new EventEmitter<number>();
+
   unseenNotificationsCount: number = 0;
   user: any;
-  unseenNotifications: any[] = [];;
+  unseenNotifications: any[] = [];ngAfterViewInit: any;
+;
   seenNotifications: any;
   notification: any;
   notificationList: any;
@@ -58,17 +61,18 @@ export class NotificationsComponent implements OnInit {
   }
   updateUnseenNotificationsCount(): void {
     this.unseenNotificationsCount = this.unseenNotifications.length;
+    this.notificationsCountUpdated.emit(this.unseenNotificationsCount);
   }
   markAllAsSeen(): void {
-    // Logic to mark all notifications as seen
     this.notificationService.markAllAsSeen(this.user).subscribe(
       (response: any) => {
         this.activeTab = 'seen';
-        // Update the seenNotifications array or handle success
         this.seenNotifications = this.unseenNotifications;
         this.unseenNotifications = [];
         this.toast.success(response.message);
 
+        this.unseenNotificationsCount = 0;
+        this.notificationsCountUpdated.emit(0);
         this.notificationService.setUnseenNotificationsCount(0);
       },
       (error) => {
@@ -79,11 +83,11 @@ export class NotificationsComponent implements OnInit {
   }
   
   deleteAllNotifications(): void {
-    // Logic to delete all notifications
     this.notificationService.deleteAllNotifications(this.user).subscribe(
       (response: any) => {
         this.seenNotifications = [];
-        // Clear the seenNotifications array or handle success
+        this.unseenNotifications = [];
+        this.updateUnseenNotificationsCount();
         this.toast.success(response.message);
       },
       (error) => {

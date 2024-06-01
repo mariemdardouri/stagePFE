@@ -66,6 +66,19 @@
       return this.http.put(URL + 'update-materiel/' + materiel._id, materiel, { headers });
     }
 
+    addNumInv(materiel: any): Observable<any> {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        throw new Error('Token introuvable');
+      }
+
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      });
+
+      return this.http.put(URL + 'add-numInv/' + materiel._id, materiel, { headers });
+    }
+    
     updateCheckedMateriels(materiels: any[]): Observable<any> {
       const token = localStorage.getItem('token');
       if (!token) {

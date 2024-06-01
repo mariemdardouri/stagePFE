@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="search-title-container">
-    <h2 class="title">Réclamations</h2>
+    <h2 class="title">Table des réclamations</h2>
     <div class="search-box">
       <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
     </div>
@@ -29,10 +29,10 @@
           <td>
             <div>
               <span *ngIf="claim.status === 'pending'">En Attente</span>
-              <span *ngIf="claim.status === 'sent to fournisseur'">reclamation envoyer au fournisseur</span>
-              <span *ngIf="claim.status === 'received'">En proccess</span>
-              <span *ngIf="claim.status === 'accepted'">Reclamation terminer</span>
-              <span *ngIf="claim.status === 'rejected'">Reclamation Rejeter</span>
+              <span *ngIf="claim.status === 'sent to fournisseur'">Envoyer au fournisseur</span>
+              <span *ngIf="claim.status === 'received'">En cours de traitement</span>
+              <span *ngIf="claim.status === 'accepted'">Réclamation accompli</span>
+              <span *ngIf="claim.status === 'rejected'">Réclamation rejeter</span>
             </div>
           </td>
           <td>

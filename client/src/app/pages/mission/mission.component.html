@@ -33,7 +33,7 @@
             <td>{{ mission.hour }}</td>
             <td>{{ mission.dateStart }}</td>
             <td>{{ mission.dateEnd }}</td>
-            <td>{{ mission.agentLogistique }}</td>
+            <td>{{ mission.agentLogistique}}</td>
             <td>
               <div>
                 <span *ngIf="mission.status === 'pending'">En attente</span>
@@ -163,7 +163,7 @@
                     <div class="col-xl-6 mb-3">
                         <label for="agentLogistique" class="form-label">Agent Logistique</label>
                         <select class="form-select" name="agentLogistique" formControlName="agentLogistique">
-                          <option *ngFor="let user of users" [value]="user.firstName + ' ' + user.lastName">{{ user.firstName + ' ' + user.lastName }}</option>
+                          <option *ngFor="let user of users" [value]="user._id">{{ user.firstName + ' ' + user.lastName }}</option>
                         </select>
                         <div *ngIf="missionForm.controls['agentLogistique'].hasError('required') && missionForm.controls['agentLogistique'].touched" class="text-danger">
                           Sélectionnez l'agent logistique pour la mission
@@ -240,7 +240,7 @@
             <div class="col-xl-6 mb-3">
                 <label for="agentLogistique" class="form-label">Agent Logistique</label>
                 <select class="form-select" name="agentLogistique" id="agentLogistique" [(ngModel)]="selectedMission.agentLogistique" [ngModelOptions]="{ standalone: true }" >
-                  <option *ngFor="let user of users" [value]="user.firstName + ' ' + user.lastName">{{ user.firstName + ' ' + user.lastName }}</option>
+                  <option *ngFor="let user of users" [value]="user._id">{{ user.firstName + ' ' + user.lastName }}</option>
                 </select>
             </div>
             </div>
@@ -269,9 +269,9 @@
         <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="exclamation">
         <i class="bi bi-exclamation-circle"></i>
-        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+        <p>Veuillez confirmer, cette opération est irréversible.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

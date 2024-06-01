@@ -57,6 +57,7 @@ export class AgentLogistiqueComponent {
       next: (resp: any) => {
         if (resp.success) {
           this.toast.success('Mission validée avec succès');
+          this.fetchUserMissions();
         } else {
           this.toast.error(resp.message);
         }
@@ -73,6 +74,7 @@ export class AgentLogistiqueComponent {
       next: (resp: any) => {
         if (resp.success) {
           this.toast.success('Mission rejetée avec succès');
+          this.fetchUserMissions();
         } else {
           this.toast.error(resp.message);
         }

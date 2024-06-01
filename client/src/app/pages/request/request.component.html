@@ -19,12 +19,22 @@
           <td>{{ user.cin }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.phoneNumber }}</td>
-          <td>{{ user.role }}</td>
+          <td> 
+            <div>
+            <span *ngIf="user.role === 'fournisseur'">Founisseur</span>
+            <span *ngIf="user.role === 'deploiement'">Responsable de déploiement</span>
+            <span *ngIf="user.role === 'approvisionnement'">Responsable d'approvisionnement</span>
+            <span *ngIf="user.role === 'logistique'">Responsable logistique</span>
+            <span *ngIf="user.role === 'responsableSite'">Responsable site</span>
+            <span *ngIf="user.role === 'agentLogistique'">Agent logistique</span>
+            <span *ngIf="user.role === 'agent'">Agent</span>
+           </div>
+          </td>
           <td>{{ user.responsableSite.firstName +' '+ user.responsableSite.lastName }}</td>
           <td>
             <div>
               <span *ngIf="user.status === 'pending'">En attente</span>
-              <span *ngIf="user.status === 'activate'">Activer</span>
+              <span *ngIf="user.status === 'activate'">Accepert</span>
               <span *ngIf="user.status === 'rejected'">Rejeter</span>
             </div>
           </td>
@@ -56,9 +66,9 @@
         <h5 class="modal-title" id="DeleteModalLabel">Rejeter ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="exclamation">
         <i class="bi bi-exclamation-circle"></i>
-        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+        <p>Veuillez confirmer la rejection.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

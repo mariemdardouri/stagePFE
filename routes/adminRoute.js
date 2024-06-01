@@ -96,7 +96,7 @@ router.post("/uploadCSV", upload.single("file"), authMiddleware, async (req, res
         phoneNumber: row.phoneNumber,
         password: hashedPassword,
         role: row.role,
-        responsableSite: userId, // Attach the user ID of the responsible site
+        responsableSite: userId,
         status: "pending",
       });
     }
@@ -113,7 +113,7 @@ router.post("/uploadCSV", upload.single("file"), authMiddleware, async (req, res
         adminUser.unseenNotifications.push({
           type: "request-list",
           message: "Une nouvelle liste de demandes a été envoyée",
-          onClickPath: "/admin/request",
+          onClickPath: "/admin/demande",
         });
         await adminUser.save();
       }
@@ -235,8 +235,8 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
 
     newUser.unseenNotifications.push({
       type: "user-account-activate",
-      message: "Votre compte a été activé",
-      onClickPath: "/notifications",
+      message: "Votre compte a été accepté",
+      onClickPath: "/agent",
     });
 
     await newUser.save();

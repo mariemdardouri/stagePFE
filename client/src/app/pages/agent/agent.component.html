@@ -26,7 +26,8 @@
             <div>
               <span *ngIf="materiel.status === 'pending'">En attente</span>
               <span *ngIf="materiel.status === 'validate'">Valider</span>
-              <span *ngIf="materiel.status === 'received'">Reçu</span>
+              <span *ngIf="materiel.status === 'accept'">Accepter</span>
+              <span *ngIf="materiel.status === 'received'">Reçus</span>
             </div>
           </td>
           <td>

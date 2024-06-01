@@ -58,6 +58,7 @@ export class FournisseurComponent {
         Validators.minLength(20),
         Validators.maxLength(20),
       ]),
+      numLot: new FormControl('', [Validators.required]),
     });
   }
 

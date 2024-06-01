@@ -33,8 +33,8 @@
             </td>
             <td>
               <div>
-                <span class="icon-check" *ngIf="mission.status !== 'validate'" (click)="validateMission(mission)"><i class="bi bi-check-square-fill"></i> </span>
-                <span class="icon-reject" *ngIf="mission.status !== 'rejected'" (click)="rejectMission(mission)"><i class="bi bi-x-square-fill"></i> </span>
+                <span class="icon-check"  (click)="validateMission(mission)"><i class="bi bi-check-square-fill"></i> </span>
+                <span class="icon-reject" (click)="rejectMission(mission)"><i class="bi bi-x-square-fill"></i> </span>
               </div>
             </td>
           </tr>

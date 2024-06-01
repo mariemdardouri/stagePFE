@@ -1,10 +1,9 @@
   import { CommonModule } from '@angular/common';
-  import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+  import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
   import { Router, RouterModule, RouterOutlet } from '@angular/router';
   import { AuthService } from '../../services/auth.service';
   import { NotificationService } from '../../services/notification.service';
 import { NotificationsComponent } from '../notifications/notifications.component';
-
   @Component({
     selector: 'app-layout',
     standalone: true,
@@ -63,7 +62,16 @@ import { NotificationsComponent } from '../notifications/notifications.component
     unseenNotifications: any;
     itemActive: any;
     firstName: any;
-    constructor(private router: Router, private authService: AuthService,private notificationService: NotificationService, private notificationsComponent: NotificationsComponent) {}
+    count: any;
+
+    @ViewChild(NotificationsComponent) notificationsComponent: NotificationsComponent | undefined;
+    
+    constructor(
+      private router: Router, 
+      private authService: AuthService,
+      private notificationService: NotificationService,
+
+    ) {}
 
     ngOnInit(): void {
       this.checkScreenSize();

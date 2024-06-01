@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="search-title-container">
-    <h2 class="title">Table des Utilisateurs</h2>
+    <h2 class="title">Table des utilisateurs</h2>
     <div class="search-box">
       <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
     </div>
@@ -29,7 +29,17 @@
           <td>{{ user.cin }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.phoneNumber }}</td>
-          <td>{{ user.role }}</td>
+          <td> 
+            <div>
+            <span *ngIf="user.role === 'fournisseur'">Founisseur</span>
+            <span *ngIf="user.role === 'deploiement'">Responsable de déploiement</span>
+            <span *ngIf="user.role === 'approvisionnement'">Responsable d'approvisionnement</span>
+            <span *ngIf="user.role === 'logistique'">Responsable logistique</span>
+            <span *ngIf="user.role === 'responsableSite'">Responsable site</span>
+            <span *ngIf="user.role === 'agentLogistique'">Agent logistique</span>
+            <span *ngIf="user.role === 'agent'">Agent</span>
+           </div>
+          </td>
           <td>{{ user.createdAt | date : "short" }}</td>
           <td>
             <div>
@@ -77,7 +87,7 @@ data-keyboard="false"
   <div class="modal-content">
     <div class="modal-header">
       <h1 class="modal-title fs-5" id="addModalLabel">
-        Créer Compte utilisateur
+        Créer un compte 
       </h1>
       <button
         type="button"
@@ -246,15 +256,15 @@ data-keyboard="false"
             <select formControlName="role" class="form-select" name="role">
               <option value="fournisseur">Fournisseur</option>
               <option value="deploiement">
-                Résponsable de déploiement
+                Responsable de déploiement
               </option>
               <option value="approvisionnement">
-                Résponsable approvisionnement
+                Responsable approvisionnement
               </option>
               <option value="logistique">
-                Résponsable logistique
+                Responsable logistique
               </option>
-              <option value="responsableSite">Résponsable site</option>
+              <option value="responsableSite">Responsable site</option>
               <option value="agentLogistique">Agent logistique</option>
               <option value="agent">Agent</option>
             </select>
@@ -441,6 +451,7 @@ data-keyboard="false"
                 type="tel"
                 name="phoneNumber"
                 id="phoneNumber"
+                class="form-control"
                 [(ngModel)]="selectedUser.phoneNumber"
                 [ngModelOptions]="{ standalone: true }"
                 maxlength="8"
@@ -466,7 +477,7 @@ data-keyboard="false"
                 </option>
                 <option value="responsableSite">Responsable site</option>
                 <option value="agentLogistique">Agent logistique</option>
-                <option value="Agent">Agent</option>
+                <option value="agent">Agent</option>
               </select>
             </div>
           </div>
@@ -494,9 +505,9 @@ data-keyboard="false"
         <h5 class="modal-title" id="DeleteModalLabel">Désactiver ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="exclamation">
         <i class="bi bi-exclamation-circle"></i>
-        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+        <p>Veuillez confirmer la désactivation </p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

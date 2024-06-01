@@ -64,8 +64,8 @@ export class ApproComponent {
     materiel.isNumInvDisabled = false;
   }
 
-  updateMateriel(materiel: any): void {
-    this.materielService.updateMateriel(materiel).subscribe({
+  addNumInv(materiel: any): void {
+    this.materielService.addNumInv(materiel).subscribe({
       next: (resp: any) => {
         if (resp.success) {
           this.toast.success(resp.message);

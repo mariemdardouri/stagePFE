@@ -35,7 +35,7 @@ router.post("/add-reclamation", authMiddleware, jsonParser, async (req, res) => 
     unseenNotifications.push({
       type: "new-list-matetiel",
       message: `Vous avez reçu une réclamation de description "${description}"`,
-      onClickPath: "/logistique",
+      onClickPath: "/logistique/réclamation",
     });
     logistiqueUser.unseenNotifications = unseenNotifications;
     await logistiqueUser.save();
@@ -100,7 +100,7 @@ router.post('/send-to-fournisseur',authMiddleware,jsonParser,async (req, res) =>
 router.get('/get-claims-for-fournisseur',jsonParser, async (req, res) => {
   try {
 
-    const claims = await Claim.find({ status: "sent to fournisseur"} ).populate('materiel').populate('user'); // Adjust the query to filter claims specific to a fournisseur
+    const claims = await Claim.find({ status: "sent to fournisseur"} ).populate('materiel').populate('user');
     res.status(200).json(claims);
   } catch (error) {
     console.error("Erreur lors de la récupération des réclamations:", error);
@@ -111,7 +111,7 @@ router.get('/get-claims-for-fournisseur',jsonParser, async (req, res) => {
 router.put('/receive-claim', authMiddleware, jsonParser, async (req, res) => {
   try {
     const claim = req.body;
-    // Update the materiel status or any other necessary changes
+
     const updatedClaim = await Claim.findByIdAndUpdate(claim._id, { status: 'received' }, { new: true });
 
     const user = await User.findOne({ role:'agent' });
@@ -142,13 +142,12 @@ router.put('/accept-claim', authMiddleware, jsonParser, async (req, res) => {
 
     const updatedClaim = await Claim.findByIdAndUpdate(claim._id, { status: 'accepted' }, { new: true });
 
-    // Ajoutez ici toute logique supplémentaire nécessaire après l'acceptation de la réclamation
     const user = await User.findOne({ role:'logistique' });
     if (user) {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "received-list-materiel",
-        message: `Claim a ete recus et dans le process`,
+        message: `Réclamation est accompli par l'agent ${claim.user.firstName+' '+claim.user.lastName } `,
         onClickPath: "/logitique/réclamation",
       });
       user.unseenNotifications = unseenNotifications;
@@ -166,7 +165,6 @@ router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => 
 
     const updatedClaim = await Claim.findByIdAndUpdate(claimId, { status: 'rejected' }, { new: true });
 
-    // Ajoutez ici toute logique supplémentaire nécessaire après l'acceptation de la réclamation
     const user = await User.findOne({ role:'logistique' });
     if (user) {
       const unseenNotifications = user.unseenNotifications || [];

@@ -6,6 +6,7 @@
       nature: { type: String },
       numSerie: { type: String},
       numInv: { type: String, default: ''},
+      numLot: { type: String},
       status: { type: String, default: 'pending' },
       agent: { type: String,default:'' },
       fournisseur: { type: String},

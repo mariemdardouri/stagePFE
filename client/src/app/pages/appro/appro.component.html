@@ -29,7 +29,7 @@
             <td>
               <button
                 class="btn btn-success float-end m-1"
-                (click)="updateMateriel(materiel)"
+                (click)="addNumInv(materiel)"
                 [disabled]="!materiel.numInv"
               >
                 affecter
@@ -70,7 +70,7 @@
         <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="exclamation">
         <i class="bi bi-exclamation-circle"></i>
         <p>Veuillez confirmer svp, cette opération est irréversible.</p>
       </div>

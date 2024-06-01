@@ -31,13 +31,23 @@
 
       </thead>
       <tbody>
-        <tr *ngFor="let user of userList | paginate: { itemsPerPage: 10, currentPage: p }">
+        <tr *ngFor="let user of userList | paginate: { itemsPerPage: 7, currentPage: p }">
           <td>{{ user.firstName }}</td>
           <td>{{ user.lastName }}</td>
           <td>{{ user.cin }}</td>
           <td>{{ user.email }}</td>
           <td>{{ user.phoneNumber }}</td>
-          <td>{{ user.role }}</td>
+          <td> 
+            <div>
+            <span *ngIf="user.role === 'fournisseur'">Founisseur</span>
+            <span *ngIf="user.role === 'deploiement'">Responsable de déploiement</span>
+            <span *ngIf="user.role === 'approvisionnement'">Responsable d'approvisionnement</span>
+            <span *ngIf="user.role === 'logistique'">Responsable logistique</span>
+            <span *ngIf="user.role === 'responsableSite'">Responsable site</span>
+            <span *ngIf="user.role === 'agentLogistique'">Agent logistique</span>
+            <span *ngIf="user.role === 'agent'">Agent</span>
+           </div>
+          </td>
           <td>
             <div>
               <span
@@ -75,9 +85,9 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="addModalLabel">
+            <h2 class="modal-title fs-5" id="addModalLabel">
               Ajouter une demande d'un compte
-            </h1>
+            </h2>
             <button
               type="button"
               class="btn-close"
@@ -245,15 +255,15 @@
                   <select formControlName="role" class="form-select" name="role" id="role">
                     <option value="fournisseur">Fournisseur</option>
                     <option value="deploiement">
-                      Résponsable de déploiement
+                      Responsable de déploiement
                     </option>
                     <option value="approvisionnement">
-                      Résponsable approvisionnement
+                      Responsable approvisionnement
                     </option>
                     <option value="logistique">
-                      Résponsable logistique
+                      Responsable logistique
                     </option>
-                    <option value="responsableSite">Résponsable site</option>
+                    <option value="responsableSite">Responsable site</option>
                     <option value="agentLogistique">Agent logistique</option>
                     <option value="agent">Agent</option>
                   </select>
@@ -451,11 +461,10 @@ data-keyboard="false"
           <div class="col-xl-6 mb-3">
             <label for="role" class="form-label">Role</label>
             <select
-              class="form-select"
-              name="role"
-              id="role"
-              [(ngModel)]="selectedRequest.role"
-              [ngModelOptions]="{ standalone: true }"
+            class="form-select"
+            name="role"
+            [(ngModel)]="selectedRequest.role"
+            [ngModelOptions]="{ standalone: true }"
             >
               <option value="fournisseur">Fournisseur</option>
               <option value="deploiement">
@@ -530,9 +539,9 @@ data-keyboard="false">
         <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="exclamation">
         <i class="bi bi-exclamation-circle"></i>
-        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+        <p>Veuillez confirmer, cette opération est irréversible.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>

@@ -114,11 +114,9 @@ export class MissionService {
       .pipe(
         catchError((error: HttpErrorResponse) => {
           if (error.status === 401) {
-            // Handle unauthorized error
             console.error('Unauthorized: ', error.message);
             throw new Error('Unauthorized');
           } else {
-            // Handle other errors
             console.error('Error deleting mission: ', error.message);
             throw new Error('An error occurred while deleting the mission');
           }
@@ -136,7 +134,7 @@ export class MissionService {
       Authorization: `Bearer ${token}`,
     });
 
-    const user = this.authService.getLoggedInUser(); // Get the logged-in user's full name
+    const user = this.authService.getLoggedInUser();
     const fullName = `${user.firstName} ${user.lastName}`;
 
     return this.http.get<any[]>(URL + 'missions', { headers });

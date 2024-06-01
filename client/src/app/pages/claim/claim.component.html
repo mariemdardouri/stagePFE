@@ -26,10 +26,10 @@
         <td>
           <div>
             <span *ngIf="claim.status === 'pending'">En Attente</span>
-            <span *ngIf="claim.status === 'sent to fournisseur'">reclamation envoyer au fournisseur</span>
-            <span *ngIf="claim.status === 'received'">En proccess</span>
-            <span *ngIf="claim.status === 'accepted'">Reclamation terminer</span>
-            <span *ngIf="claim.status === 'rejected'">Reclamation Rejeter</span>
+            <span *ngIf="claim.status === 'sent to fournisseur'">Réclamation envoyer au fournisseur</span>
+            <span *ngIf="claim.status === 'received'">En cours de traitement</span>
+            <span *ngIf="claim.status === 'accepted'">Réclamation accompli</span>
+            <span *ngIf="claim.status === 'rejected'">Réclamation rejeter</span>
           </div>
         </td>
         <td>
@@ -118,7 +118,7 @@ data-keyboard="false"
         <h5 class="modal-title" id="DeleteModalLabel">Supprimer ?</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
+      <div class="exclamation">
         <i class="bi bi-exclamation-circle"></i>
         <p>Veuillez confirmer svp, cette opération est irréversible.</p>
       </div>

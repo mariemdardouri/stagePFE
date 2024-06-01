@@ -1,11 +1,12 @@
 <div class="container-fluid">
-  <h2 class="title">Accepter Matériel</h2>
+  <h2 class="title">Accepter liste des matériels</h2>
       <table class="table table-bordered">
         <thead>
           <tr>
             <th for="categorie">Catégorie</th>
             <th for="nature">Nature du model</th>
             <th for="numSerie">Numéro du serie</th>
+            <th>Fournisseur</th>
             <th>Vérifier</th>
         </thead>
         <tbody>
@@ -13,6 +14,7 @@
             <td>{{ materiel.categorie }}</td>
             <td>{{ materiel.nature }}</td>
             <td>{{ materiel.numSerie }}</td>
+            <td>{{ materiel.fournisseur }}</td>
             <td>
                 <div class="checkbox-container">
                     <input type="checkbox" [(ngModel)]="materiel.checked">

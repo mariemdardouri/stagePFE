@@ -66,14 +66,10 @@ export class MissionComponent {
   submit(): void {
     if (this.missionForm.valid) {
       const missionData = this.missionForm.value;
-      const selectedAgentName = missionData.agentLogistique;
-      const selectedAgent = this.users.find((user) => {
-        const fullName = `${user.firstName} ${user.lastName}`;
-        return fullName === selectedAgentName;
-      });
+      const selectedAgent = this.users.find((user) => user._id === missionData.agentLogistique);
 
       if (selectedAgent) {
-        missionData.assignedTo = selectedAgent._id; // Assign the mission to the selected agent
+        missionData.assignedTo = selectedAgent._id;
         this.missionService.addMission(missionData).subscribe({
           next: (resp: any) => {
             if (resp.success) {
@@ -101,6 +97,7 @@ export class MissionComponent {
     this.userService.getAgentsWithRole().subscribe(
       (data: any[]) => {
         this.users = data;
+        this.getAllMissions();
       },
       (error) => {
         console.error('Erreur lors de la récupération des agents :', error);
@@ -111,7 +108,13 @@ export class MissionComponent {
     this.missionService.getMissions().subscribe(
       (data: any[]) => {
         console.log(data, 'data');
-        this.missionList = data;
+        this.missionList = data.map(mission => {
+          const agent = this.users.find(user => user._id === mission.agentLogistique);
+          return {
+            ...mission,
+            agentLogistique: agent ? `${agent.firstName} ${agent.lastName}` : 'Unknown'
+          };
+        });
         console.log(data, 'missionList');
       },
       (error) => {

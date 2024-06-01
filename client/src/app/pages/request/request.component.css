@@ -87,7 +87,7 @@ tr:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1040;
   }
-  .modal-body {
+  .exclamation {
     text-align: center; 
 }
 .bi-exclamation-circle {

@@ -1,59 +1,58 @@
 <div class="container-fluid">
   <div class="search-title-container">
-    <h2 class="title"> Affectation du  matériel</h2>
+    <h2 class="title"> Affectation du matériel</h2>
     <div class="search-box">
       <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
     </div>
   </div>
- 
-      <table class="table table-bordered">
-        <thead>
-          <tr>
-            <th for="categorie">Catégorie</th>
-            <th for="nature">Nature du model</th>
-            <th for="numSerie">Numéro du serie</th>
-            <th>Numéro d'inventaire</th>
-            <th>Statut</th>
-            <th>Agent</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-  
-        <tbody>
-          <tr *ngFor="let materiel of materielList | filter: searchText | paginate: { itemsPerPage: 7, currentPage: p }">
-            <td>{{ materiel.categorie }}</td>
-            <td>{{ materiel.nature }}</td>
-            <td>{{ materiel.numSerie }}</td>
-            <td>{{ materiel.numInv }}</td>
-            <td>
-              <div>
-                <span *ngIf="materiel.status === 'pending'">En attente</span>
-                <span *ngIf="materiel.status === 'validate'">Valider</span>
-                <span *ngIf="materiel.status === 'received'">Reçus</span>
-              </div>
-            </td>
-            <td>
-              <select class="form-select" [(ngModel)]="materiel.agent" [disabled]="materiel.isAgentDisabled">
-                <option *ngFor="let user of userList" [ngValue]="user._id">
-                  {{ user.firstName }} {{ user.lastName }}
-                </option>
-              </select>
-            </td>
-            <td>
-              <button class="btn btn-success float-end m-1" (click)="affecterMateriel(materiel)" [disabled]="!materiel.agent">
-                Affecter
-              </button>
-              <button name="edit" class="btn btn-primary float-end m-1"
-              (click)="editNumInv(materiel)" [disabled]="!materiel.agent">
-              Modifier
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      <div class="d-flex justify-content-end">
-        <pagination-controls (pageChange)="p = $event"  previousLabel="Précédent"
-        nextLabel="Suivant"></pagination-controls>
-      </div>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th for="categorie">Catégorie</th>
+        <th for="nature">Nature du model</th>
+        <th for="numSerie">Numéro du série</th>
+        <th>Numéro d'inventaire</th>
+        <th>Fournisseur</th>
+        <th>Statut</th>
+        <th for="agent">Agent</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let materiel of materielList | filter: searchText | paginate: { itemsPerPage: 7, currentPage: p }">
+        <td>{{ materiel.categorie }}</td>
+        <td>{{ materiel.nature }}</td>
+        <td>{{ materiel.numSerie }}</td>
+        <td>{{ materiel.numInv }}</td>
+        <td>{{ materiel.fournisseur }}</td>
+        <td>
+          <div>
+            <span *ngIf="materiel.status === 'pending'">En attente</span>
+            <span *ngIf="materiel.status === 'validate'">Valider</span>
+            <span *ngIf="materiel.status === 'accept'">Accepter</span>
+            <span *ngIf="materiel.status === 'received'">Reçus</span>
+          </div>
+        </td>
+        <td>
+          <select class="form-select" [(ngModel)]="materiel.agent" [disabled]="materiel.isAgentDisabled">
+            <option *ngFor="let user of userList" [ngValue]="user._id">
+              {{ user.firstName }} {{ user.lastName }}
+            </option>
+          </select>
+        </td>
+        <td>
+          <button class="btn btn-success float-end m-1" (click)="affecterMateriel(materiel)" [disabled]="!materiel.agent">
+            Affecter
+          </button>
+          <button class="btn btn-primary float-end m-1" (click)="editNumInv(materiel)" [disabled]="!materiel.agent">
+            Modifier
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="d-flex justify-content-end">
+    <pagination-controls (pageChange)="p = $event" previousLabel="Précédent" nextLabel="Suivant"></pagination-controls>
+  </div>
 </div>
-  

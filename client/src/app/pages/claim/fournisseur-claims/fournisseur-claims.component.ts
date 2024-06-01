@@ -26,7 +26,7 @@ export class FournisseurClaimsComponent {
   }
 
   getClaimsForFournisseur(): void {
-    this.claimService.getClaimsForFournisseur().subscribe(
+    this.claimService.getAllClaims().subscribe(
       (data: any[]) => {
         console.log(data, 'data');
         this.claims = data;

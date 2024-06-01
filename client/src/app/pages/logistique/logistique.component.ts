@@ -26,6 +26,7 @@ import { FilterPipe } from '../../filter.pipe';
 export class LogistiqueComponent {
   materielList: any[] = [];
   userList: any[] = [];
+  selectedMateriel: any;
   isAgentDisabled:boolean =false;
   p: number = 1;
   searchText: string = '';
@@ -38,13 +39,14 @@ export class LogistiqueComponent {
 
   ngOnInit(): void {
     this.getAllMateriels();
+    this.getAllUsers();
   }
 
   getAllMateriels(): void {
     this.materielService.getMateriels().subscribe(
       (data: any[]) => {
         console.log(data, 'data');
-        this.materielList = data;
+        this.materielList = data.filter((materiel) => materiel.numInv !== '');
         console.log(data, 'materielList');
         this.materielList.forEach((materiel) => {
           if (materiel.agent) {
@@ -60,8 +62,10 @@ export class LogistiqueComponent {
           error
         );
       }
-    );
+    ); 
+  }
 
+  getAllUsers(): void {
     this.userService.getAllUser().subscribe(
       (users: any[]) => {
         this.userList = users;
@@ -74,14 +78,12 @@ export class LogistiqueComponent {
       }
     );
   }
-    affecterMateriel(materiel: any): void {
-      console.log(materiel,'materiel');
+  affecterMateriel(materiel: any): void {
+    if (materiel) {
       this.materielService.affectMateriel(materiel).subscribe({
         next: (resp: any) => {
-          console.log(resp);
           if (resp.success) {
             this.toast.success(resp.message);
-
             this.getAllMateriels();
           } else {
             this.toast.error(resp.message);
@@ -91,8 +93,9 @@ export class LogistiqueComponent {
           console.error("Erreur lors de l'affectation du matériel:", error);
           this.toast.error("Erreur lors de l'affectation du matériel.");
         }
-    });
+      });
     }
+  }
 
   editNumInv(materiel: any): void {
     materiel.isAgentDisabled = false;

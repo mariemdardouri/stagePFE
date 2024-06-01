@@ -1,5 +1,5 @@
 <div class="container-fluid">
-  <h2 class="title">Réclamations Reçues</h2>
+  <h2 class="title">Les réclamations reçues</h2>
   
   <table class="table table-bordered">
     <thead>
@@ -11,7 +11,7 @@
         <th>Description</th>
         <th>Date d'envoi</th>
         <th>Statut</th>
-        <th>Actions</th>
+        <th for="actions">Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -22,9 +22,17 @@
         <td>{{ claim.materiel.numSerie }}</td>
         <td>{{ claim.description }}</td>
         <td>{{ claim.createdAt | date : "short" }}</td>
-        <td>{{ claim.status }}</td>
         <td>
-          <button (click)="ReceiveClaim(claim)" class="btn btn-primary float-end m-2">Received</button>
+          <div>
+            <span *ngIf="claim.status === 'pending'">En Attente</span>
+            <span *ngIf="claim.status === 'sent to fournisseur'">Réclamation envoyer au fournisseur</span>
+            <span *ngIf="claim.status === 'received'">En cours de traitement</span>
+            <span *ngIf="claim.status === 'accepted'">Réclamation accompli</span>
+            <span *ngIf="claim.status === 'rejected'">Réclamation rejeter</span>
+          </div>
+        </td>
+        <td>
+          <button (click)="ReceiveClaim(claim)" class="btn btn-primary float-center m-2">Reçu</button>
         </td>
       </tr>
     </tbody>

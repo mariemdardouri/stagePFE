@@ -1,10 +1,8 @@
 .login-section{
     height: 80vh;
-    /*background-color: #f6f1e1;*/
 }
 
 .login-card{
-    /*background-color: white;*/
     width: 450px;
 }
 
@@ -16,15 +14,11 @@ h2{
     text-transform: uppercase;
 }
 label{
-    /*color: black;*/
     font-family: sans-serif;
     font-weight: bold;
 }
 
-
-
 input::placeholder{
-    /*color: #6c757d;*/
     color: var(--secondary-color);
 }
 
