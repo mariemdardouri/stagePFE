@@ -134,6 +134,12 @@
                     maxlength="20"
                   />
                 </div>
+                <div class="col-xl-6 mb-3">
+                  <label for="numLot" class="form-label">Lot</label>
+                  <select formControlName="numLot" class="form-select" name="numLot" id="numLot">
+                    <option *ngFor="let lot of lotNumbers" [value]="lot">Lot {{ lot }}</option>
+                  </select>
+                </div>
               </div>
             </form>
           </div>
@@ -302,31 +308,23 @@ data-keyboard="false">
 
 
 <!-- QrModal -->
-
-
-
 <div class="modal fade" id="QrModal" tabindex="-1" role="dialog" aria-labelledby="FileModalTitle" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="UpdateModalLabel">
-        Scanner code QR
+          Code QR
         </h1>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-          aria-label="Close"
-        ></button>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="file-upload-container" #qr>      
           <qrcode *ngIf="qrCodeData" [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
         </div>
-    </div>
-    <div class="modal-footer">
-      <button  class="btn btn-primary" (click)="downloadqr()">Télecharger</button>
-  </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary" (click)="downloadqr()">Télecharger</button>
+      </div>
     </div>
   </div>
 </div>

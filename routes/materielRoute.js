@@ -52,9 +52,10 @@ router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
   }
 });
 
+
 router.get("/get-materiel", authMiddleware, jsonParser, async (req, res) => {
   try {
-    const materiel = await Materiel.find({numLot: req.query.numLot,});
+    const materiel = await Materiel.find({});
     res.status(200).json({ materiel });
 
   } catch (error) {
@@ -66,8 +67,7 @@ router.get("/get-materiel-by-fournisseur", authMiddleware, jsonParser, async (re
   try {
     const user = await User.findOne({ _id: req.body.id });
     const materiel = await Materiel.find({
-      fournisseur: user.firstName + " " + user.lastName,
-      numLot: req.query.numLot});
+      fournisseur: user.firstName + " " + user.lastName});
     res.status(200).json({ materiel });
 
   } catch (error) {
@@ -96,6 +96,15 @@ router.put("/update-materiel/:id",authMiddleware,jsonParser,async (req, res) => 
     }
   }
 );
+router.get("/lotNumbers", authMiddleware, async (req, res) => {
+  try {
+    const lotNumbers = await Materiel.distinct("numLot");
+    res.status(200).json(lotNumbers);
+  } catch (error) {
+    console.error("Error fetching lot numbers:", error);
+    res.status(500).json({ message: "Error fetching lot numbers", success: false });
+  }
+});
 
 router.put("/add-numInv/:id",authMiddleware,jsonParser,async (req, res) => {
   try {
@@ -294,7 +303,7 @@ router.put('/receive-materiel', authMiddleware, jsonParser, async (req, res) => 
     });
   }
 });
-router.post("/uploadCSV", upload.single("file"), async (req, res) => {
+/*router.post("/uploadCSV", upload.single("file"), async (req, res) => {
   const user = await User.findOne(req.body.id);
   console.log(user,'user');
   if (!user) {
@@ -344,5 +353,56 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
         });
       }
     });
+});*/
+router.post("/uploadCSV", upload.single("file"), async (req, res) => {
+  const user = await User.findOne(req.body.id);
+  if (!user) {
+    return res.status(404).json({ message: "Utilisateur non trouvé", success: false });
+  }
+
+  const csvData = [];
+  csvtojson().fromFile(req.file.path).then(async (jsonObj) => {
+    const existingLotNumbers = await Materiel.distinct("numLot");
+    let maxLotNumber = existingLotNumbers.length > 0 ? Math.max(...existingLotNumbers) : 0;
+
+    for (const row of jsonObj) {
+      csvData.push({
+        categorie: row.categorie,
+        nature: row.nature,
+        numSerie: row.numSerie,
+        fournisseur: user.firstName + " " + user.lastName,
+        numLot: maxLotNumber + 1, 
+      });
+    }
+
+    try {
+      if (csvData.length > 0) {
+        await Materiel.insertMany(csvData);
+        const userDeploiement = await User.findOne({ role: 'deploiement'});
+        if (userDeploiement) {
+          userDeploiement.unseenNotifications = userDeploiement.unseenNotifications || [];
+          userDeploiement.unseenNotifications.push({
+            type: "materiel-list",
+            message: `Une nouvelle liste de matériel a été envoyée par fournisseur ${user.firstName + ' '+user.lastName} `,
+            onClickPath: "/deploiement",
+          });
+          await userDeploiement.save();
+        }
+        res.status(200).json({ message: "Données CSV importées avec succès" ,success:true });
+      } else {
+        console.error("Aucune donnée valide à importer");
+        res.status(400).json({ message: "Aucune donnée valide à importer",success:false });
+      }
+    } catch (error) {
+      console.error("Erreur lors de l'importation des données CSV:", error);
+      res.status(500).json({ message: "Erreur lors de l'importation des données CSV" ,success:false });
+    } finally {
+      fs.unlink(req.file.path, (err) => {
+        if (err) {
+          console.error("Erreur lors de la suppression du fichier téléchargé:", err);
+        }
+      });
+    }
+  });
 });
 module.exports = router;

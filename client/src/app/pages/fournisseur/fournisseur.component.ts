@@ -8,7 +8,6 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { HttpClient } from '@angular/common/http';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { saveAs } from 'file-saver';  
-import { QRCodeComponent } from 'angularx-qrcode';
 import { FilterPipe } from '../../filter.pipe';
 
 @Component({
@@ -31,6 +30,7 @@ export class FournisseurComponent {
   qrCodeData: string ='';
   file!: File;
   materielList: any[] = [];
+  lotNumbers: number[] = [];
   materielForm!: FormGroup;
   selectedMateriel: any = {};
   p: number = 1;
@@ -47,6 +47,7 @@ export class FournisseurComponent {
   ngOnInit(): void {
     this.setForm();
     this.getMaterielByFournisseur();
+    this.getLotNumbers();
   }
 
   setForm(): void {
@@ -95,6 +96,17 @@ export class FournisseurComponent {
     );
   }
 
+  getLotNumbers(): void {
+    this.materielService.getLotNumbers().subscribe(
+      (data: number[]) => {
+        this.lotNumbers = data;
+      },
+      (error) => {
+        console.error('Error fetching lot numbers:', error);
+      }
+    );
+  }
+  
   editMateriel(materiel: any): void {
     this.selectedMateriel = materiel;
   }
@@ -186,6 +198,7 @@ export class FournisseurComponent {
     }
   }
   
+
   updateFileName(event: any): void {
     const input = event.target;
     const fileName = input.files.length ? input.files[0].name : 'Aucun fichier choisi';
