@@ -6,14 +6,16 @@
             <th for="categorie">Catégorie</th>
             <th for="nature">Nature du model</th>
             <th for="numSerie">Numéro du serie</th>
+            <th for="numLot">Numéro du lot</th>
             <th>Fournisseur</th>
             <th>Vérifier</th>
         </thead>
         <tbody>
-          <tr *ngFor="let materiel of materielList  | paginate: { itemsPerPage: 7, currentPage: p }">
+          <tr *ngFor="let materiel of materielList  | paginate: { itemsPerPage: 9, currentPage: p }">
             <td>{{ materiel.categorie }}</td>
             <td>{{ materiel.nature }}</td>
             <td>{{ materiel.numSerie }}</td>
+            <td>{{ materiel.numLot }}</td>
             <td>{{ materiel.fournisseur }}</td>
             <td>
                 <div class="checkbox-container">

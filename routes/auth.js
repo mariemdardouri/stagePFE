@@ -66,7 +66,7 @@ router.post("/get-user-info", authMiddleware, jsonParser, async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ msg: "Erreur lors de l'obtention des informations sur l'utilisateur", error: err.message });
+    res.status(500).json({ message: "Erreur lors de l'obtention des informations sur l'utilisateur", error: err.message });
   }
 });
 

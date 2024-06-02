@@ -48,36 +48,35 @@ router.post("/add-request", authMiddleware, jsonParser, async (req, res) => {
     const unseenNotifications = user.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-user",
-      message: "Vous avez reçu une nouvelle demande d'utilisateur",
+      message: `Le responsable de site ${newRequest.responsableSite.firstName+' '+ newRequest.responsableSite.lastName} a envoyé une nouvelle demande de compte`,
       onClickPath: "/admin/demande",
     });
     user.unseenNotifications = unseenNotifications;
     await user.save();
     res
       .status(201)
-      .json({ message: "Demande ajouté avec succès", success: true });
+      .json({ message: "Demande ajoutée avec succès", success: true });
   } catch (error) {
     console.error(error);
     res
       .status(500)
-      .json({ message: "Erreur lors de l'ajout du demande", success: false });
+      .json({ message: "Erreur lors de l'ajout de la demande", success: false });
   }
 });
 
 router.post("/uploadCSV", upload.single("file"), authMiddleware, async (req, res) => {
   try {
     const userId = req.body.id;
-    console.log(userId, "User ID from request body");
 
     if (!userId) {
-      return res.status(400).json({ message: "User ID is required", success: false });
+      return res.status(400).json({ message: "L'ID utilisateur est requis", success: false });
     }
 
     const user = await User.findById(userId);
     console.log(user, "User object");
 
     if (!user) {
-      return res.status(404).json({ message: "User not found", success: false });
+      return res.status(404).json({ message: "Utilisateur non trouvé", success: false });
     }
 
     const csvData = [];
@@ -112,7 +111,7 @@ router.post("/uploadCSV", upload.single("file"), authMiddleware, async (req, res
         adminUser.unseenNotifications = adminUser.unseenNotifications || [];
         adminUser.unseenNotifications.push({
           type: "request-list",
-          message: "Une nouvelle liste de demandes a été envoyée",
+          message: `Le responsable de site ${csvData.responsableSite.firstName+' '+ csvData.responsableSite.lastName} a envoyé une nouvelle liste de demandes`,
           onClickPath: "/admin/demande",
         });
         await adminUser.save();
@@ -141,23 +140,19 @@ router.get("/request", authMiddleware, async (req, res) => {
     res.status(200).json(requests);
   } catch (error) {
     console.error(
-      "Erreur lors de la récupération des demandes de demande:",
+      "Erreur lors de la récupération des demandes:",
       error
     );
     res
       .status(500)
       .json({
-        message: "Erreur lors de la récupération des demandes de demande",
+        message: "Erreur lors de la récupération des demandes",
         success: false,
       });
   }
 });
 
-router.put(
-  "/update-request/:id",
-  authMiddleware,
-  jsonParser,
-  async (req, res) => {
+router.put("/update-request/:id",authMiddleware,jsonParser,async (req, res) => {
     try {
       const updatedRequest = await Request.findByIdAndUpdate(
         req.params.id,
@@ -181,11 +176,7 @@ router.put(
   }
 );
 
-router.delete(
-  "/delete-request/:id",
-  authMiddleware,
-  jsonParser,
-  async (req, res) => {
+router.delete("/delete-request/:id",authMiddleware,jsonParser,async (req, res) => {
     try {
       const deletedRequest = await Request.findByIdAndDelete(req.params.id);
       res.status(200).json({
@@ -256,7 +247,6 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
 router.put("/reject-request/:id",authMiddleware,jsonParser,async (req, res) => {
   try {
     const requestId = req.params.id;
-    console.log(requestId, "llllllll");
     const request = await Request.findByIdAndUpdate(
       requestId,
       { status: "rejected" },
@@ -292,10 +282,7 @@ router.get("/get-request", async (req, res) => {
   }
 });
 
-router.get(
-  "/get-requests-by-responsable-site",
-  authMiddleware,
-  async (req, res) => {
+router.get("/get-requests-by-responsable-site",authMiddleware,async (req, res) => {
     try {
       const requests = await Request.find({ responsableSite: req.body.id });
       res.status(200).json({ requests });

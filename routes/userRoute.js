@@ -62,7 +62,7 @@ router.put("/update-profile", authMiddleware,jsonParser, async (req, res) => {
 
     const user = await User.findById(req.body.id);
     if (!user) {
-      return res.status(404).json({ message: "User not found", success: false });
+      return res.status(404).json({ message: "Utilisateur introuvable", success: false });
     }
 
     // Mise à jour des informations de l'utilisateur uniquement si elles sont présentes dans la requête
@@ -75,10 +75,10 @@ router.put("/update-profile", authMiddleware,jsonParser, async (req, res) => {
     
 
     await user.save();
-    res.status(200).json({ message: "Profile updated successfully", success: true });
+    res.status(200).json({ message: "Mise à jour du profil réussie", success: true });
   } catch (err) {
     console.log(err);
-    res.status(500).json({ message: "Error updating profile", success: false });
+    res.status(500).json({ message: "Erreur lors de la mise à jour du profil", success: false });
   }
 });
 
@@ -101,11 +101,11 @@ router.put("/user-activate/:id", authMiddleware, jsonParser, async (req, res) =>
       unseenNotifications.push({
         type: "user-account-activate",
         message: 'Votre compte a été activé',
-        onClickPath: "/notifications",
+        onClickPath: "/agent",
       });
       res.status(200).json({
           user,
-          message: "l'utilisateur a été activé avec succès",
+          message: "Utilisateur activé avec succès",
           success: true,
         });
   } catch (error) {

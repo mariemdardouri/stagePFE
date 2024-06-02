@@ -18,7 +18,7 @@ router.post("/add-mission", authMiddleware, jsonParser, async (req, res) => {
     const unseenNotifications = user.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-mission",
-      message: `Vous avez une nouvelle mission du titre "${newMission.title}" de la part du résponsable logistique`,
+      message: `Vous avez une nouvelle mission du titre "${newMission.title}" de la part du responsable logistique`,
       onClickPath: "/agentLogistique",
     });
     user.unseenNotifications = unseenNotifications;

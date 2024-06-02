@@ -119,7 +119,7 @@ router.put('/receive-claim', authMiddleware, jsonParser, async (req, res) => {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "received-claim",
-        message: `Réclamation est dans le process par le fournisseur ${claim.materiel.fournisseur}`,
+        message: `Réclamation est en cours de traitement par le fournisseur ${claim.materiel.fournisseur}`,
         onClickPath: "/agent/réclamation",
       });
       user.unseenNotifications = unseenNotifications;
@@ -147,13 +147,13 @@ router.put('/accept-claim', authMiddleware, jsonParser, async (req, res) => {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "received-list-materiel",
-        message: `Réclamation est accompli par l'agent ${claim.user.firstName+' '+claim.user.lastName } `,
+        message: `Réclamation est accomplie par l'agent ${claim.user.firstName+' '+claim.user.lastName } `,
         onClickPath: "/logitique/réclamation",
       });
       user.unseenNotifications = unseenNotifications;
       await user.save();
     }
-    res.status(200).json({ updatedClaim, message: "Réclamation acceptée avec succès", success: true });
+    res.status(200).json({ updatedClaim, message: "Réclamation accomplie avec succès", success: true });
   } catch (error) {
     console.error("Erreur lors de l'acceptation de la réclamation:", error);
     res.status(500).json({ message: "Erreur lors de l'acceptation de la réclamation", success: false });
@@ -161,25 +161,25 @@ router.put('/accept-claim', authMiddleware, jsonParser, async (req, res) => {
 });
 router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => {
   try{
-    const { claimId } = req.body;
+    const claim = req.body;
 
-    const updatedClaim = await Claim.findByIdAndUpdate(claimId, { status: 'rejected' }, { new: true });
+    const updatedClaim = await Claim.findByIdAndUpdate(claim._id, { status: 'rejected' }, { new: true });
 
     const user = await User.findOne({ role:'logistique' });
     if (user) {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "received-list-materiel",
-        message: `Claim a ete recus et dans le process`,
+        message: `Réclamation est refusée par l'agent ${claim.user.firstName+' '+claim.user.lastName }`,
         onClickPath: "/logitique/réclamation",
       });
       user.unseenNotifications = unseenNotifications;
       await user.save();
     }
-    res.status(200).json({updatedClaim,message: "La réclamation non vérifié ont été rejetés avec succès",success: true });
+    res.status(200).json({updatedClaim,message: "La réclamation a été refuser avec succès",success: true });
   } catch (error) {
-    console.error("Erreur lors du rejet de réclamation: ", error);
-    res.status(500).json({message: "Erreur lors du rejet de réclamation",success: false});
+    console.error("Erreur lors de la rejection de réclamation: ", error);
+    res.status(500).json({message: "Erreur lors de la rejection de réclamation",success: false});
   }
 });
 
@@ -192,7 +192,7 @@ router.put('/update-claim/:id', authMiddleware, jsonParser, async (req, res) => 
       { new: true }
     );
 
-    res.status(200).json({ updatedClaim, message: "Réclamation mise à jour avec succès", success: true });
+    res.status(200).json({ updatedClaim, message: "Réclamation a été mis à jour avec succès", success: true });
   } catch (error) {
     console.error("Erreur lors de la mise à jour de la réclamation:", error);
     res.status(500).json({ message: "Erreur lors de la mise à jour de la réclamation", success: false });

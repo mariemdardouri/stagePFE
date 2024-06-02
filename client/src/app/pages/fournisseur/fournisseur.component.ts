@@ -6,9 +6,9 @@ import { CommonModule } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { QRCodeModule } from 'angularx-qrcode';
 import { HttpClient } from '@angular/common/http';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { saveAs } from 'file-saver';  
+import { NgxPaginationModule } from 'ngx-pagination'; 
 import { FilterPipe } from '../../filter.pipe';
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-fournisseur',
@@ -27,7 +27,9 @@ import { FilterPipe } from '../../filter.pipe';
   styleUrl: './fournisseur.component.css',
 })
 export class FournisseurComponent {
-  qrCodeData: string ='';
+[x: string]: any;
+  qrCodeData: { [key: string]: string } = {};
+  selectedLotData: string = ''; 
   file!: File;
   materielList: any[] = [];
   lotNumbers: number[] = [];
@@ -36,6 +38,8 @@ export class FournisseurComponent {
   p: number = 1;
   searchText: string = '';
   @ViewChild('qr', { static: false })qr!:ElementRef;
+  lots: any;
+  selectedLot: string = '';
 
   constructor(
     private materielService: MaterielService,
@@ -157,7 +161,6 @@ export class FournisseurComponent {
       });
     }
   }
-
   downloadqr():void{
     const qr=this.qr.nativeElement.querySelector('canvas');
     if(qr){
@@ -166,7 +169,6 @@ export class FournisseurComponent {
      });
     }
     }
-
   onFileChange(event: any): void {
     this.file = event.target.files[0];
     this.updateFileName(event);
@@ -189,13 +191,48 @@ export class FournisseurComponent {
       }
     );
   }
+  openQrModal(lot: string): void {
+    this.selectedLot = lot;
+    this.generateQRCodeForSelectedLot();
+  }
+  getMaterielList(): any[] {
+    if (this.selectedLotData) {
+      const data = JSON.parse(this.selectedLotData);
+      return data.materiels;
+    }
+    return [];
+  }
   getStringifiedData(data: any[]): string {
     return JSON.stringify(data);
   }
-  generateQRCode(): void {
+  generateQRCodeForSelectedLot(): void {
     if (this.materielList) {
-      this.qrCodeData = this.getStringifiedData(this.materielList);
+      const lots = this.materielList.reduce((acc, current) => {
+        const lot = current.numLot;
+        if (!acc[lot]) {
+          acc[lot] = [];
+        }
+        acc[lot].push(current);
+        return acc;
+      }, {});
+  
+      const selectedLotMaterials = lots[this.selectedLot];
+      const selectedLotData = {
+        lot: this.selectedLot,
+        materiels: selectedLotMaterials.map((materiel: { categorie: any; nature: any; numSerie: any; numLot:any; createdAt: any; }) => ({
+          categorie: materiel.categorie,
+          nature: materiel.nature,
+          numSerie: materiel.numSerie,
+          numLot: materiel.numLot,
+          createdAt: materiel.createdAt
+        }))
+      };
+  
+      this.selectedLotData = JSON.stringify(selectedLotData);
     }
+  }
+  getUniqueNumInvs(): string[] {
+    return [...new Set(this.materielList.map(materiel => materiel.numInv))];
   }
   
 

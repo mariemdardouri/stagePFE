@@ -40,7 +40,7 @@ router.post("/add-materiel", authMiddleware, jsonParser, async (req, res) => {
     const unseenNotifications = deploiementUser.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-list-matetiel",
-      message: `Vous avez reçu un matériel a été envoyée par ${newMateriel.fournisseur}` ,
+      message: `Vous avez reçu un nouveau matériel par le fournisseur ${newMateriel.fournisseur}` ,
       onClickPath: "/deploiement",
     });
     deploiementUser.unseenNotifications = unseenNotifications;
@@ -101,8 +101,8 @@ router.get("/lotNumbers", authMiddleware, async (req, res) => {
     const lotNumbers = await Materiel.distinct("numLot");
     res.status(200).json(lotNumbers);
   } catch (error) {
-    console.error("Error fetching lot numbers:", error);
-    res.status(500).json({ message: "Error fetching lot numbers", success: false });
+    console.error("Erreur lors de la récupération des numéros de lot:", error);
+    res.status(500).json({ message: "Erreur lors de la récupération des numéros de lot", success: false });
   }
 });
 
@@ -118,7 +118,7 @@ router.put("/add-numInv/:id",authMiddleware,jsonParser,async (req, res) => {
         const unseenNotifications = user.unseenNotifications || [];
         unseenNotifications.push({
           type: "numInv-added",
-          message: "Le responsable d'approvisionnement a ajouté le numéro d'inventaire au matériel ",
+          message: `Le responsable d'approvisionnement a ajouté le numéro d'inventaire au matériel Le responsable d'approvisionnement a ajouté le numéro d'inventaire au matériel du categorie ${addNumInv.categorie} et de la nature ${addNumInv.nature}`,
           onClickPath: "/logistique",
         });
         user.unseenNotifications = unseenNotifications;
@@ -185,7 +185,7 @@ router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => 
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "rejected-list-materiel",
-        message: 'La liste des matériels a été rejetée',
+        message: 'La liste des matériels a été rejetée par le responsable de déploiement',
         onClickPath: "/approvisionnement",
       });
       user.unseenNotifications = unseenNotifications;
@@ -194,7 +194,7 @@ router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => 
 
     res.status(200).json({
       updatedMateriels,
-      message: "Les matériels non vérifiés ont été rejetés avec succès",
+      message: "Les matériels ont été rejetés avec succès",
       success: true
     });
   } catch (error) {
@@ -233,7 +233,7 @@ router.put('/affecter-materiel/:id', authMiddleware, jsonParser, async (req, res
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "materiel-assigned",
-        message: `Le matériel de catégorie ${materiel.categorie} et de nature ${materiel.nature} a été affecté pour vous ${user.firstName} ${user.lastName}`,
+        message: `Le responsable logistique a affecté le matériel de la catégorie "${materiel.categorie}" et de la nature "${materiel.nature}" pour vous`,
         onClickPath: "/agent",
       });
       user.unseenNotifications = unseenNotifications;
@@ -283,7 +283,7 @@ router.put('/receive-materiel', authMiddleware, jsonParser, async (req, res) => 
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
         type: "received-list-materiel",
-        message: `Le matériel ${materiel.categorie} ${materiel.nature} a été reçus par l'agent ${agent.firstName +' '+agent.lastName} `,
+        message: `Le matériel de la catégorie "${materiel.categorie}" et de la nature "${materiel.nature}"est reçu à l'agent "${agent.firstName +' '+agent.lastName}" `,
         onClickPath: "/logitique",
       });
       user.unseenNotifications = unseenNotifications;
@@ -383,7 +383,7 @@ router.post("/uploadCSV", upload.single("file"), async (req, res) => {
           userDeploiement.unseenNotifications = userDeploiement.unseenNotifications || [];
           userDeploiement.unseenNotifications.push({
             type: "materiel-list",
-            message: `Une nouvelle liste de matériel a été envoyée par fournisseur ${user.firstName + ' '+user.lastName} `,
+            message: `Le fournisseur ${user.firstName + ' '+user.lastName} a envoyé une nouvelle liste de matériel `,
             onClickPath: "/deploiement",
           });
           await userDeploiement.save();

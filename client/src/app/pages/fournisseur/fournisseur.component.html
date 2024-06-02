@@ -17,8 +17,6 @@
     <button data-bs-toggle="modal" data-bs-target="#FileModal" class="btn btn-primary float-end m-2">   
       <i class="bi bi-file-earmark-arrow-down-fill"></i>
       </button>
-   <button data-bs-toggle="modal"  data-bs-target="#QrModal" class="btn btn-primary float-end m-2" (click)="generateQRCode()"> <i i class="bi bi-qr-code"></i>
-     </button>
   </div>
   <div>
     <table class="table table-bordered">
@@ -29,6 +27,7 @@
           <th for="numSerie">Numéro du serie</th>
           <th for="dateCreate">Date de creation</th>
           <th for="lot">Numéro du lot</th>
+          <th>Qr Code</th>
           <th for="action">Actions</th>
       </thead>
       <tbody>
@@ -38,6 +37,10 @@
           <td>{{ materiel.numSerie }}</td>
           <td>{{ materiel.createdAt | date : "short" }}</td>
           <td>{{ materiel.numLot}}</td>
+          <td>
+            <span data-bs-toggle="modal"  data-bs-target="#QrModal"  (click)="openQrModal(materiel.numLot)"> <i i class="bi bi-qr-code"></i>
+            </span>
+          </td>
           <td>
             <div>
               <span
@@ -50,6 +53,7 @@
                 data-bs-target="#DeleteModal" (click)="openDeleteModal(materiel)">
                 <i class="bi bi-trash-fill"></i>
               </span>
+              
             </div>
           </td>
         </tr>
@@ -312,18 +316,20 @@ data-keyboard="false">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h1 class="modal-title fs-5" id="UpdateModalLabel">
+        <h2 class="modal-title fs-5" id="UpdateModalLabel">
           Code QR
-        </h1>
+        </h2>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="file-upload-container" #qr>      
-          <qrcode *ngIf="qrCodeData" [qrdata]="qrCodeData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
+        <div class="file-upload-container" #qr>
+          <h3>Lot {{ selectedLot }}</h3>
+          <qrcode *ngIf="selectedLotData" [qrdata]="selectedLotData" [width]="256" [errorCorrectionLevel]="'M'"></qrcode>
         </div>
       </div>
+      
       <div class="modal-footer">
-        <button class="btn btn-primary" (click)="downloadqr()">Télecharger</button>
+        <button class="btn btn-primary" (click)="downloadqr()">Télécharger</button>
       </div>
     </div>
   </div>
