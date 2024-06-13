@@ -239,7 +239,8 @@
             </div>
             <div class="col-xl-6 mb-3">
                 <label for="agentLogistique" class="form-label">Agent Logistique</label>
-                <select class="form-select" name="agentLogistique" id="agentLogistique" [(ngModel)]="selectedMission.agentLogistique" [ngModelOptions]="{ standalone: true }" >
+                <select class="form-select" name="agentLogistique"
+                [(ngModel)]="selectedMission.agentLogistique" [ngModelOptions]="{ standalone: true }" >
                   <option *ngFor="let user of users" [value]="user._id">{{ user.firstName + ' ' + user.lastName }}</option>
                 </select>
             </div>

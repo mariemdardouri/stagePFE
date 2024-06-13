@@ -68,7 +68,7 @@ export class LogistiqueComponent {
   getAllUsers(): void {
     this.userService.getAllUser().subscribe(
       (users: any[]) => {
-        this.userList = users;
+        this.userList = users.filter((user) => user.role === 'agent');
       },
       (error) => {
         console.error(

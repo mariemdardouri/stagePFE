@@ -80,8 +80,30 @@
           >
             Numéro de téléphone doit être exactement 8 chiffres
           </div>
-            
           </div>
+          <div class="col-xl-6 mb-3">
+            <label for="role" class="form-label">Role</label>
+            <select
+              class="form-select"
+              name="role"
+              formControlName="role"
+            >
+              <option value="fournisseur">Fournisseur</option>
+              <option value="deploiement">
+                Responsable de déploiement
+              </option>
+              <option value="approvisionnement">
+                Responsable approvisionnement
+              </option>
+              <option value="logistique">
+                Responsable logistique
+              </option>
+              <option value="responsableSite">Responsable site</option>
+              <option value="agentLogistique">Agent logistique</option>
+              <option value="agent">Agent</option>
+            </select>
+          </div>
+          
         </div>
         <div class="row">
           <div class="col-xl-6 mb-3">

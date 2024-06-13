@@ -38,7 +38,7 @@
           <td>{{ materiel.createdAt | date : "short" }}</td>
           <td>{{ materiel.numLot}}</td>
           <td>
-            <span data-bs-toggle="modal"  data-bs-target="#QrModal"  (click)="openQrModal(materiel.numLot)"> <i i class="bi bi-qr-code"></i>
+            <span class="qr" data-bs-toggle="modal"  data-bs-target="#QrModal"  (click)="openQrModal(materiel.numLot)"> <i i class="bi bi-qr-code"></i>
             </span>
           </td>
           <td>
@@ -109,6 +109,13 @@
                     <option value="Modems">Modems</option>
                     <option value="Scanner">Scanner</option>
                   </select>
+                  <div *ngIf="
+                      materielForm.controls['categorie'].hasError('required') &&
+                      materielForm.controls['categorie'].touched"
+                       class="text-danger"
+                  >
+                  Entrez la catégorie du matériel
+                  </div>
                 </div>
                 <div class="col-xl-6 mb-3">
                   <label for="nature" class="form-label">Nature du matériel</label>
@@ -124,6 +131,13 @@
                     <option value="CANON">CANON</option>
                     <option value="LOGITECH">LOGITECH</option>
                   </select>
+                  <div *ngIf="
+                      materielForm.controls['nature'].hasError('required') &&
+                      materielForm.controls['nature'].touched"
+                       class="text-danger"
+                  >
+                  Entrez la nature du matériel
+                  </div>
                 </div>
               </div>
               <div class="row">
@@ -137,12 +151,26 @@
                     formControlName="numSerie"
                     maxlength="20"
                   />
+                  <div *ngIf="
+                      materielForm.controls['numSerie'].hasError('required') &&
+                      materielForm.controls['numSerie'].touched"
+                       class="text-danger"
+                  >
+                  Entrez le numéro de la série du matériel
+                  </div>
                 </div>
                 <div class="col-xl-6 mb-3">
                   <label for="numLot" class="form-label">Lot</label>
                   <select formControlName="numLot" class="form-select" name="numLot" id="numLot">
                     <option *ngFor="let lot of lotNumbers" [value]="lot">Lot {{ lot }}</option>
                   </select>
+                  <div *ngIf="
+                      materielForm.controls['numLot'].hasError('required') &&
+                      materielForm.controls['numLot'].touched"
+                       class="text-danger"
+                  >
+                  Entrez le lot du matériel
+                  </div>
                 </div>
               </div>
             </form>
@@ -246,19 +274,16 @@ data-keyboard="false"
                 maxlength="20"
               />
             </div>
-            <div class="col-xl-6 mb-3">
-              <label  class="form-label"
-                >Date de création</label
-              >
-              <input
-                type="datetime"
-                name="createdAt"
-                class="form-control"
-                id="createdAt"
-                [(ngModel)]="selectedMateriel.createdAt"
+              <div class="col-xl-6 mb-3">
+                <label for="numLot" class="form-label">Lot</label>
+                <select 
+                class="form-select"
+                name="numLot"
+                [(ngModel)]="selectedMateriel.numLot"
                 [ngModelOptions]="{ standalone: true }"
-                
-              />
+                >
+                <option *ngFor="let lot of lotNumbers" [value]="lot">Lot {{ lot }}</option>
+                </select>
             </div>
         </div>
       </form>

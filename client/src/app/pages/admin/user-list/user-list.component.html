@@ -116,7 +116,7 @@ data-keyboard="false"
               "
               class="text-danger"
             >
-              Entrez votre prénom
+              Entrez le prénom
             </div>
             <div
             *ngIf="
@@ -146,7 +146,7 @@ data-keyboard="false"
               "
               class="text-danger"
             >
-              Entrez votre nom
+              Entrez le nom
             </div>
             <div
               *ngIf="
@@ -179,7 +179,7 @@ data-keyboard="false"
               "
               class="text-danger"
             >
-              Entrez votre cin
+              Entrez le numéro du cin
             </div>
             <div *ngIf="
                 userRegForm.controls['cin'].hasError('minlength') &&
@@ -205,7 +205,7 @@ data-keyboard="false"
               "
               class="text-danger"
             >
-              Entrez votre email
+              Entrez l'email
             </div>
             <div
               *ngIf="
@@ -239,7 +239,7 @@ data-keyboard="false"
               "
               class="text-danger"
             >
-              Entrez votre numéro de téléphone
+              Entrez le numéro de téléphone
             </div>
             <div
               *ngIf="
@@ -268,6 +268,15 @@ data-keyboard="false"
               <option value="agentLogistique">Agent logistique</option>
               <option value="agent">Agent</option>
             </select>
+            <div
+              *ngIf="
+                userRegForm.controls['role'].hasError('required') &&
+                userRegForm.controls['role'].touched
+              "
+              class="text-danger"
+            >
+              Entrez le role
+            </div>
           </div>
         </div>
   
@@ -290,7 +299,7 @@ data-keyboard="false"
               "
               class="text-danger"
             >
-              Entrez votre mot de passe
+              Entrez le mot de passe
             </div>
             <div
               *ngIf="
@@ -331,7 +340,7 @@ data-keyboard="false"
               "
               class="text-danger"
             >
-              Confirmer votre mot de passe
+              Confirmer le mot de passe
             </div>
             <div
               *ngIf="
@@ -376,7 +385,7 @@ data-keyboard="false"
     <div class="modal-content">
       <div class="modal-header">
         <h1 class="modal-title fs-5" id="UpdateModalLabel">
-          Modifier l'utilisateur
+          Modifier un compte
         </h1>
         <button
           type="button"

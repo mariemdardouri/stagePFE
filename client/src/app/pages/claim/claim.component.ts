@@ -79,8 +79,27 @@ export class ClaimComponent {
         }
       },
       error:(error) => {
-        console.error('Error receiving reclamation:', error);
-        this.toast.error('Error receiving reclamation.');
+        console.error('Erreur de réception de la réclamation:', error);
+        this.toast.error('Erreur de réception de la réclamation.');
+      }
+  });
+  }
+  openRejectModal(claim: any): void {
+    this.selectedClaim = claim;
+  }
+  rejectClaim(): void {
+    this.claimService.rejectClaim(this.selectedClaim).subscribe({
+      next: (resp: any) => {
+        if (resp.success) {
+          this.toast.success(resp.message);
+          this.getClaimsByMateriel();
+        } else {
+          this.toast.error(resp.message);
+        }
+      },
+      error:(error) => {
+        console.error('Erreur de réjection de la réclamation:', error);
+        this.toast.error('Erreur de réjection de la réclamation.');
       }
   });
   }

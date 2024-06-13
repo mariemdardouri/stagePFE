@@ -136,7 +136,7 @@ export class ClaimService {
       Authorization: `Bearer ${token}`,
     });
   
-    return this.http.put(URL + 'reject-materiels', claim, { headers });
+    return this.http.put(URL + 'reject-claim', claim, { headers });
   }
 }
 

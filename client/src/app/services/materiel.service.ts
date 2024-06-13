@@ -169,4 +169,17 @@
       return this.http.put(URL + 'receive-materiel', materiel, { headers });
     }
     
+    uploadCSV(file: File, userId: string): Observable<any> {
+      const formData: FormData = new FormData();
+      formData.append('file', file);
+      formData.append('id', userId);
+  
+      const token = localStorage.getItem('token')
+  
+      const headers = new HttpHeaders({
+        Authorization: `Bearer ${token}`
+      });
+  
+      return this.http.post(URL+ 'uploadCSV', formData, { headers });
+    }
   }

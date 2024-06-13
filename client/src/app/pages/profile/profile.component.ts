@@ -41,6 +41,7 @@ export class ProfileComponent {
       ]) ,
       email : new FormControl('')  ,
       phoneNumber : new FormControl('', [Validators.minLength(8),]),
+      role : new FormControl({value:'',disabled:true}) ,
       password: new FormControl('', [
         Validators.minLength(8),
         this.strongPasswordValidator(),

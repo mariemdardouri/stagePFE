@@ -18,7 +18,7 @@ export class FilterPipe implements PipeTransform {
       item.nature?.toLowerCase().includes(searchText) ||
       item.numSerie?.toLowerCase().includes(searchText) ||
       item.numInv?.toLowerCase().includes(searchText) ||
-      item.numLot?.toLowerCase().includes(searchText) ||
+      item.numLot?.toString().toLowerCase().includes(searchText) 
       item.status?.toLowerCase().includes(searchText) ||
       item.agent?.toLowerCase().includes(searchText);
 

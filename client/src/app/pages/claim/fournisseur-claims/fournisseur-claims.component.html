@@ -10,7 +10,7 @@
         <th>Numéro de série</th>
         <th>Description</th>
         <th>Date d'envoi</th>
-        <th>Statut</th>
+        <th class="status">Statut</th>
         <th for="actions">Actions</th>
       </tr>
     </thead>
@@ -25,7 +25,7 @@
         <td>
           <div>
             <span *ngIf="claim.status === 'pending'">En Attente</span>
-            <span *ngIf="claim.status === 'sent to fournisseur'">Réclamation envoyer au fournisseur</span>
+            <span *ngIf="claim.status === 'sent to fournisseur'">Envoyer au fournisseur</span>
             <span *ngIf="claim.status === 'received'">En cours de traitement</span>
             <span *ngIf="claim.status === 'accepted'">Réclamation accompli</span>
             <span *ngIf="claim.status === 'rejected'">Réclamation rejeter</span>

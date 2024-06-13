@@ -79,6 +79,10 @@ th.actions {
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1040;
 }
+.modal-body textarea {
+  height: 100px;
+  width: 100%;
+}
 .search-title-container {
   display: flex;
   justify-content: space-between;

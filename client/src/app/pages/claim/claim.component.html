@@ -1,6 +1,6 @@
 <div class="container-fluid">
   <div class="search-title-container">
-    <h2 class="title">Réclamations</h2>
+    <h2 class="title">Table des réclamations</h2>
     <div class="search-box">
       <input type="search" [(ngModel)]="searchText" class="form-control" placeholder="Rechercher" aria-label="search"/>
     </div>
@@ -28,14 +28,18 @@
             <span *ngIf="claim.status === 'pending'">En Attente</span>
             <span *ngIf="claim.status === 'sent to fournisseur'">Réclamation envoyer au fournisseur</span>
             <span *ngIf="claim.status === 'received'">En cours de traitement</span>
-            <span *ngIf="claim.status === 'accepted'">Réclamation accompli</span>
-            <span *ngIf="claim.status === 'rejected'">Réclamation rejeter</span>
+            <span *ngIf="claim.status === 'accepted'">Réclamation accomplie</span>
+            <span *ngIf="claim.status === 'rejected'">Réclamation refuser</span>
           </div>
         </td>
         <td>
           <div>
             <span class="icon-check" (click)="acceptClaim(claim)">
               <i class="bi bi-check-square-fill"></i>
+          </span>
+          <span class="icon-desactivate" data-bs-toggle="modal"
+            data-bs-target="#RejectModal" (click)="openRejectModal(claim)">
+            <i class="bi bi-x-square-fill"></i> 
           </span>
             <span
               data-bs-toggle="modal"
@@ -85,13 +89,14 @@ data-keyboard="false"
       <form autocomplete="off">
           <div class="col-xl-6 mb-3">
             <label for="description" class="form-label">Déscription</label>
-            <input 
+            <textarea 
               name="description"
               id="description"
               class="form-control"
+              rows="5"
               [(ngModel)]="selectedClaim.description"
               [ngModelOptions]="{ standalone: true }"
-            >
+            ></textarea>
           </div>
       </form>
     </div>
@@ -120,11 +125,31 @@ data-keyboard="false"
       </div>
       <div class="exclamation">
         <i class="bi bi-exclamation-circle"></i>
-        <p>Veuillez confirmer svp, cette opération est irréversible.</p>
+        <p>Veuillez confirmer, cette opération est irréversible.</p>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
         <button type="button" class="btn btn-danger" (click)="deleteClaim()" data-bs-dismiss="modal">Supprimer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Reject Modal -->
+<div class="modal fade" id="RejectModal" tabindex="-1" aria-labelledby="RejectModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="RejectModalLabel">Rejeter ?</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="exclamation">
+        <i class="bi bi-exclamation-circle"></i>
+        <p>Veuillez confirmer cette opération.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+        <button type="button" class="btn btn-danger" (click)="rejectClaim()" data-bs-dismiss="modal">Rejeter</button>
       </div>
     </div>
   </div>

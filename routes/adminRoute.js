@@ -44,11 +44,12 @@ router.post("/add-request", authMiddleware, jsonParser, async (req, res) => {
       status: "pending",
     });
     await newRequest.save();
+    const userSite = await User.findById(req.body.id);
     const user = await User.findOne({ role: "admin" });
     const unseenNotifications = user.unseenNotifications || [];
     unseenNotifications.push({
       type: "new-user",
-      message: `Le responsable de site ${newRequest.responsableSite.firstName+' '+ newRequest.responsableSite.lastName} a envoyé une nouvelle demande de compte`,
+      message: `Le responsable de site ${userSite.firstName + ' '+userSite.lastName} a envoyé une nouvelle demande de compte`,
       onClickPath: "/admin/demande",
     });
     user.unseenNotifications = unseenNotifications;
@@ -111,7 +112,7 @@ router.post("/uploadCSV", upload.single("file"), authMiddleware, async (req, res
         adminUser.unseenNotifications = adminUser.unseenNotifications || [];
         adminUser.unseenNotifications.push({
           type: "request-list",
-          message: `Le responsable de site ${csvData.responsableSite.firstName+' '+ csvData.responsableSite.lastName} a envoyé une nouvelle liste de demandes`,
+          message: `Le responsable de site ${user.firstName+' '+ user.lastName} a envoyé une nouvelle liste de demandes`,
           onClickPath: "/admin/demande",
         });
         await adminUser.save();
@@ -231,15 +232,26 @@ router.put("/accept-user/:id", authMiddleware, jsonParser, async (req, res) => {
     });
 
     await newUser.save();
+
+    const user = await User.findOne({ role: "responsableSite" });
+    const unseenNotifications = user.unseenNotifications || [];
+    unseenNotifications.push({
+      type: "accept-request",
+      message: `L'administrateur a accepté votre demande`,
+      onClickPath: "/admin/demande",
+    });
+    user.unseenNotifications = unseenNotifications;
+    await user.save();
+
     res
       .status(200)
-      .json({ message: "Utilisateur créé avec succès", success: true });
+      .json({ message: "Demande de compte accepté avec succès", success: true });
   } catch (error) {
-    console.error("Erreur lors de l'acceptation de l'utilisateur:", error);
+    console.error("Erreur lors de l'acceptation de la demande de compte:", error);
     res
       .status(500)
       .json({
-        message: "Erreur lors de l'acceptation de l'utilisateur",
+        message: "Erreur lors de l'acceptation de la demande de compte",
         success: false,
       });
   }
@@ -257,7 +269,17 @@ router.put("/reject-request/:id",authMiddleware,jsonParser,async (req, res) => {
       return res.status(404).json({ message: "Demande non trouvé", success: false });
     }
 
-    res.status(200).json({ message: "Demande rejeter avec succès", success: true });
+    const user = await User.findOne({ role: "responsableSite" });
+    const unseenNotifications = user.unseenNotifications || [];
+    unseenNotifications.push({
+      type: "accept-request",
+      message: `L'administrateur a rejet votre demande`,
+      onClickPath: "/admin/demande",
+    });
+    user.unseenNotifications = unseenNotifications;
+    await user.save();
+
+    res.status(200).json({ message: "Demande de compte rejeté avec succès", success: true });
   } catch (error) {
     console.error("Erreur lors de la réjection du demande:", error);
     res

@@ -115,7 +115,7 @@
                     "
                     class="text-danger"
                   >
-                    Entrez votre prénom
+                    Entrez le prénom
                   </div>
                   <div
                   *ngIf="
@@ -145,7 +145,7 @@
                     "
                     class="text-danger"
                   >
-                    Entrez votre nom
+                    Entrez le nom
                   </div>
                   <div
                     *ngIf="
@@ -178,7 +178,7 @@
                     "
                     class="text-danger"
                   >
-                    Entrez votre cin
+                    Entrez le cin
                   </div>
                   <div *ngIf="
                       userForm.controls['cin'].hasError('minlength') &&
@@ -204,7 +204,7 @@
                     "
                     class="text-danger"
                   >
-                    Entrez votre email
+                    Entrez l'email
                   </div>
                   <div
                     *ngIf="
@@ -238,7 +238,7 @@
                     "
                     class="text-danger"
                   >
-                    Entrez votre numéro de téléphone
+                    Entrez le numéro de téléphone
                   </div>
                   <div
                     *ngIf="
@@ -267,6 +267,15 @@
                     <option value="agentLogistique">Agent logistique</option>
                     <option value="agent">Agent</option>
                   </select>
+                  <div
+                    *ngIf="
+                      userForm.controls['role'].hasError('required') &&
+                      userForm.controls['role'].touched
+                    "
+                    class="text-danger"
+                  >
+                    Entrez le role
+                  </div>
                 </div>
               </div>        
             </form>
@@ -478,7 +487,7 @@ data-keyboard="false"
               </option>
               <option value="responsableSite">Responsable site</option>
               <option value="agentLogistique">Agent logistique</option>
-              <option value="Agent">Agent</option>
+              <option value="agent">Agent</option>
             </select>
           </div>
         </div>

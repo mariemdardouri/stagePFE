@@ -40,6 +40,7 @@ export class FournisseurComponent {
   @ViewChild('qr', { static: false })qr!:ElementRef;
   lots: any;
   selectedLot: string = '';
+  userId!:string;
 
   constructor(
     private materielService: MaterielService,
@@ -173,7 +174,7 @@ export class FournisseurComponent {
     this.file = event.target.files[0];
     this.updateFileName(event);
   }
-  uploadCSV() {
+  /*uploadCSV() {
     const formData = new FormData();
     formData.append('file', this.file);
     console.log(formData);
@@ -190,6 +191,24 @@ export class FournisseurComponent {
         console.error('Error uploading CSV:', error);
       }
     );
+  }*/
+  uploadCSV() {
+
+    this.materielService.uploadCSV(this.file, this.userId).subscribe({
+      next: (response: any) => {
+        console.log('Fichier téléchargé avec succès');
+        console.log(response);
+        if (response.success) {
+          this.toast.success(response.message);
+          this.getMaterielByFournisseur();
+        } else {
+          this.toast.error(response.message);
+        }
+      },
+      error: (error) => {
+        console.error('Erreur lors du téléchargement du CSV:', error);
+      }
+    });
   }
   openQrModal(lot: string): void {
     this.selectedLot = lot;

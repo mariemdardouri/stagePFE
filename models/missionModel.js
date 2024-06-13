@@ -7,7 +7,7 @@ const missionSchema = new mongoose.Schema(
     hour: { type: String, required: true },
     dateStart: { type: String, required: true },
     dateEnd: { type: String, required: true },
-    agentLogistique: { type: String,required: true },
+    agentLogistique: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
     status: { type: String,default: "pending" },
     
   },

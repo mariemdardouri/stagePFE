@@ -82,14 +82,21 @@ router.post('/send-to-fournisseur',authMiddleware,jsonParser,async (req, res) =>
     const claim = req.body;
     const updatedClaim = await Claim.findByIdAndUpdate(claim._id, { status: 'sent to fournisseur' }, { new: true }).populate('materiel').populate('user');
 
-    const fournisseurUser = await User.findOne({ role: 'fournisseur' });
+    const fournisseurUser = await User.findOne({
+      $or: [
+        { firstName: claim.materiel.fournisseur.split(' ')[0], lastName: claim.materiel.fournisseur.split(' ')[1] },
+        { firstName: claim.materiel.fournisseur.split(' ')[1], lastName: claim.materiel.fournisseur.split(' ')[0] },
+      ],
+    });
+    console.log(fournisseurUser,'fournisseurUser');
     const unseenNotifications = fournisseurUser.unseenNotifications || [];
     unseenNotifications.push({
       type: "send-to-fournisseur",
-      message: `Une réclamation de description "${claim.description}" a été envoyée par le responsable logistique`,
+      message: `Le responsable logistique a envoyée une réclamation de description "${claim.description}" du matériel "${claim.materiel.categorie}" du numéro du série "${claim.materiel.numSerie}" `,
       onClickPath: "/fournisseur/réclamation",
     });
     fournisseurUser.unseenNotifications = unseenNotifications;
+    console.log(unseenNotifications,'unseenNotifications');
     await fournisseurUser.save();
     res.status(200).json(updatedClaim);
   } catch (error) {
@@ -114,7 +121,8 @@ router.put('/receive-claim', authMiddleware, jsonParser, async (req, res) => {
 
     const updatedClaim = await Claim.findByIdAndUpdate(claim._id, { status: 'received' }, { new: true });
 
-    const user = await User.findOne({ role:'agent' });
+    const user = await User.findById( claim.user);
+    console.log(user,'agenttt');
     if (user) {
       const unseenNotifications = user.unseenNotifications || [];
       unseenNotifications.push({
@@ -148,7 +156,7 @@ router.put('/accept-claim', authMiddleware, jsonParser, async (req, res) => {
       unseenNotifications.push({
         type: "received-list-materiel",
         message: `Réclamation est accomplie par l'agent ${claim.user.firstName+' '+claim.user.lastName } `,
-        onClickPath: "/logitique/réclamation",
+        onClickPath: "/logistique/réclamation",
       });
       user.unseenNotifications = unseenNotifications;
       await user.save();
@@ -159,7 +167,7 @@ router.put('/accept-claim', authMiddleware, jsonParser, async (req, res) => {
     res.status(500).json({ message: "Erreur lors de l'acceptation de la réclamation", success: false });
   }
 });
-router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => {
+router.put('/reject-claim', authMiddleware, jsonParser, async (req, res) => {
   try{
     const claim = req.body;
 
@@ -171,7 +179,7 @@ router.put('/reject-materiels', authMiddleware, jsonParser, async (req, res) => 
       unseenNotifications.push({
         type: "received-list-materiel",
         message: `Réclamation est refusée par l'agent ${claim.user.firstName+' '+claim.user.lastName }`,
-        onClickPath: "/logitique/réclamation",
+        onClickPath: "/logistique/réclamation",
       });
       user.unseenNotifications = unseenNotifications;
       await user.save();

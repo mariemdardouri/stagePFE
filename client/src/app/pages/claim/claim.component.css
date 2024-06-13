@@ -75,20 +75,25 @@ tr:nth-child(even) {
     color: rgb(255, 98, 0);
     margin-bottom: 10px; 
 }
-.icon-edit,.icon-delete,.icon-check{
+.icon-edit,.icon-delete,.icon-check,.icon-desactivate{
     font-size: 1.5rem;
     cursor: pointer;
     margin-right: 0.5rem;
 }
-
-.icon-edit:hover,.icon-check:hover,.icon-delete:hover{
+.modal-body textarea {
+    height: 100px;
+    width: 200%;
+  }
+.icon-edit:hover,.icon-check:hover,.icon-delete:hover,.icon-desactivate:hover{
     color:#007bff;
 }
 
 .icon-edit{
     color: blue;
 }
-
+.icon-desactivate{
+    color: red;
+}
 .icon-delete{
     color: red;
 }

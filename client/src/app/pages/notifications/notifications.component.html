@@ -17,7 +17,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let notification of unseenNotifications | paginate: { itemsPerPage: 10, currentPage: p }" (click)="navigateToRequests(notification.onClickPath) ">
+          <tr *ngFor="let notification of unseenNotifications | paginate: { itemsPerPage: 9, currentPage: p }" (click)="navigateToRequests(notification.onClickPath) ">
             <td>{{ notification.message }}</td>
           </tr>
         </tbody>
@@ -39,7 +39,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr *ngFor="let notification of seenNotifications | paginate: { itemsPerPage: 10, currentPage: p }" (click)="navigateToRequests(notification.onClickPath)">
+          <tr *ngFor="let notification of seenNotifications | paginate: { itemsPerPage: 9, currentPage: p }" (click)="navigateToRequests(notification.onClickPath)">
             <td>{{ notification.message }}</td>
           </tr>
         </tbody>

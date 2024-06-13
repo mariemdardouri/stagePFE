@@ -28,6 +28,10 @@ th {
     text-align:center ;
 }
 
+th.status{
+    width: 200px;
+
+}
   
 tr:nth-child(even) {
     background-color: #f2f2f2;
